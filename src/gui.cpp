@@ -435,7 +435,6 @@ void gui::Render() noexcept {
           functions::funChat();
           functions::funFOVMin();
           functions::funMouseFix();
-          functions::sendHUDToggle();
           functions::fuckTheSunAway();
           functions::sendNoCamo();
           functions::sendNoFog();
