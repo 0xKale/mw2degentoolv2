@@ -1,5 +1,6 @@
 #include "config.h"
 #include "variables.h"
+#include "functions.h"
 #include <shlobj.h>  // For getting folder paths if needed
 #include <windows.h> // For GetModuleHandleExA, HMODULE, MAX_PATH
 #include <iostream>
