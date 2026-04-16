@@ -1,8 +1,5 @@
 #pragma once
-
-struct Position {
-    float x, y, z, viewx, viewy;
-};
+#include "engine_hooks.h"
 
 class variables
 {

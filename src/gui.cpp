@@ -1,5 +1,6 @@
 #include "gui.h"
 #include "config.h" // Add this include at the top
+#include "engine_hooks.h"
 #include "hooks.h"
 
 #include "../ext/imgui/imgui.h"
@@ -7,6 +8,7 @@
 #include "../ext/imgui/imgui_impl_win32.h"
 #include "../ext/imgui/imgui_internal.h"
 
+#include "engine_hooks.h"
 #include "functions.h"
 #include "variables.h"
 

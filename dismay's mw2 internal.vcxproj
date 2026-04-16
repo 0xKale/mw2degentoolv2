@@ -162,6 +162,7 @@
     <ClInclude Include="src\colors.h" />
     <ClInclude Include="src\cruin.h" />
     <ClInclude Include="src\detours.h" />
+    <ClInclude Include="src\engine_hooks.h" />
     <ClInclude Include="src\gui.h" />
     <ClInclude Include="src\hooks.h" />
     <ClInclude Include="src\icon_font.h" />
@@ -186,6 +187,7 @@
     <ClCompile Include="ext\minhook\hde\hde64.c" />
     <ClCompile Include="ext\minhook\hook.c" />
     <ClCompile Include="ext\minhook\trampoline.c" />
+    <ClCompile Include="src\engine_hooks.cpp" />
     <ClCompile Include="src\notes.h" />
     <ClCompile Include="src\functions.cpp" />
     <ClCompile Include="src\functions.h" />

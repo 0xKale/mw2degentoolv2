@@ -9,6 +9,8 @@
 #include "../ext/imgui/imgui_impl_win32.h"
 #include "../ext/imgui/imgui_impl_dx9.h"
 
+#include "engine_hooks.h"
+
 void hooks::Setup()
 {
 
@@ -34,6 +36,7 @@ void hooks::Setup()
 		throw std::runtime_error("Unable to enable hooks");
 
 	gui::DestroyDirectX();
+	engine::InstallHooks();
 }
 
 void hooks::Destroy() noexcept
