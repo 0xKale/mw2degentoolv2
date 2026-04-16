@@ -2,6 +2,7 @@
 #include "../ext/imgui/imgui.h"
 #include "../src/gui.h"
 #include <cstdint>
+#include <windows.h>
 
 typedef void(__cdecl* SV_GameSendServerCommand_t)(int clientNum, int reliable, char* command);
 typedef void(__cdecl* Cbuf_AddText_t)(int localClientNum, const char* text);
@@ -77,5 +78,13 @@ namespace functions
 	void writeSensitivity(float sens);
 	float readSensitivity();
 	void doIronSight();
+
+	// --- 8000Hz Raw Input fix ---
+	void InitializeRawInput(HWND hwnd);
+	bool HandleRawInputMessage(UINT uMsg, WPARAM wParam, LPARAM lParam);
+	void ApplyRawInputToCamera();
+
+	// --- Byte patching helper ---
+	void WriteBytes(LPVOID address, const char* bytes, int length);
 
 }
