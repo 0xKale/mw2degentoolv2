@@ -1,5 +1,4 @@
 #include "variables.h"
-#include "engine_hooks.h"
 
 
 bool variables::debug = false;

@@ -2,7 +2,6 @@
 #include <Windows.h>
 #include <thread>
 #include <cstdint>
-#include "engine_hooks.h"
 #include "gui.h"
 #include "hooks.h"
 #include "variables.h"
@@ -115,7 +114,6 @@ void Setup(const HMODULE instance)
 
 UNLOAD:
     std::cout << "[!] Unloading Tool..." << std::endl;
-    engine::RemoveHooks();
     hooks::Destroy();
     gui::Destroy();
     FreeLibraryAndExitThread(instance, 0);

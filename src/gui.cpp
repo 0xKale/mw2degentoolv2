@@ -1,6 +1,5 @@
 #include "gui.h"
 #include "config.h" // Add this include at the top
-#include "engine_hooks.h"
 #include "hooks.h"
 
 #include "../ext/imgui/imgui.h"
@@ -8,7 +7,6 @@
 #include "../ext/imgui/imgui_impl_win32.h"
 #include "../ext/imgui/imgui_internal.h"
 
-#include "engine_hooks.h"
 #include "functions.h"
 #include "variables.h"
 
@@ -158,8 +156,6 @@ void gui::SetupMenu(LPDIRECT3DDEVICE9 device) noexcept {
 
   ImGui_ImplWin32_Init(window);
   ImGui_ImplDX9_Init(device);
-
-  functions::InitializeRawInput(window);
 
   setup = true;
 }
@@ -1308,12 +1304,6 @@ LRESULT CALLBACK WindowProcess(HWND window, UINT message, WPARAM wideParam,
   functions::doFFATeamFix();
   functions::handleHotkeys();
   functions::menuUITweaks();
-  functions::ApplyRawInputToCamera();
-
-  // --- 8000HZ RAW INPUT FIX ---
-  if (functions::HandleRawInputMessage(message, wideParam, longParam)) {
-    return DefWindowProcA(window, message, wideParam, longParam);
-  }
 
   // Pass Messages to Imgui
   if (gui::open &&
