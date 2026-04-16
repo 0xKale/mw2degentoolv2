@@ -78,4 +78,9 @@ namespace functions
 	float readSensitivity();
 	void doIronSight();
 
+	// --- 8000HZ RAW INPUT FIX ---
+	void InitializeRawInput(HWND hwnd);
+	bool HandleRawInputMessage(UINT uMsg, WPARAM wParam, LPARAM lParam);
+	void ApplyRawInputToCamera();
+
 }

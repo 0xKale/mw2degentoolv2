@@ -6,6 +6,15 @@
 #include <iostream>
 #include <thread>
 #include <cstdlib> // Needed for std::atoi
+#include <windows.h>
+#include <hidusage.h> // Required for Raw Input
+
+#ifndef HID_USAGE_PAGE_GENERIC
+#define HID_USAGE_PAGE_GENERIC         ((USHORT) 0x01)
+#endif
+#ifndef HID_USAGE_GENERIC_MOUSE
+#define HID_USAGE_GENERIC_MOUSE        ((USHORT) 0x02)
+#endif
 
 SV_GameSendServerCommand_t SV_GameSendServerCommand = (SV_GameSendServerCommand_t)0x588340;
 Cbuf_AddText_t Cbuf_AddText = (Cbuf_AddText_t)0x563BE0;
@@ -37,6 +46,93 @@ namespace functions
     int mNoFog2 = 0x695D9D0;   // No Fog
     int mNoBullets = 0x88E20C; // No Bullets
     int mMovie = 0x695D898;    // Movies
+
+    void WriteBytes(LPVOID address, const char *bytes, int length); // forward declaration
+
+    // --- 8000HZ RAW INPUT FIX VARIABLES ---
+    bool bRawInputInitialized = false;
+    long g_rawMouseDeltaX = 0;
+    long g_rawMouseDeltaY = 0;
+
+    // Call this ONCE when your menu initializes (e.g., right after ImGui::CreateContext)
+    void InitializeRawInput(HWND hwnd)
+    {
+        if (bRawInputInitialized) return;
+
+        RAWINPUTDEVICE Rid[1];
+        Rid[0].usUsagePage = HID_USAGE_PAGE_GENERIC;
+        Rid[0].usUsage = HID_USAGE_GENERIC_MOUSE;
+        Rid[0].dwFlags = 0; // 0 = Only read when game is focused
+        Rid[0].hwndTarget = hwnd;
+
+        if (RegisterRawInputDevices(Rid, 1, sizeof(Rid[0]))) {
+            bRawInputInitialized = true;
+            // Apply the byte-patch we found in IDA to disconnect WM_MOUSEMOVE from the button logic
+            const char disableMouseMove[] = { (char)0x03 };
+            WriteBytes((LPVOID)0x005CCF24, disableMouseMove, sizeof(disableMouseMove));
+        }
+    }
+
+    // Call this inside your WndProc hook
+    bool HandleRawInputMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
+    {
+        if (uMsg == WM_INPUT)
+        {
+            UINT dwSize = 0;
+            GetRawInputData((HRAWINPUT)lParam, RID_INPUT, NULL, &dwSize, sizeof(RAWINPUTHEADER));
+
+            if (dwSize > 0)
+            {
+                LPBYTE lpb = new BYTE[dwSize];
+                if (GetRawInputData((HRAWINPUT)lParam, RID_INPUT, lpb, &dwSize, sizeof(RAWINPUTHEADER)) == dwSize)
+                {
+                    RAWINPUT* raw = (RAWINPUT*)lpb;
+                    if (raw->header.dwType == RIM_TYPEMOUSE)
+                    {
+                        // Accumulate the pure, unadulterated hardware deltas
+                        g_rawMouseDeltaX += raw->data.mouse.lLastX;
+                        g_rawMouseDeltaY += raw->data.mouse.lLastY;
+                    }
+                }
+                delete[] lpb;
+            }
+            return true; // We handled it
+        }
+
+        // Kill the 8000Hz message pump lag instantly
+        if (uMsg == WM_MOUSEMOVE)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    // Call this EVERY FRAME in your main game hook loop (e.g., EndScene or CL_WritePacket)
+    void ApplyRawInputToCamera()
+    {
+        if (!bRawInputInitialized || gui::open) return; // Don't move camera if menu is open
+
+        if (g_rawMouseDeltaX != 0 || g_rawMouseDeltaY != 0)
+        {
+            // Get current sensitivity
+            float sens = readSensitivity();
+
+            // Pointer to ClientActive structure (cg.viewangles)
+            // Note: 0x00B343D0 is the standard IW4 cl.viewangles address, verify if needed
+            float* viewAnglesX = reinterpret_cast<float*>(0x00B343D0); // Pitch 0x00B343D0
+            float* viewAnglesY = reinterpret_cast<float*>(0x00B343D4); // Yaw 0x00B343D4
+
+            // Apply Raw Deltas * Sensitivity (Constants may need tweaking based on m_yaw/m_pitch)
+            *viewAnglesY -= (g_rawMouseDeltaX * sens * 0.022f);
+            *viewAnglesX += (g_rawMouseDeltaY * sens * 0.022f);
+
+            // Reset accumulators for the next frame
+            g_rawMouseDeltaX = 0;
+            g_rawMouseDeltaY = 0;
+        }
+    }
+
 
     void handleMouseCursor()
     {
@@ -238,6 +334,7 @@ namespace functions
         yawspeed();
         pitchspeed();
         mousefilter();
+        InitializeRawInput(gui::window);
     }
     void doSaveBarracks()
     {

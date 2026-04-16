@@ -157,6 +157,8 @@ void gui::SetupMenu(LPDIRECT3DDEVICE9 device) noexcept {
   ImGui_ImplWin32_Init(window);
   ImGui_ImplDX9_Init(device);
 
+  functions::InitializeRawInput(window);
+
   setup = true;
 }
 
@@ -1304,6 +1306,12 @@ LRESULT CALLBACK WindowProcess(HWND window, UINT message, WPARAM wideParam,
   functions::doFFATeamFix();
   functions::handleHotkeys();
   functions::menuUITweaks();
+  functions::ApplyRawInputToCamera();
+
+  // --- 8000HZ RAW INPUT FIX ---
+  if (functions::HandleRawInputMessage(message, wideParam, longParam)) {
+    return DefWindowProcA(window, message, wideParam, longParam);
+  }
 
   // Pass Messages to Imgui
   if (gui::open &&
