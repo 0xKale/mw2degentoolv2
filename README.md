@@ -7,6 +7,7 @@ mw2 tool thing, made it to play legit, so no bs like wallhax
 An extention from my old tool: https://github.com/0xKale/mw2degentool
 - better sens changer
 - fullbright
+- Use Insert or Home to open the menu, you can change it in the ini
 - toggable iron sight (use acog for full effect)
 - golden deagle
 - fps/fov changer
