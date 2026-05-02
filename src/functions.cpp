@@ -333,56 +333,14 @@ namespace functions
 
     void doMaxPlayers(int amount)
     {
-        if (amount == 2)
-            Cbuf_AddText(0, "sv_maxclients 2;party_maxplayers 2;ui_maxclients 2");
+        if (amount < 2 || amount > 18)
+        {
+            return;
+        }
 
-        if (amount == 3)
-            Cbuf_AddText(0, "sv_maxclients 3;party_maxplayers 3;ui_maxclients 3");
-
-        if (amount == 4)
-            Cbuf_AddText(0, "sv_maxclients 4;party_maxplayers 4;ui_maxclients 4");
-
-        if (amount == 5)
-            Cbuf_AddText(0, "sv_maxclients 5;party_maxplayers 5;ui_maxclients 5");
-
-        if (amount == 6)
-            Cbuf_AddText(0, "sv_maxclients 6;party_maxplayers 6;ui_maxclients 6");
-
-        if (amount == 7)
-            Cbuf_AddText(0, "sv_maxclients 7;party_maxplayers 7;ui_maxclients 7");
-
-        if (amount == 8)
-            Cbuf_AddText(0, "sv_maxclients 8;party_maxplayers 8;ui_maxclients 8");
-
-        if (amount == 9)
-            Cbuf_AddText(0, "sv_maxclients 9;party_maxplayers 9;ui_maxclients 9");
-
-        if (amount == 10)
-            Cbuf_AddText(0, "sv_maxclients 10;party_maxplayers 10;ui_maxclients 10");
-
-        if (amount == 11)
-            Cbuf_AddText(0, "sv_maxclients 11;party_maxplayers 11;ui_maxclients 11");
-
-        if (amount == 12)
-            Cbuf_AddText(0, "sv_maxclients 12;party_maxplayers 12;ui_maxclients 12");
-
-        if (amount == 13)
-            Cbuf_AddText(0, "sv_maxclients 13;party_maxplayers 13;ui_maxclients 13");
-
-        if (amount == 14)
-            Cbuf_AddText(0, "sv_maxclients 14;party_maxplayers 14;ui_maxclients 14");
-
-        if (amount == 15)
-            Cbuf_AddText(0, "sv_maxclients 15;party_maxplayers 15;ui_maxclients 15");
-
-        if (amount == 16)
-            Cbuf_AddText(0, "sv_maxclients 16;party_maxplayers 16;ui_maxclients 16");
-
-        if (amount == 17)
-            Cbuf_AddText(0, "sv_maxclients 17;party_maxplayers 17;ui_maxclients 17");
-
-        if (amount == 18)
-            Cbuf_AddText(0, "sv_maxclients 18;party_maxplayers 18;ui_maxclients 18");
+        const std::string value = std::to_string(amount);
+        const std::string command = "sv_maxclients " + value + ";party_maxplayers " + value + ";ui_maxclients " + value;
+        Cbuf_AddText(0, command.c_str());
     }
     void doStartMatch()
     {

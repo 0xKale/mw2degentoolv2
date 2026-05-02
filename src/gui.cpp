@@ -422,6 +422,9 @@ void gui::Render() noexcept {
           Cbuf_AddText(0, "r_fullbright 1;");
         }
         ImGui::Separator();
+        if (ImGui::Button("Disconnect"))
+          Cbuf_AddText(0, "disconnect");
+        ImGui::SameLine();
         if (ImGui::Button("Save Config")) {
           config::Save();
         }
