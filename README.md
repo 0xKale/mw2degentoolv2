@@ -1,6 +1,8 @@
 <img width="788" height="331" alt="image" src="https://github.com/user-attachments/assets/01852e71-66c6-457f-82a4-4f5647e11edf" />
 
 
+
+
 mw2 tool thing, made it to play legit, so no bs like wallhax
 An extention from my old tool: https://github.com/0xKale/mw2degentool
 - better sens changer
@@ -24,9 +26,7 @@ An extention from my old tool: https://github.com/0xKale/mw2degentool
 ![images](https://github.com/user-attachments/assets/b2193c3b-8e52-41d3-a2fd-35c824fc9420)
 
 enjoy
-<img width="869" height="851" alt="image" src="https://github.com/user-attachments/assets/35a55235-96fc-460c-8df6-de58c41bf0d7" />
-<img width="833" height="597" alt="image" src="https://github.com/user-attachments/assets/3b62ab01-8c78-49b1-ac39-cddc97d7b013" />
-<img width="633" height="908" alt="image" src="https://github.com/user-attachments/assets/b2fe8522-76fc-4579-868c-8eff8328d112" />
+<img width="787" height="581" alt="image" src="https://github.com/user-attachments/assets/51f5372e-ebb9-4382-85a3-2cdbcc20808c" />
 <img width="2560" height="1392" alt="image" src="https://github.com/user-attachments/assets/93673774-0d3a-414b-a121-a6b0357c28ad" />
 <img width="1500" height="1024" alt="image" src="https://github.com/user-attachments/assets/a3a602c3-c377-486b-bbc3-4b1ac4a4f2db" />
 
