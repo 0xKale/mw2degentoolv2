@@ -9,6 +9,7 @@
 
 #include "functions.h"
 #include "variables.h"
+#include "dedigamer.h"
 
 #include <iostream>
 #include <map>
@@ -320,6 +321,9 @@ void gui::Render() noexcept {
     io.ConfigDebugHighlightIdConflicts = false;
     gui::windowSizeStartUp = true;
   }
+
+  if (!gui::open)
+    dedigamer::g_tabOpen.store(false);
 
   ImGui::Begin("dismay's MW2 degen tool", &open);
   {
@@ -1262,6 +1266,93 @@ void gui::Render() noexcept {
         if (ImGui::Button("Send port number"))
           functions::sendCustomPort();
         ImGui::EndTabItem();
+      }
+      if (ImGui::BeginTabItem("Dedigamer")) {
+        dedigamer::g_tabOpen.store(true);
+        ImGui::Text("Dedigamer Servers:");
+        ImGui::Separator();
+
+        bool isFetching;
+        bool hasFetched;
+        std::string error;
+        std::vector<DedigamerServer> servers;
+        int totalPlayers, totalCapacity;
+        {
+          std::lock_guard<std::mutex> lock(dedigamer::g_state.mtx);
+          isFetching = dedigamer::g_state.fetching;
+          hasFetched = dedigamer::g_state.fetched;
+          error = dedigamer::g_state.error;
+          servers = dedigamer::g_state.servers;
+          totalPlayers = dedigamer::g_state.totalPlayers;
+          totalCapacity = dedigamer::g_state.totalCapacity;
+        }
+
+        if (isFetching) {
+          ImGui::Text("Fetching...");
+        } else if (!error.empty()) {
+          ImGui::TextColored(ImVec4(1, 0.4f, 0.4f, 1), "Error: %s", error.c_str());
+        }
+
+        if (hasFetched && totalCapacity > 0) {
+          float pct = (float)totalPlayers / (float)totalCapacity * 100.0f;
+          ImGui::Text("Total Players: %d / %d (%.1f%%)", totalPlayers, totalCapacity, pct);
+        } else if (hasFetched) {
+          ImGui::Text("Total Players: %d / %d", totalPlayers, totalCapacity);
+        }
+
+        if (ImGui::Button("Refresh"))
+          dedigamer::Refresh();
+
+        if (hasFetched && !servers.empty()) {
+          ImGui::Separator();
+          if (ImGui::BeginTable("DedigamerServers", 6,
+              ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg | ImGuiTableFlags_ScrollY,
+              ImVec2(0, 300))) {
+            ImGui::TableSetupColumn("Server");
+            ImGui::TableSetupColumn("Players");
+            ImGui::TableSetupColumn("Map");
+            ImGui::TableSetupColumn("Gametype");
+            ImGui::TableSetupColumn("Uptime");
+            ImGui::TableSetupColumn("##Join", ImGuiTableColumnFlags_WidthFixed, 40.0f);
+            ImGui::TableHeadersRow();
+
+            for (int si = 0; si < (int)servers.size(); si++) {
+              auto& srv = servers[si];
+              ImGui::TableNextRow();
+              ImGui::TableSetColumnIndex(0);
+              char selId[16];
+              snprintf(selId, sizeof(selId), "##row%d", si);
+              ImGui::Selectable(selId, false,
+                  ImGuiSelectableFlags_SpanAllColumns | ImGuiSelectableFlags_AllowOverlap,
+                  ImVec2(0, 0));
+              ImGui::SameLine();
+              ImGui::TextUnformatted(srv.name.c_str());
+              ImGui::TableSetColumnIndex(1);
+              ImGui::Text("%d / %d", srv.currentPlayers, srv.totalPlayers);
+              ImGui::TableSetColumnIndex(2);
+              ImGui::TextUnformatted(srv.map.c_str());
+              ImGui::TableSetColumnIndex(3);
+              ImGui::TextUnformatted(srv.gametype.c_str());
+              ImGui::TableSetColumnIndex(4);
+              ImGui::TextUnformatted(srv.uptime.c_str());
+              ImGui::TableSetColumnIndex(5);
+              if (!srv.joinUrl.empty()) {
+                char joinLabel[16];
+                snprintf(joinLabel, sizeof(joinLabel), "Join##%d", si);
+                if (ImGui::SmallButton(joinLabel))
+                  ShellExecuteA(NULL, "open", srv.joinUrl.c_str(), NULL, NULL, SW_SHOWNORMAL);
+              }
+            }
+            ImGui::EndTable();
+          }
+        }
+        ImGui::Separator();
+        if (ImGui::Button("Disconnect"))
+          Cbuf_AddText(0, "disconnect");
+        ImGui::SameLine();
+        ImGui::EndTabItem();
+      } else {
+        dedigamer::g_tabOpen.store(false);
       }
       if (ImGui::BeginTabItem("About")) {
         ImGui::Text("About:");

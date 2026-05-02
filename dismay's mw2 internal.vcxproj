@@ -91,7 +91,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d9.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d9.lib;winhttp.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -110,7 +110,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d9.lib;d3dx9.lib;d3dx9d.lib;dxguid.lib;d3dcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d9.lib;d3dx9.lib;d3dx9d.lib;dxguid.lib;d3dcompiler.lib;winhttp.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -170,6 +170,7 @@
     <ClInclude Include="src\ubuntu_bold.h" />
     <ClInclude Include="src\ubuntu_medium.h" />
     <ClInclude Include="src\ubunutu_regular.h" />
+    <ClInclude Include="src\dedigamer.h" />
     <ClInclude Include="src\variables.h" />
     <ClCompile Include="src\config.cpp" />
   </ItemGroup>
@@ -192,6 +193,7 @@
     <ClCompile Include="src\gui.cpp" />
     <ClCompile Include="src\dllmain.cpp" />
     <ClCompile Include="src\hooks.cpp" />
+    <ClCompile Include="src\dedigamer.cpp" />
     <ClCompile Include="src\variables.cpp" />
     <ClInclude Include="src\config.h" />
   </ItemGroup>

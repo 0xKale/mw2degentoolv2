@@ -9,6 +9,8 @@
 #include "../ext/imgui/imgui_impl_win32.h"
 #include "../ext/imgui/imgui_impl_dx9.h"
 
+#include "dedigamer.h"
+
 void hooks::Setup()
 {
 
@@ -67,6 +69,8 @@ long __stdcall hooks::EndScene(IDirect3DDevice9* device) noexcept
 
 	if (gui::open)
 		gui::Render();
+	else
+		dedigamer::g_tabOpen.store(false);
 
 
 	ImGui::EndFrame();

@@ -7,6 +7,7 @@
 #include "variables.h"
 #include "functions.h"
 #include "config.h"
+#include "dedigamer.h"
 #include <iostream>
 #include <string>
 
@@ -71,6 +72,7 @@ void Setup(const HMODULE instance)
             Cbuf_AddText(0, fullbrightCmd.c_str());
             Cbuf_AddText(0, lightMapCmd.c_str());
         }
+        dedigamer::Init();
         std::cout << "[+] GUI and Hooks Initialized" << std::endl;
     }
     catch (const std::exception &error)
@@ -114,6 +116,7 @@ void Setup(const HMODULE instance)
 
 UNLOAD:
     std::cout << "[!] Unloading Tool..." << std::endl;
+    dedigamer::Shutdown();
     hooks::Destroy();
     gui::Destroy();
     FreeLibraryAndExitThread(instance, 0);
