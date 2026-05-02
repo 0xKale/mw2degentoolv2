@@ -19,7 +19,7 @@ An extention from my old tool: https://github.com/0xKale/mw2degentool
 - Force Host if you want it
 - Port Forwarding for VPNs
 - Something with DLC idk, check the code
-- directly join dedigamer in the tool and bypass the acc join thing that website does
+- directly join dedigamer.com servers in the tool and bypass the acc join thing that website does
 
 ![images](https://github.com/user-attachments/assets/b2193c3b-8e52-41d3-a2fd-35c824fc9420)
 
