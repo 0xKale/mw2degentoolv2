@@ -6,14 +6,13 @@ An extention from my old tool: https://github.com/0xKale/mw2degentool
 - better sens changer
 - fullbright
 - toggable iron sight (use acog for full effect)
-- real unlock all (the spinning skull)
 - golden deagle
 - fps/fov changer
 - fovmin which simulates new cods 1:1 sens
 - make map bigger smaller like god intended
 - enable/disable chat
 - remove Camos/Sun Rays/Fog/Bullets
-- semi-Unlock All (Do it in main menu) or Real Unlock All (Must be in private match server for this one, will do other players aswell)
+- semi-Unlock All (Do it in main menu) or Real Unlock All {spinning skull} (Must be in private match server for this one, will do other players aswell)
 - host Console and Server console
 - XYZ Gun Location
 - Private Match stuff like speed hacks
