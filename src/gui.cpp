@@ -11,6 +11,7 @@
 #include "variables.h"
 #include "dedigamer.h"
 
+#include <algorithm>
 #include <iostream>
 #include <map>
 #include <stdexcept>
@@ -1269,6 +1270,7 @@ void gui::Render() noexcept {
       }
       if (ImGui::BeginTabItem("Dedigamer")) {
         dedigamer::g_tabOpen.store(true);
+
         ImGui::Text("Dedigamer Servers:");
         ImGui::Separator();
 
@@ -1286,6 +1288,14 @@ void gui::Render() noexcept {
           totalPlayers = dedigamer::g_state.totalPlayers;
           totalCapacity = dedigamer::g_state.totalCapacity;
         }
+
+        std::sort(servers.begin(), servers.end(), [](const DedigamerServer& a, const DedigamerServer& b) {
+          float ratioA = a.totalPlayers > 0 ? (float)a.currentPlayers / a.totalPlayers : 0.0f;
+          float ratioB = b.totalPlayers > 0 ? (float)b.currentPlayers / b.totalPlayers : 0.0f;
+          if (ratioA != ratioB) return ratioA > ratioB;
+          if (a.currentPlayers != b.currentPlayers) return a.currentPlayers > b.currentPlayers;
+          return a.name < b.name;
+        });
 
         if (isFetching) {
           ImGui::Text("Fetching...");
@@ -1325,10 +1335,18 @@ void gui::Render() noexcept {
               ImGui::Selectable(selId, false,
                   ImGuiSelectableFlags_SpanAllColumns | ImGuiSelectableFlags_AllowOverlap,
                   ImVec2(0, 0));
+              bool rowHovered = ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenBlockedByActiveItem);
               ImGui::SameLine();
               ImGui::TextUnformatted(srv.name.c_str());
               ImGui::TableSetColumnIndex(1);
-              ImGui::Text("%d / %d", srv.currentPlayers, srv.totalPlayers);
+              ImVec4 playerColor;
+              if (srv.totalPlayers > 0 && srv.currentPlayers >= srv.totalPlayers)
+                playerColor = ImVec4(1.0f, 0.3f, 0.3f, 1.0f); // Red - full
+              else if (srv.totalPlayers > 0 && srv.currentPlayers * 3 >= srv.totalPlayers * 2)
+                playerColor = ImVec4(1.0f, 0.9f, 0.3f, 1.0f); // Yellow - 2/3 or more
+              else
+                playerColor = ImVec4(0.3f, 1.0f, 0.3f, 1.0f); // Green - less than 2/3
+              ImGui::TextColored(playerColor, "%d / %d", srv.currentPlayers, srv.totalPlayers);
               ImGui::TableSetColumnIndex(2);
               ImGui::TextUnformatted(srv.map.c_str());
               ImGui::TableSetColumnIndex(3);
@@ -1341,6 +1359,12 @@ void gui::Render() noexcept {
                 snprintf(joinLabel, sizeof(joinLabel), "Join##%d", si);
                 if (ImGui::SmallButton(joinLabel))
                   ShellExecuteA(NULL, "open", srv.joinUrl.c_str(), NULL, NULL, SW_SHOWNORMAL);
+                if (ImGui::IsItemHovered()) rowHovered = true;
+              }
+              
+              if (rowHovered) {
+                ImU32 hoverColor = ImGui::GetColorU32(ImGuiCol_HeaderHovered);
+                ImGui::TableSetBgColor(ImGuiTableBgTarget_RowBg0, hoverColor);
               }
             }
             ImGui::EndTable();
