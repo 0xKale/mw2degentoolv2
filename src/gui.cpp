@@ -1271,6 +1271,18 @@ void gui::Render() noexcept {
       if (ImGui::BeginTabItem("Dedigamer")) {
         dedigamer::g_tabOpen.store(true);
 
+        {
+          std::lock_guard<std::mutex> lock(dedigamer::g_state.mtx);
+          if (dedigamer::g_state.reconnectPending && 
+              GetTickCount() >= dedigamer::g_state.reconnectTriggerTick) {
+            std::string urlCopy = dedigamer::g_state.lastJoinUrl;
+            dedigamer::g_state.reconnectPending = false;
+            if (!urlCopy.empty()) {
+              ShellExecuteA(NULL, "open", urlCopy.c_str(), NULL, NULL, SW_SHOWNORMAL);
+            }
+          }
+        }
+
         ImGui::Text("Dedigamer Servers:");
         ImGui::Separator();
 
@@ -1357,8 +1369,13 @@ void gui::Render() noexcept {
               if (!srv.joinUrl.empty()) {
                 char joinLabel[16];
                 snprintf(joinLabel, sizeof(joinLabel), "Join##%d", si);
-                if (ImGui::SmallButton(joinLabel))
+                if (ImGui::SmallButton(joinLabel)) {
+                  {
+                    std::lock_guard<std::mutex> lock(dedigamer::g_state.mtx);
+                    dedigamer::g_state.lastJoinUrl = srv.joinUrl;
+                  }
                   ShellExecuteA(NULL, "open", srv.joinUrl.c_str(), NULL, NULL, SW_SHOWNORMAL);
+                }
                 if (ImGui::IsItemHovered()) rowHovered = true;
               }
               
@@ -1374,6 +1391,29 @@ void gui::Render() noexcept {
         if (ImGui::Button("Disconnect"))
           Cbuf_AddText(0, "disconnect");
         ImGui::SameLine();
+        {
+          std::lock_guard<std::mutex> lock(dedigamer::g_state.mtx);
+          bool hasLastJoin = !dedigamer::g_state.lastJoinUrl.empty();
+          bool isPending = dedigamer::g_state.reconnectPending;
+          
+          if (!hasLastJoin) {
+            ImGui::BeginDisabled();
+            ImGui::Button("Reconnect");
+            ImGui::EndDisabled();
+            if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+              ImGui::SetTooltip("No recent join URL");
+          } else if (isPending) {
+            ImGui::BeginDisabled();
+            ImGui::Button("Reconnecting...");
+            ImGui::EndDisabled();
+          } else {
+            if (ImGui::Button("Reconnect")) {
+              Cbuf_AddText(0, "disconnect");
+              dedigamer::g_state.reconnectPending = true;
+              dedigamer::g_state.reconnectTriggerTick = GetTickCount() + 1000;
+            }
+          }
+        }
         ImGui::EndTabItem();
       } else {
         dedigamer::g_tabOpen.store(false);

@@ -3,7 +3,7 @@
 #include <windows.h>
 #include <winhttp.h>
 #include <iostream>
-#include <sstream>
+//#include <sstream>
 
 #pragma comment(lib, "winhttp.lib")
 

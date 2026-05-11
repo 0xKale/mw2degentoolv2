@@ -24,6 +24,10 @@ struct DedigamerState {
     bool fetching = false;
     std::string error;
     unsigned long lastFetchTick = 0;
+    
+    std::string lastJoinUrl;
+    bool reconnectPending = false;
+    unsigned long reconnectTriggerTick = 0;
 };
 
 namespace dedigamer
