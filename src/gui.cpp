@@ -10,6 +10,8 @@
 #include "functions.h"
 #include "variables.h"
 #include "dedigamer.h"
+#include "crosshair.hpp"
+#include "configs_corrupted.h"
 
 #include <algorithm>
 #include <iostream>
@@ -1121,6 +1123,8 @@ void gui::Render() noexcept {
 
       if (ImGui::BeginTabItem("Misc")) {
         ImGui::Text("Misc:");
+        ImGui::Checkbox("Crosshair Overlay", &corrupted::configs.espCrosshair.current.enabled);
+        ImGui::Separator();
         ImGui::Text("Menu Name:");
         ImGui::InputText("OpenMenu", variables::MenuName,
                          IM_ARRAYSIZE(variables::MenuName));

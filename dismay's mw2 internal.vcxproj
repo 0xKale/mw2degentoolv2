@@ -171,6 +171,11 @@
     <ClInclude Include="src\ubuntu_medium.h" />
     <ClInclude Include="src\ubunutu_regular.h" />
     <ClInclude Include="src\dedigamer.h" />
+    <ClInclude Include="src\configs_corrupted.h" />
+    <ClInclude Include="src\crosshair_scope.hpp" />
+    <ClInclude Include="src\crosshair.hpp" />
+    <ClInclude Include="src\engine.hpp" />
+    <ClInclude Include="src\iw4.h" />
     <ClInclude Include="src\variables.h" />
     <ClCompile Include="src\config.cpp" />
   </ItemGroup>
@@ -194,6 +199,9 @@
     <ClCompile Include="src\dllmain.cpp" />
     <ClCompile Include="src\hooks.cpp" />
     <ClCompile Include="src\dedigamer.cpp" />
+    <ClCompile Include="src\configs_corrupted.cpp" />
+    <ClCompile Include="src\crosshair_scope.cpp" />
+    <ClCompile Include="src\crosshair.cpp" />
     <ClCompile Include="src\variables.cpp" />
     <ClInclude Include="src\config.h" />
   </ItemGroup>

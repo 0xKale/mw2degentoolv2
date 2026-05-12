@@ -85,7 +85,6 @@ public:
     static bool bPingText;
     static bool bIronSightInter;
 
-
     // This now works because Position is defined in engine_hooks.h
     static Position SavedLocationOne;
 };

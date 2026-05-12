@@ -105,6 +105,21 @@
     <ClInclude Include="src\detours.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\engine.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\iw4.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\configs_corrupted.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\crosshair.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\crosshair_scope.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ext\imgui\imgui.cpp">
@@ -168,6 +183,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\notes.h">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\configs_corrupted.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\crosshair_scope.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\crosshair.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

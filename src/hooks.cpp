@@ -10,6 +10,7 @@
 #include "../ext/imgui/imgui_impl_dx9.h"
 
 #include "dedigamer.h"
+#include "crosshair.hpp"
 
 void hooks::Setup()
 {
@@ -72,6 +73,8 @@ long __stdcall hooks::EndScene(IDirect3DDevice9* device) noexcept
 	else
 		dedigamer::g_tabOpen.store(false);
 
+
+	corrupted::DrawCrosshairOverlay();
 
 	ImGui::EndFrame();
 	ImGui::Render();
