@@ -240,7 +240,7 @@ namespace menu_pages {
 					if (vars::enableDepatchBounces)
 					{
 						vars::enableDepatchBouncesEasy = false;
-						functions::sendDepatchBounces(); // you can fix this
+						functions::sendBouncesToggle(); 
 					}
 
 				}
@@ -249,12 +249,12 @@ namespace menu_pages {
 					if (vars::enableDepatchBounces)
 					{
 						vars::enableDepatchBounces = false;
-						functions::sendDepatchBouncesEasy();// you can fix this
+						functions::sendBouncesToggleEasy();
 					}
 				}
 				if(ksd::Checkbox("Depatch Elevators", &vars::enableDepatchElevators))
 				{
-					functions::sendDepatchElevators();// you can fix this
+					functions::sendElevatorsToggle();
 				}
 			}
 			ksd::EndChild();

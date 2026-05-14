@@ -528,20 +528,21 @@ namespace functions {
 	void sendBouncesToggleEasy()
 	{
 		// these do not count as clips lmao i swear to god
+		// Thanks https://github.com/V3nilla
 		const char bounceDepatch[] = {(char)0x74, (char)0x14};
         const char bounceDepatch2[] = {(char)0xEB, (char)0x35};
         const char bounceOriginal[] = {(char)0x75, (char)0x14};
         const char bounceOriginal2[] = {(char)0x75, (char)0x35};
-		if (vars::enableDepatchBouncesEasy)
-		{
-			WriteBytes((LPVOID)0x004736E2, bounceDepatch, sizeof(bounceDepatch));
-			WriteBytes((LPVOID)0x004736E2, bounceDepatch2, sizeof(bounceDepatch2));
-		}
-		else
-		{
-			WriteBytes((LPVOID)0x004736E2, bounceOriginal, sizeof(bounceOriginal));
-			WriteBytes((LPVOID)0x004736E2, bounceOriginal2, sizeof(bounceOriginal2));
-		}
+        if (vars::enableDepatchBouncesEasy)
+        {
+            WriteBytes((LPVOID)0x004736E2, bounceDepatch, sizeof(bounceDepatch));
+            WriteBytes((LPVOID)0x004736F6, bounceDepatch2, sizeof(bounceDepatch2));
+        }
+        else
+        {
+            WriteBytes((LPVOID)0x004736E2, bounceOriginal, sizeof(bounceOriginal));
+            WriteBytes((LPVOID)0x004736F6, bounceOriginal2, sizeof(bounceOriginal2));
+        }
 	}
 
 	char* getPlayerName(int client)
@@ -709,18 +710,6 @@ namespace functions {
 			*reinterpret_cast<int*>(iw4::offsets::PrimNade + (i * 0x366C)) = 999;
 			*reinterpret_cast<int*>(iw4::offsets::StunNade + (i * 0x366C)) = 999;
 		}
-	}
-	void sendDepatchBounces()
-	{
-		sendBouncesToggle();
-	}
-	void sendDepatchBouncesEasy()
-	{
-		sendBouncesToggle();
-	}
-	void sendDepatchElevators()
-	{
-		sendElevatorsToggle();
 	}
 	void sendRank()
 	{

@@ -50,9 +50,8 @@ namespace functions
 	void handleHotkeys();
 	void sendElevatorsToggle();
 	void sendBouncesToggle();
-	void sendDepatchBounces();
-	void sendDepatchBouncesEasy();
-	void sendDepatchElevators();
+	void sendBouncesToggleEasy();
+	void sendElevatorsToggle();
 	void giveAmmo();
 	char* getPlayerName(int client);
 	void sendCustomPort();
