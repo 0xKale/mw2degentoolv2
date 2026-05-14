@@ -26,10 +26,12 @@ namespace vars {
 	bool pingText = true;
 
 	float mouseSensitivity = functions::readSensitivity();
+	float defaultFovMin = 1.0f;
 
 	int framesPerSecond = 400;
 	int fieldOfView = 90.0f;
 	float mapSize = 1.000f;
+
 
 
 	int selectedFullbrightMode = 1;
@@ -68,7 +70,7 @@ namespace menu_pages {
 			const ImVec2 origin(ImGui::GetCursorPos());
 			const float leftX = origin.x - layout::leftPull;
 			const float rightX = origin.x + layout::colWidth + layout::colGap;
-	
+
 			ImGui::SetCursorPos(ImVec2(leftX, origin.y));
 			if(ksd::BeginChild(ICON_FA_CROSSHAIRS, "Main", 650.f, layout::leftWidth))
 			{
@@ -126,7 +128,7 @@ namespace menu_pages {
 				ksd::InputFloat("Sensitivity", &vars::mouseSensitivity);
 				if(ksd::Button("Send Senitivity", ImVec2(280.f, 30.f)))
 				{
-					functions::writeSensitivity(vars::mouseSensitivity);	
+					functions::writeSensitivity(vars::mouseSensitivity);
 					if(vars::mouseSensitivity)
 					{
 						SendNotify("Sensitivity Sent", 2.0f);
@@ -199,7 +201,7 @@ namespace menu_pages {
 
 			}
 			ksd::EndChild();
-	
+
 			ImGui::SetCursorPos(ImVec2(rightX, origin.y));
 			if(ksd::BeginChild(ICON_FA_KEYBOARD, "Toggles", 230.f, layout::rightWidth))
 			{
@@ -235,7 +237,7 @@ namespace menu_pages {
 			}
 			ksd::EndChild();
 
-	
+
 			ImGui::SetCursorPos(ImVec2(rightX, origin.y + 290.f));
 			if(ksd::BeginChild(ICON_FA_GEAR, "Fullbright", 190.f, layout::rightWidth))
 			{

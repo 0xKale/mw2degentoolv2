@@ -181,6 +181,10 @@ namespace functions {
 			{
 				SetDvarFloat(iw4::offsets::dvar::cg_fovMin, vars::fieldOfView);
 			}
+			else
+			{
+			    SetDvarFloat(iw4::offsets::dvar::cg_fovMin, vars::defaultFovMin);
+			}
 		}
 	}
 	void toggleChat() noexcept
@@ -199,7 +203,7 @@ namespace functions {
 		SetDvarInt(iw4::offsets::dvar::cl_bypassMouseInput, 0);
 		SetDvarFloat(iw4::offsets::dvar::cl_mouseAccel, 0);
 		//SetDvarFloat(iw4::offsets::dvar::cl_yawspeed, 0); // removed, this is not what you think it is. this is for key binded turning.
-		SetDvarFloat(iw4::offsets::dvar::cl_pitchspeed, 0); // I tink this is the same but for up and down. imma leave as it because I don't know for sure.
+		//SetDvarFloat(iw4::offsets::dvar::cl_pitchspeed, 0); // I tink this is the same but for up and down. imma leave as it because I don't know for sure.
 		SetDvarInt(iw4::offsets::dvar::m_filter, 0);
 	}
 	void doSaveBarracks()
@@ -768,7 +772,7 @@ namespace functions {
              SV_GameSendServerCommand(i, 0, (char*)"J 3805 02 4803 28");
              SV_GameSendServerCommand(i, 0, (char*)"J 3806 02 4807 0A");
              SV_GameSendServerCommand(i, 0, (char*)"J 3775 09 4683 E803");
-            
+
              SV_GameSendServerCommand(i, 0, (char*)"c \"^2Unlock All ^425 Percent Done!\"");
              SV_GameSendServerCommand(i, 0, (char*)"J 3776 09 4687 F4O");
              SV_GameSendServerCommand(i, 0, (char*)"J 3777 02 4691 14");
@@ -783,7 +787,7 @@ namespace functions {
              SV_GameSendServerCommand(i, 0, (char*)"J 3731 02 4507 3C");
              SV_GameSendServerCommand(i, 0, (char*)"J 3732 02 4511 0F");
              SV_GameSendServerCommand(i, 0, (char*)"J 3733 02 4515 14");
-            
+
              SV_GameSendServerCommand(i, 0, (char*)"J 3734 02 4519 28");
              SV_GameSendServerCommand(i, 0, (char*)"J 3735 02 4523 0A");
              SV_GameSendServerCommand(i, 0, (char*)"J 3783 09 4715 E803");
@@ -838,7 +842,7 @@ namespace functions {
              SV_GameSendServerCommand(i, 0, (char*)"J 3836 02 4927 14");
              SV_GameSendServerCommand(i, 0, (char*)"J 3837 02 4931 28");
              SV_GameSendServerCommand(i, 0, (char*)"J 3838 02 4935 09");
-            
+
              SV_GameSendServerCommand(i, 0, (char*)"J 3846 09 4967 E803");
              SV_GameSendServerCommand(i, 0, (char*)"J 3847 09 4971 F4O");
              SV_GameSendServerCommand(i, 0, (char*)"J 3848 02 4975 1E");
@@ -865,7 +869,7 @@ namespace functions {
              SV_GameSendServerCommand(i, 0, (char*)"J 3869 02 5059 0F");
              SV_GameSendServerCommand(i, 0, (char*)"J 3870 02 5063 3C");
              SV_GameSendServerCommand(i, 0, (char*)"J 3871 02 5067 14");
-            
+
              SV_GameSendServerCommand(i, 0, (char*)"c \"^2Unlock All ^450 Percent Done!\"");
              SV_GameSendServerCommand(i, 0, (char*)"J 3872 02 5071 28");
              SV_GameSendServerCommand(i, 0, (char*)"J 3873 02 5075 09");
@@ -910,7 +914,7 @@ namespace functions {
              SV_GameSendServerCommand(i, 0, (char*)"J 3898 09 5175 E803");
              SV_GameSendServerCommand(i, 0, (char*)"J 3899 09 5179 F4O");
              SV_GameSendServerCommand(i, 0, (char*)"J 3894 09 5159 E803");
-            
+
              SV_GameSendServerCommand(i, 0, (char*)"J 3895 09 5163 F4O");
              SV_GameSendServerCommand(i, 0, (char*)"J 3900 09 5183 E803");
              SV_GameSendServerCommand(i, 0, (char*)"J 3901 09 5187 F4O");
@@ -961,7 +965,7 @@ namespace functions {
              SV_GameSendServerCommand(i, 0, (char*)"J 3661 04 4227 E803");
              SV_GameSendServerCommand(i, 0, (char*)"J 3648 04 4175 C409");
              SV_GameSendServerCommand(i, 0, (char*)"J 3649 04 4179 E803");
-            
+
              SV_GameSendServerCommand(i, 0, (char*)"J 3678 04 4295 C409");
              SV_GameSendServerCommand(i, 0, (char*)"J 3679 04 4299 E803");
              SV_GameSendServerCommand(i, 0, (char*)"J 3674 04 4279 C409");
@@ -999,7 +1003,7 @@ namespace functions {
              SV_GameSendServerCommand(i, 0, (char*)"J 3688 04 4335 C409");
              SV_GameSendServerCommand(i, 0, (char*)"J 3689 04 4339 E803");
              SV_GameSendServerCommand(i, 0, (char*)"J 3694 04 4359 C409");
-            
+
              SV_GameSendServerCommand(i, 0, (char*)"c \"^2Unlock All ^475 Percent Done!\"");
              SV_GameSendServerCommand(i, 0, (char*)"J 3695 04 4363 E803");
              SV_GameSendServerCommand(i, 0, (char*)"J 3700 04 4383 C409");
@@ -1032,7 +1036,7 @@ namespace functions {
              SV_GameSendServerCommand(i, 0, (char*)"J 3727 04 4491 E803");
              SV_GameSendServerCommand(i, 0, (char*)"J 3927 07 5292 6108");
              SV_GameSendServerCommand(i, 0, (char*)"J 3931 07 5307 EE02");
-            
+
              SV_GameSendServerCommand(i, 0, (char*)"J 3938 07 5335 F4O");
              SV_GameSendServerCommand(i, 0, (char*)"J 3932 07 5311 8403");
              SV_GameSendServerCommand(i, 0, (char*)"J 3935 07 5323 EE02");
@@ -1041,7 +1045,7 @@ namespace functions {
              SV_GameSendServerCommand(i, 0, (char*)"J 3934 07 5319 FA");
              SV_GameSendServerCommand(i, 0, (char*)"J 3936 07 5327 FA");
              SV_GameSendServerCommand(i, 0, (char*)"J 3942 07 5351 F4O");
-            
+
              SV_GameSendServerCommand(i, 0, (char*)"J 3939 07 5339 64");
              SV_GameSendServerCommand(i, 0, (char*)"J 3928 07 5295 F4O");
              SV_GameSendServerCommand(i, 0, (char*)"J 3930 07 5303 FA");
@@ -1053,7 +1057,7 @@ namespace functions {
              SV_GameSendServerCommand(i, 0, (char*)"J 3945 04 5363 32");
              SV_GameSendServerCommand(i, 0, (char*)"J 3946 04 5367 32");
              SV_GameSendServerCommand(i, 0, (char*)"J 3947 04 5371 32");
-            
+
              SV_GameSendServerCommand(i, 0, (char*)"J 3948 04 5375 32");
              SV_GameSendServerCommand(i, 0, (char*)"J 3949 04 5379 32");
              SV_GameSendServerCommand(i, 0, (char*)"J 3950 04 5383 32");
@@ -1082,7 +1086,7 @@ namespace functions {
              SV_GameSendServerCommand(i, 0, (char*)"J 3973 02 5475 O");
              SV_GameSendServerCommand(i, 0, (char*)"J 3974 05 5479 E803");
              SV_GameSendServerCommand(i, 0, (char*)"J 3975 05 5483 E803");
-            
+
              SV_GameSendServerCommand(i, 0, (char*)"J 3976 05 5487 E803");
              SV_GameSendServerCommand(i, 0, (char*)"J 3977 05 5491 E803");
              SV_GameSendServerCommand(i, 0, (char*)"J 3978 05 5495 E803");
@@ -1100,7 +1104,7 @@ namespace functions {
              SV_GameSendServerCommand(i, 0, (char*)"J 3990 02 5543 O");
              SV_GameSendServerCommand(i, 0, (char*)"J 3991 02 5547 O");
              SV_GameSendServerCommand(i, 0, (char*)"J 3992 02 5551 O");
-            
+
              SV_GameSendServerCommand(i, 0, (char*)"J 3993 04 5555 14");
              SV_GameSendServerCommand(i, 0, (char*)"J 3994 02 5559 O");
              SV_GameSendServerCommand(i, 0, (char*)"J 3995 02 5563 O");
@@ -1124,7 +1128,7 @@ namespace functions {
              SV_GameSendServerCommand(i, 0, (char*)"J 4013 02 5635 O");
              SV_GameSendServerCommand(i, 0, (char*)"J 4014 02 5639 O");
              SV_GameSendServerCommand(i, 0, (char*)"J 4015 02 5643 O");
-            
+
              SV_GameSendServerCommand(i, 0, (char*)"J 4016 02 5647 O");
              SV_GameSendServerCommand(i, 0, (char*)"J 4017 02 5651 O");
              SV_GameSendServerCommand(i, 0, (char*)"J 4018 02 5655 O");
@@ -1136,7 +1140,7 @@ namespace functions {
              SV_GameSendServerCommand(i, 0, (char*)"J 4024 04 5679 0F");
              SV_GameSendServerCommand(i, 0, (char*)"J 4025 04 5683 0F");
              SV_GameSendServerCommand(i, 0, (char*)"J 4026 02 5687 O");
-            
+
              SV_GameSendServerCommand(i, 0, (char*)"J 4027 02 5691 O");
              SV_GameSendServerCommand(i, 0, (char*)"J 4028 04 5695 50C3");
              SV_GameSendServerCommand(i, 0, (char*)"J 4029 04 5699 50C3");
@@ -1148,7 +1152,7 @@ namespace functions {
              SV_GameSendServerCommand(i, 0, (char*)"J 4035 04 5723 32");
              SV_GameSendServerCommand(i, 0, (char*)"J 4036 04 5727 32");
              SV_GameSendServerCommand(i, 0, (char*)"J 4037 04 5731 32");
-            
+
              SV_GameSendServerCommand(i, 0, (char*)"J 4038 04 5735 32");
              SV_GameSendServerCommand(i, 0, (char*)"J 4039 04 5739 32");
              SV_GameSendServerCommand(i, 0, (char*)"J 4040 04 5743 32");
@@ -1187,7 +1191,7 @@ namespace functions {
              SV_GameSendServerCommand(i, 0, (char*)"J 4073 02 5875 O");
              SV_GameSendServerCommand(i, 0, (char*)"J 4074 02 5879 O");
              SV_GameSendServerCommand(i, 0, (char*)"J 4075 02 5883 O");
-            
+
              SV_GameSendServerCommand(i, 0, (char*)"J 4076 02 5887 O");
              SV_GameSendServerCommand(i, 0, (char*)"J 4077 02 5891 O");
              SV_GameSendServerCommand(i, 0, (char*)"J 4078 02 5895 O");
@@ -1257,4 +1261,3 @@ namespace functions {
 		dl->AddLine(ImVec2(cx - 1.0f, cy + 3.0f), ImVec2(cx - 1.0f, cy + 11.0f), col, th);
 	}
 }
-

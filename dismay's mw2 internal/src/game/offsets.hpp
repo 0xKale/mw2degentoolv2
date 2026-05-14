@@ -6,7 +6,7 @@ namespace iw4 {
     namespace offsets {
         namespace dvar {
             inline constexpr std::uintptr_t cg_fov = 0xAAC1F8;
-            inline constexpr std::uintptr_t cg_FovMin = 0x88CB54;     
+            inline constexpr std::uintptr_t cg_FovMin = 0x88CB54;
             inline constexpr std::uintptr_t com_maxFPS = 0x1B90730;             // FPS
             inline constexpr std::uintptr_t cg_chatTime = 0xAA61C0;             // Chat
             inline constexpr std::uintptr_t compassSize = 0x886E7C;          // Map Size
@@ -18,8 +18,8 @@ namespace iw4 {
             inline constexpr std::uintptr_t r_detail = 0x695D9C4;  // No Camo
             inline constexpr std::uintptr_t r_detailMap = 0x695D860;  // No Camo
             inline constexpr std::uintptr_t r_fog = 0x695DB18;   // No Fog
-            inline constexpr std::uintptr_t r_polygonOffsetScale = 0x695D9D0;   // No Fog // not sure why this was in here?? 
-            inline constexpr std::uintptr_t cg_brass = 0x88E20C; // No Bullets 
+            inline constexpr std::uintptr_t r_polygonOffsetScale = 0x695D9D0;   // No Fog // not sure why this was in here??
+            inline constexpr std::uintptr_t cg_brass = 0x88E20C; // No Bullets
             inline constexpr std::uintptr_t r_filmUseTweaks = 0x695D898;    // Movies
             inline constexpr std::uintptr_t r_filmAltShader = 0x695DA04;
             inline constexpr std::uintptr_t r_filmTweakEnable = 0x695D9E8;
@@ -80,13 +80,13 @@ namespace iw4 {
             inline constexpr std::uintptr_t cg_drawCrosshairNames = 0xAA60F8;
             inline constexpr std::uintptr_t cg_drawCrosshairNamesPosX = 0xAA61B4;
             inline constexpr std::uintptr_t cg_drawCrosshairNamesPosY = 0xAA61B0;
-            inline constexpr std::uintptr_t cg_drawShellshock = 0x89D318;
+            inline constexpr std::uintptr_t cg_drawShellshock = 0x89D318; // hmm
             inline constexpr std::uintptr_t cg_drawDamageFlash = 0xAA61B0;
             inline constexpr std::uintptr_t cg_drawDamageDirection = 0x8A0E44;
             inline constexpr std::uintptr_t cg_drawSplatter = 0x88E1D8;
             inline constexpr std::uintptr_t cg_splatterHitInnerAngle = 0x89D33C;
             inline constexpr std::uintptr_t cg_splatterHitOuterAngle = 0xAAC218;
-            inline constexpr std::uintptr_t cg_splatterHitInnerRadius = 0xAA61E4;    
+            inline constexpr std::uintptr_t cg_splatterHitInnerRadius = 0xAA61E4;
             inline constexpr std::uintptr_t cg_splatterHitOuterRadius = 0x89D2EC;
             inline constexpr std::uintptr_t cg_splatterHitFadeInTime = 0x89D328;
             inline constexpr std::uintptr_t cg_splatterHitFullInTime = 0xAA616C;
@@ -561,7 +561,7 @@ namespace iw4 {
         inline constexpr std::uintptr_t PrimNade = 0x1B0E4A0;
         inline constexpr std::uintptr_t StunNade = 0x1B0E4B8;
         inline constexpr std::uintptr_t BarracksWins = 0x1B8B7B0;
-        inline constexpr std::uintptr_t BarracksLosses = 0x1B8B7B4; 
+        inline constexpr std::uintptr_t BarracksLosses = 0x1B8B7B4;
         inline constexpr std::uintptr_t BarracksTies = 0x1B8B7B8;
         inline constexpr std::uintptr_t BarracksWinStreak = 0x1B8B7BC;
         inline constexpr std::uintptr_t BarracksKills = 0x1B8B77C;
@@ -578,4 +578,3 @@ namespace iw4 {
         inline constexpr std::uintptr_t Dvar = 0xC;
     }
 }
-
