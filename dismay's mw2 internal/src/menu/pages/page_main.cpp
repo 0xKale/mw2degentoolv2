@@ -29,7 +29,7 @@ namespace vars {
 	float defaultFovMin = 1.0f;
 
 	int framesPerSecond = 400;
-	int fieldOfView = 90.0f;
+	float fieldOfView = 90.0f;
 	float mapSize = 1.000f;
 
 
@@ -97,6 +97,7 @@ namespace menu_pages {
 					else
 					{
 						SendNotify("Mouse 1:1 Disabled", 2.0f);
+						//functions::sendFOVMin();
 					}
 
 				}
@@ -135,7 +136,7 @@ namespace menu_pages {
 					}
 				}
 				ksd::SliderInt("Frames Per Second", &vars::framesPerSecond, 30, 1000);
-				ksd::SliderInt("Field Of View", &vars::fieldOfView, 60, 120);
+				ksd::SliderFloat("Field Of View", &vars::fieldOfView, 60.0f, 120.0f);
 				ksd::SliderFloat("Map Size", &vars::mapSize, 1.f, 2.0f);
 				ImGui::Dummy(ImVec2(0.f, 10.f));
 				if(ksd::Button("Disconnect", ImVec2(280.f, 30.f)))

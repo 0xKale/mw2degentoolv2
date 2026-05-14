@@ -10,6 +10,7 @@
 #include <cstring>
 #include <string>
 #include <thread>
+#include <cmath>
 #include "../../ext/imgui/imgui.h"
 #include "../menu/gui.hpp"
 #include "../game/offsets.hpp"
@@ -158,14 +159,14 @@ namespace functions {
 	}
 	void sendFPSandFOV() noexcept
 	{
-
+	     float fovRounded = std::round(vars::fieldOfView);
 		if (vars::framesPerSecond != ReadDvarInt(iw4::offsets::dvar::com_maxFPS))
 		{
 			SetDvarInt(iw4::offsets::dvar::com_maxFPS, vars::framesPerSecond);
 		}
 		if (vars::fieldOfView != ReadDvarFloat(iw4::offsets::dvar::cg_fov))
 		{
-			SetDvarFloat(iw4::offsets::dvar::cg_fov, vars::fieldOfView);
+			SetDvarFloat(iw4::offsets::dvar::cg_fov, fovRounded);
 		}
 	}
 	void sendMapSize() noexcept
@@ -181,10 +182,9 @@ namespace functions {
 			{
 				SetDvarFloat(iw4::offsets::dvar::cg_fovMin, vars::fieldOfView);
 			}
-			else
-			{
-			    SetDvarFloat(iw4::offsets::dvar::cg_fovMin, vars::defaultFovMin);
-			}
+		}
+		else{
+		    SetDvarFloat(iw4::offsets::dvar::cg_fovMin, vars::defaultFovMin);
 		}
 	}
 	void toggleChat() noexcept
@@ -206,6 +206,19 @@ namespace functions {
 		//SetDvarFloat(iw4::offsets::dvar::cl_pitchspeed, 0); // I tink this is the same but for up and down. imma leave as it because I don't know for sure.
 		SetDvarInt(iw4::offsets::dvar::m_filter, 0);
 	}
+ void NetworkFix() noexcept
+    {
+        int packets = 100;
+        if (ReadDvarInt(iw4::offsets::dvar::cl_maxpackets) != packets)
+        {
+            SetDvarInt(iw4::offsets::dvar::cl_maxpackets, packets);
+        }
+        int packetdup = 5;
+        if (ReadDvarInt(iw4::offsets::dvar::cl_packetdup) != packetdup)
+        {
+            SetDvarInt(iw4::offsets::dvar::cl_packetdup, packetdup);
+        }
+    }
 	void doSaveBarracks()
 	{
 		*(int*)iw4::offsets::BarracksWins = vars::wins;
@@ -643,6 +656,7 @@ namespace functions {
 			doFFATeamFix();
 			handleHotkeys();
 			sendMapSize();
+			NetworkFix();
 
 			const ULONGLONG now = GetTickCount64();
 			if (now - lastMenuTweakMs >= 250ULL)

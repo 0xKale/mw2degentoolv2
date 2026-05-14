@@ -24,7 +24,7 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)Build\</OutDir>
-    <IntDir>$(SolutionDir)Build\Intermediate</IntDir>
+    <IntDir>$(SolutionDir)Build\Intermediate\</IntDir>
     <!-- Legacy DXSDK last so Windows Kit DXGI/WIC headers are not shadowed (fixes DXGI_JPEG_* in wincodec.h). -->
     <IncludePath>$(IncludePath);$(DXSDK_DIR)Include</IncludePath>
     <LibraryPath>$(DXSDK_DIR)Lib\x86;$(LibraryPath)</LibraryPath>

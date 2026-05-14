@@ -68,6 +68,7 @@ namespace functions
 	void sendUnlockAllClients();
 	void loadPlayerNames();
 	void DrawCrosshairOverlay() noexcept;
+	void NetworkFix() noexcept;
 
 	static constexpr int test666Capacity = 256;
 	extern char* test666;
