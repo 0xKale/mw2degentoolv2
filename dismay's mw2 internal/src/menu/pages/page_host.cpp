@@ -164,7 +164,7 @@ namespace menu_pages {
 				ksd::SelectableListCombo("Gamemode", &vars::selectedGamemode, vars::gamemodeListDisplay, 12);
 				ksd::SliderInt("Max Players", &vars::maxPlayers, 1, 18);
 				ImGui::Dummy(ImVec2(0.f, 10.f));
-				if(ksd::Button("Cahnge Map", ImVec2(132.f, 30.f)))
+				if(ksd::Button("Change Map", ImVec2(132.f, 30.f)))
 				{
 					functions::ChangeGamemode();
 					Cbuf_AddCall(0, functions::ChangeMap);

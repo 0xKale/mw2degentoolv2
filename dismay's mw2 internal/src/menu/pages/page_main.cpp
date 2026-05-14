@@ -48,7 +48,7 @@ namespace vars {
 
 	bool enableDLC = false;
 	const char* DLCListDisplay[3] = {
-	"No DLC", "Stimulus", "Resurgence"};
+	"No DLC", "Resurgence", "Stimulus"};
 	int selectedDLC = 0;
 
 	bool enableCustomPort = false;
@@ -153,19 +153,22 @@ namespace menu_pages {
 					SendNotify("Sent To Console", 2.0f);
 
 				}
-				ksd::Checkbox("Enable DLC?", &vars::enableDLC);
-				if (vars::enableDLC)
-				{
-					ksd::SelectableListCombo("Select DLC", &vars::selectedDLC, vars::DLCListDisplay, 3);
-					if(vars::enableDLC)
-					{
-						SendNotify("DLC Enabled", 2.0f);
-					}
-					else
-					{
-						SendNotify("DLC Disabled", 2.0f);
-					}
-				}
+				if(ksd::Checkbox("Enable DLC?", &vars::enableDLC))
+                {
+
+                    if(vars::enableDLC)
+                    {
+                        SendNotify("DLC Enabled", 2.0f);
+                    }
+                    else
+                    {
+                        SendNotify("DLC Disabled", 2.0f);
+                    }
+                }
+                if(vars::enableDLC)
+                {
+                    ksd::SelectableListCombo("Select DLC", &vars::selectedDLC, vars::DLCListDisplay, 3);
+                }
 				if(ksd::Checkbox("Enable Custom Port?", &vars::enableCustomPort))
 				{
 					functions::sendCustomPort();
