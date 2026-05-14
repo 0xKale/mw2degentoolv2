@@ -10,7 +10,6 @@
 #include <cstring>
 #include <string>
 #include <thread>
-#include <cmath>
 #include "../../ext/imgui/imgui.h"
 #include "../menu/gui.hpp"
 #include "../game/offsets.hpp"
@@ -159,14 +158,13 @@ namespace functions {
 	}
 	void sendFPSandFOV() noexcept
 	{
-	     float fovRounded = std::round(vars::fieldOfView);
 		if (vars::framesPerSecond != ReadDvarInt(iw4::offsets::dvar::com_maxFPS))
 		{
 			SetDvarInt(iw4::offsets::dvar::com_maxFPS, vars::framesPerSecond);
 		}
 		if (vars::fieldOfView != ReadDvarFloat(iw4::offsets::dvar::cg_fov))
 		{
-			SetDvarFloat(iw4::offsets::dvar::cg_fov, fovRounded);
+			SetDvarFloat(iw4::offsets::dvar::cg_fov, vars::fieldOfView);
 		}
 	}
 	void sendMapSize() noexcept

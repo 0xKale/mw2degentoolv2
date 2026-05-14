@@ -136,7 +136,7 @@ namespace menu_pages {
 					}
 				}
 				ksd::SliderInt("Frames Per Second", &vars::framesPerSecond, 30, 1000);
-				ksd::SliderFloat("Field Of View", &vars::fieldOfView, 60.0f, 120.0f);
+				ksd::SliderFloat("Field Of View", &vars::fieldOfView, 65.0f, 120.0f, "%.0f");
 				ksd::SliderFloat("Map Size", &vars::mapSize, 1.f, 2.0f);
 				ImGui::Dummy(ImVec2(0.f, 10.f));
 				if(ksd::Button("Disconnect", ImVec2(280.f, 30.f)))
