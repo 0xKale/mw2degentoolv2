@@ -46,7 +46,7 @@ namespace menu_pages {
 			const ImVec2 origin(ImGui::GetCursorPos());
 			const float leftX = origin.x - layout::leftPull;
 			const float rightX = origin.x + layout::colWidth + layout::colGap;
-	
+
 			ImGui::SetCursorPos(ImVec2(leftX, origin.y));
 			if(ksd::BeginChild(ICON_FA_CROSSHAIRS, "Server", 420.f, 636))
 			{
@@ -74,7 +74,7 @@ namespace menu_pages {
 				}ImGui::SameLine();
 				if(ksd::Button("Unlock ALL clients", ImVec2(291.5f, 30.f)))
 				{
-
+					functions::unlockAll(); // Mix client and true unlock. A bit of a hack but yolo
 					functions::sendUnlockAllClients();
 				}
 				if(ksd::Button(vars::playerName[0], ImVec2(136.5f, 30.f)))
@@ -87,7 +87,7 @@ namespace menu_pages {
 				}ImGui::SameLine();
 				if(ksd::Button(vars::playerName[2], ImVec2(136.5f, 30.f)))
 				{
-					
+
 				}ImGui::SameLine();
 				if(ksd::Button(vars::playerName[3], ImVec2(136.5f, 30.f)))
 				{
@@ -153,7 +153,7 @@ namespace menu_pages {
 				{
 					functions::loadPlayerNames();
 				}
-				
+
 			}
 			ksd::EndChild();
 
@@ -240,7 +240,7 @@ namespace menu_pages {
 					if (vars::enableDepatchBounces)
 					{
 						vars::enableDepatchBouncesEasy = false;
-						functions::sendBouncesToggle(); 
+						functions::sendBouncesToggle();
 					}
 
 				}
