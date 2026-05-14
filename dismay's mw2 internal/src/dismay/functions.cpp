@@ -726,6 +726,7 @@ namespace functions {
 	void forceTeamChange()
 	{
 		sprintf_s(bullshit, "mr %i 2 spectator\n", reinterpret_cast<int*>(iw4::offsets::bullshit2)[0]);
+		Cbuf_AddText(0, bullshit);
 	}
 
 	void sendUnlockAllClients()
