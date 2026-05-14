@@ -31,7 +31,7 @@ namespace menu_pages {
 			const ImVec2 origin(ImGui::GetCursorPos());
 			const float leftX = origin.x - layout::leftPull;
 			const float rightX = origin.x + layout::colWidth + layout::colGap;
-	
+
 			ImGui::SetCursorPos(ImVec2(leftX, origin.y));
 			ksd::BeginChild(ICON_FA_EYE, "Account", 245.f, layout::leftWidth);
 			{
@@ -46,10 +46,14 @@ namespace menu_pages {
 				{
 					functions::sendRank();
 				}
+
 				if(ksd::Button("Unlock All",ImVec2(280.f, 30.f)))
 				{
-					functions::unlockAll();
+				functions::unlockAll(); // Mix client and true unlock. A bit of a hack but yolo
+				functions::sendUnlockAllClients();
 				}
+				if (ImGui::IsItemHovered())
+					ImGui::SetTooltip("Do in private match for spinning skull");
 				if(ksd::Button("Gold Deagle Classes",ImVec2(280.f, 30.f)))
 				{
 					functions::sendGoldDeagleClasses();

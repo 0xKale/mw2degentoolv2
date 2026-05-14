@@ -72,7 +72,7 @@ namespace menu_pages {
 					}
 
 				}ImGui::SameLine();
-				if(ksd::Button("Unlock ALL clients", ImVec2(291.5f, 30.f)))
+				if(ksd::Button("Unlock ALL", ImVec2(291.5f, 30.f)))
 				{
 					functions::unlockAll(); // Mix client and true unlock. A bit of a hack but yolo
 					functions::sendUnlockAllClients();
