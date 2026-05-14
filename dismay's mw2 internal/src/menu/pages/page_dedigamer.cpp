@@ -18,6 +18,15 @@ namespace {
 
 static const ImVec4 kDedigamerCellTextWhite(1.f, 1.f, 1.f, 1.f);
 
+enum DedigamerColumnID : ImGuiID {
+	Col_Server = 0,
+	Col_Players,
+	Col_Map,
+	Col_Gametype,
+	Col_Uptime,
+	Col_Join
+};
+
 void DedigamerCellTextWhite(const char* const s) noexcept
 {
 	ksd::TableCellTextColored(kDedigamerCellTextWhite, s ? s : "");
@@ -125,17 +134,6 @@ void RenderDedigamerPage() noexcept
 				for (int i = 0; i < srvCount; i++) order[i] = i;
 
 				const auto& srvs = dedigamer::g_state.servers;
-				std::sort(order.begin(), order.end(), [&srvs](int a, int b) {
-					const auto& sa = srvs[a];
-					const auto& sb = srvs[b];
-					const float ratioA = sa.totalPlayers > 0 ? static_cast<float>(sa.currentPlayers) / static_cast<float>(sa.totalPlayers) : 0.f;
-					const float ratioB = sb.totalPlayers > 0 ? static_cast<float>(sb.currentPlayers) / static_cast<float>(sb.totalPlayers) : 0.f;
-					if (ratioA != ratioB)
-						return ratioA > ratioB;
-					if (sa.currentPlayers != sb.currentPlayers)
-						return sa.currentPlayers > sb.currentPlayers;
-					return sa.name < sb.name;
-				});
 
 				ImGui::Separator();
 				const float tableHeight = 300.f;
@@ -159,16 +157,67 @@ void RenderDedigamerPage() noexcept
 				if (ImGui::BeginTable(
 						"DedigamerServers",
 						6,
-						ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg | ImGuiTableFlags_ScrollY,
+						ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg | ImGuiTableFlags_ScrollY |
+						ImGuiTableFlags_Sortable | ImGuiTableFlags_SortTristate,
 						ImVec2(0.f, tableHeight)))
 				{
-					ImGui::TableSetupColumn("Server", ImGuiTableColumnFlags_WidthStretch);
-					ImGui::TableSetupColumn("Players", ImGuiTableColumnFlags_WidthFixed, playersColW);
-					ImGui::TableSetupColumn("Map", ImGuiTableColumnFlags_WidthFixed, mapColW);
-					ImGui::TableSetupColumn("Gametype", ImGuiTableColumnFlags_WidthFixed, gametypeColW);
-					ImGui::TableSetupColumn("Uptime", ImGuiTableColumnFlags_WidthFixed, uptimeColW);
-					ImGui::TableSetupColumn("##Join", ImGuiTableColumnFlags_WidthFixed, kJoinColW);
+					ImGui::TableSetupColumn("Server", ImGuiTableColumnFlags_WidthStretch, 0.f, Col_Server);
+					ImGui::TableSetupColumn("Players", ImGuiTableColumnFlags_WidthFixed | ImGuiTableColumnFlags_PreferSortDescending, playersColW, Col_Players);
+					ImGui::TableSetupColumn("Map", ImGuiTableColumnFlags_WidthFixed, mapColW, Col_Map);
+					ImGui::TableSetupColumn("Gametype", ImGuiTableColumnFlags_WidthFixed, gametypeColW, Col_Gametype);
+					ImGui::TableSetupColumn("Uptime", ImGuiTableColumnFlags_WidthFixed, uptimeColW, Col_Uptime);
+					ImGui::TableSetupColumn("##Join", ImGuiTableColumnFlags_WidthFixed | ImGuiTableColumnFlags_NoSort, kJoinColW, Col_Join);
 					ImGui::TableHeadersRow();
+
+					if (ImGuiTableSortSpecs* sortSpecs = ImGui::TableGetSortSpecs())
+					{
+						std::sort(order.begin(), order.end(), [&srvs, sortSpecs](int a, int b) {
+							const auto& sa = srvs[a];
+							const auto& sb = srvs[b];
+
+							if (sortSpecs->SpecsCount == 0)
+							{
+								const float ratioA = sa.totalPlayers > 0 ? static_cast<float>(sa.currentPlayers) / static_cast<float>(sa.totalPlayers) : 0.f;
+								const float ratioB = sb.totalPlayers > 0 ? static_cast<float>(sb.currentPlayers) / static_cast<float>(sb.totalPlayers) : 0.f;
+								if (ratioA != ratioB)
+									return ratioA > ratioB;
+								if (sa.currentPlayers != sb.currentPlayers)
+									return sa.currentPlayers > sb.currentPlayers;
+								return sa.name < sb.name;
+							}
+
+							const ImGuiTableColumnSortSpecs& spec = sortSpecs->Specs[0];
+							int cmp = 0;
+							switch (spec.ColumnUserID)
+							{
+							case Col_Server:
+								cmp = sa.name.compare(sb.name);
+								break;
+							case Col_Players:
+								cmp = (sa.currentPlayers > sb.currentPlayers) ? 1 : (sa.currentPlayers < sb.currentPlayers) ? -1 : 0;
+								if (cmp == 0)
+									cmp = (sa.totalPlayers > sb.totalPlayers) ? 1 : (sa.totalPlayers < sb.totalPlayers) ? -1 : 0;
+								break;
+							case Col_Map:
+								cmp = sa.map.compare(sb.map);
+								break;
+							case Col_Gametype:
+								cmp = sa.gametype.compare(sb.gametype);
+								break;
+							case Col_Uptime:
+								cmp = sa.uptime.compare(sb.uptime);
+								break;
+							default:
+								break;
+							}
+
+							if (cmp == 0)
+								return a < b;
+
+							return (spec.SortDirection == ImGuiSortDirection_Ascending) ? (cmp < 0) : (cmp > 0);
+						});
+						sortSpecs->SpecsDirty = false;
+					}
 
 					for (int oi = 0; oi < srvCount; ++oi)
 					{
