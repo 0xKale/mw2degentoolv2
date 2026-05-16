@@ -1253,18 +1253,35 @@ namespace functions {
 		ImDrawList* dl = ImGui::GetBackgroundDrawList();
 		const float cx = io.DisplaySize.x * 0.5f;
 		const float cy = io.DisplaySize.y * 0.5f;
-		const float th = 3.0f;
 
-		auto drawLines = [&](ImU32 c, float t) {
-			dl->AddLine(ImVec2(cx - 12.0f, cy - 1.0f), ImVec2(cx - 4.0f, cy - 1.0f), c, t);
-			dl->AddLine(ImVec2(cx + 3.0f, cy - 1.0f), ImVec2(cx + 11.0f, cy - 1.0f), c, t);
-			dl->AddLine(ImVec2(cx - 1.0f, cy - 12.0f), ImVec2(cx - 1.0f, cy - 4.0f), c, t);
-			dl->AddLine(ImVec2(cx - 1.0f, cy + 3.0f), ImVec2(cx - 1.0f, cy + 11.0f), c, t);
+		const float scale = io.DisplaySize.y / 480.f;
+		const float th = vars::crosshairThickness * scale;
+		const float gap = vars::crosshairGap * scale;
+		const float len = vars::crosshairLength * scale;
+		const float olTh = vars::crosshairOutlineThickness * scale;
+		const float inner = gap;
+		const float outer = gap + len;
+
+		auto drawArms = [&](ImU32 c, float t) {
+			dl->AddLine(ImVec2(cx - outer, cy), ImVec2(cx - inner, cy), c, t);
+			dl->AddLine(ImVec2(cx + inner, cy), ImVec2(cx + outer, cy), c, t);
+			dl->AddLine(ImVec2(cx, cy + inner), ImVec2(cx, cy + outer), c, t);
+			if (!vars::crosshairTStyle)
+				dl->AddLine(ImVec2(cx, cy - outer), ImVec2(cx, cy - inner), c, t);
 		};
 
 		if (vars::crosshairOutline)
-			drawLines(IM_COL32(0, 0, 0, 255), th + 2.0f);
+			drawArms(IM_COL32(0, 0, 0, 255), th + olTh);
 
-		drawLines(ImGui::GetColorU32(vars::crosshair_color), th);
+		drawArms(ImGui::GetColorU32(vars::crosshair_color), th);
+
+		if (vars::crosshairCenterDot)
+		{
+			float dotR = th * 0.5f;
+			if (dotR < 1.f) dotR = 1.f;
+			if (vars::crosshairOutline)
+				dl->AddCircleFilled(ImVec2(cx, cy), dotR + olTh * 0.5f, IM_COL32(0, 0, 0, 255));
+			dl->AddCircleFilled(ImVec2(cx, cy), dotR, ImGui::GetColorU32(vars::crosshair_color));
+		}
 	}
 }

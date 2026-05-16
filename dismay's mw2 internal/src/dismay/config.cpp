@@ -75,6 +75,12 @@ void config::Save()
 	WriteInt("UI", "CrosshairG", static_cast<int>(vars::crosshair_color.y * 255.f));
 	WriteInt("UI", "CrosshairB", static_cast<int>(vars::crosshair_color.z * 255.f));
 	WriteInt("UI", "CrosshairA", static_cast<int>(vars::crosshair_color.w * 255.f));
+	WriteFloat("UI", "CrosshairGap", vars::crosshairGap);
+	WriteFloat("UI", "CrosshairLength", vars::crosshairLength);
+	WriteFloat("UI", "CrosshairThickness", vars::crosshairThickness);
+	WriteFloat("UI", "CrosshairOutlineThickness", vars::crosshairOutlineThickness);
+	WriteBool("UI", "CrosshairCenterDot", vars::crosshairCenterDot);
+	WriteBool("UI", "CrosshairTStyle", vars::crosshairTStyle);
 
 	WritePrivateProfileStringA(NULL, NULL, NULL, file.c_str());
 }
@@ -128,6 +134,12 @@ void config::Load()
 	int cb = ReadInt("UI", "CrosshairB", 255);
 	int ca = ReadInt("UI", "CrosshairA", 255);
 	vars::crosshair_color = ImVec4(cr / 255.f, cg / 255.f, cb / 255.f, ca / 255.f);
+	vars::crosshairGap = ReadFloat("UI", "CrosshairGap", 1.8f);
+	vars::crosshairLength = ReadFloat("UI", "CrosshairLength", 3.5f);
+	vars::crosshairThickness = ReadFloat("UI", "CrosshairThickness", 1.3f);
+	vars::crosshairOutlineThickness = ReadFloat("UI", "CrosshairOutlineThickness", 1.0f);
+	vars::crosshairCenterDot = ReadBool("UI", "CrosshairCenterDot", false);
+	vars::crosshairTStyle = ReadBool("UI", "CrosshairTStyle", false);
 
 	ApplyToGame();
 }

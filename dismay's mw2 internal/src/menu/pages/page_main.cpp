@@ -6,6 +6,7 @@
 
 #include "../../framework/framework.hpp"
 #include "../../dismay/functions.hpp"
+#include "../../dismay/crosshair_sharecode.h"
 #include "../../game/iw4hooks.h"
 
 #include <string>
@@ -60,6 +61,13 @@ namespace vars {
 	bool enableCrosshair = false;
 	ImVec4 crosshair_color = ImColor(225, 255, 255);
 	bool crosshairOutline = true;
+	float crosshairGap = 1.8f;
+	float crosshairLength = 3.5f;
+	float crosshairThickness = 1.3f;
+	float crosshairOutlineThickness = 1.0f;
+	bool crosshairCenterDot = false;
+	bool crosshairTStyle = false;
+	char csShareCodeInput[48] = "";
 
 }
 
@@ -73,7 +81,7 @@ namespace menu_pages {
 			const float rightX = origin.x + layout::colWidth + layout::colGap;
 
 			ImGui::SetCursorPos(ImVec2(leftX, origin.y));
-			if(ksd::BeginChild(ICON_FA_CROSSHAIRS, "Main", 650.f, layout::leftWidth))
+			if(ksd::BeginChild(ICON_FA_CROSSHAIRS, "Main", 830.f, layout::leftWidth))
 			{
 				if(ksd::Checkbox("Enable Text Chat", &vars::enableTextChat))
 				{
@@ -204,6 +212,22 @@ namespace menu_pages {
 				}
 				ImGui::ColorEdit4("Crosshair Color", (float*)&vars::crosshair_color, ImGuiColorEditFlags_AlphaPreview | ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_NoInputs);
 				ksd::Checkbox("Crosshair Outline", &vars::crosshairOutline);
+				ksd::Checkbox("Center Dot", &vars::crosshairCenterDot);
+				ksd::Checkbox("T-Style", &vars::crosshairTStyle);
+				/*
+				ImGui::Dummy(ImVec2(0.f, 4.f));
+				ksd::Text("CS2 Crosshair Code");
+				ImGui::Dummy(ImVec2(0.f, 1.f));
+				ksd::InputTextOnly("##csCrosshair", vars::csShareCodeInput, sizeof(vars::csShareCodeInput), 290.f);
+				if (ksd::Button("Apply CS Crosshair", ImVec2(280.f, 30.f)))
+				{
+					if (ApplyCsCrosshairToVars(vars::csShareCodeInput))
+						SendNotify("Crosshair Imported", 2.0f);
+					else
+						SendNotify("Invalid Share Code", 2.0f);
+				}
+				 */
+
 
 			}
 			ksd::EndChild();
