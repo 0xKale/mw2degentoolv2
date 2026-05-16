@@ -1,5 +1,6 @@
 #include "pages.hpp"
 
+#include "../../dismay/config.h"
 #include "../../dismay/functions.hpp"
 #include "../../game/iw4hooks.h"
 
@@ -18,35 +19,14 @@ namespace menu_pages {
 			if(ksd::BeginChild(ICON_FA_CROSSHAIRS, "Config", 150.f, layout::leftWidth))
 			{
 				ksd::Text(".ini file is located in the same directory");
-				ksd::Text("as the executable.");
+				ksd::Text("as the DLL.");
 				if(ksd::Button("Load Config", ImVec2(280.f, 30.f)))
 				{
-					functions::sendFPSandFOV();
-					functions::sendMapSize();
-					functions::toggleChat();
-					functions::sendFOVMin();
-					functions::mouseFix();
-					functions::fuckTheSunAway();
-					functions::sendNoCamo();
-					functions::sendNoFog();
-					functions::sendNoBullets();
-					functions::sendMovie();
-					functions::clearGlass();
-					const std::string lightMapCmd = "r_lightMap " + std::to_string(vars::lightmap) + ";";
-					const std::string fullbrightCmd = "r_fullbright " + std::to_string(vars::fullbright) + ";";
-					if (vars::fullbright != 0)
-					{
-						Cbuf_AddText(0, lightMapCmd.c_str());
-						Cbuf_AddText(0, fullbrightCmd.c_str());
-					}
-					else
-					{
-						Cbuf_AddText(0, fullbrightCmd.c_str());
-						Cbuf_AddText(0, lightMapCmd.c_str());
-					}
+					config::Load();
 				}
 				if(ksd::Button("Save Config", ImVec2(280.f, 30.f)))
 				{
+					config::Save();
 				}
 				ImGui::ColorEdit4("Accent Color", (float*)&colors::accent_color, ImGuiColorEditFlags_AlphaPreview | ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_NoInputs);
                                

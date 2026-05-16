@@ -68,6 +68,7 @@
     <ClInclude Include="ext\minhook\trampoline.h" />
     <ClInclude Include="ext\stb\stb_image.h" />
     <ClInclude Include="src\dismay\dedigamer\dedigamer.hpp" />
+    <ClInclude Include="src\dismay\config.h" />
     <ClInclude Include="src\dismay\functions.hpp" />
     <ClInclude Include="src\dismay\offsets.hpp" />
     <ClInclude Include="src\dismay\utils\utils.h" />
@@ -126,6 +127,9 @@
     <ClCompile Include="src\menu\pages\page_main.cpp" />
     <ClCompile Include="src\dismay\dedigamer\dedigamer.cpp">
       <ObjectFileName>$(IntDir)dedigamer.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="src\dismay\config.cpp">
+      <ObjectFileName>$(IntDir)dismay_config.obj</ObjectFileName>
     </ClCompile>
     <ClCompile Include="src\dismay\functions.cpp">
       <ObjectFileName>$(IntDir)dismay_functions.obj</ObjectFileName>

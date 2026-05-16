@@ -19,6 +19,7 @@
 #include "../../ext/fonts/iconsfontawesome/fa.h"
 #include "../../ext/fonts/iconsfontawesome/IconsFontAwesome6.h"
 #include "pages/pages.hpp"
+#include "../dismay/config.h"
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
@@ -299,6 +300,7 @@ namespace gui {
 			(void)ksd::D3D9MemoryGif_Load(currentDevice, lain, static_cast<std::uint32_t>(sizeof(lain)));
 		}
 		setup = true;
+		config::Load();
 	}
 
 	void Destroy() noexcept {
