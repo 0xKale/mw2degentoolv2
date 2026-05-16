@@ -69,6 +69,13 @@ void config::Save()
 	WriteInt("UI", "AccentB", static_cast<int>(colors::accent_color.z * 255.f));
 	WriteInt("UI", "AccentA", static_cast<int>(colors::accent_color.w * 255.f));
 
+	WriteBool("UI", "EnableCrosshair", vars::enableCrosshair);
+	WriteBool("UI", "CrosshairOutline", vars::crosshairOutline);
+	WriteInt("UI", "CrosshairR", static_cast<int>(vars::crosshair_color.x * 255.f));
+	WriteInt("UI", "CrosshairG", static_cast<int>(vars::crosshair_color.y * 255.f));
+	WriteInt("UI", "CrosshairB", static_cast<int>(vars::crosshair_color.z * 255.f));
+	WriteInt("UI", "CrosshairA", static_cast<int>(vars::crosshair_color.w * 255.f));
+
 	WritePrivateProfileStringA(NULL, NULL, NULL, file.c_str());
 }
 
@@ -113,6 +120,14 @@ void config::Load()
 	int b = ReadInt("UI", "AccentB", 255);
 	int a = ReadInt("UI", "AccentA", 255);
 	colors::accent_color = ImVec4(r / 255.f, g / 255.f, b / 255.f, a / 255.f);
+
+	vars::enableCrosshair = ReadBool("UI", "EnableCrosshair", false);
+	vars::crosshairOutline = ReadBool("UI", "CrosshairOutline", true);
+	int cr = ReadInt("UI", "CrosshairR", 225);
+	int cg = ReadInt("UI", "CrosshairG", 255);
+	int cb = ReadInt("UI", "CrosshairB", 255);
+	int ca = ReadInt("UI", "CrosshairA", 255);
+	vars::crosshair_color = ImVec4(cr / 255.f, cg / 255.f, cb / 255.f, ca / 255.f);
 
 	ApplyToGame();
 }

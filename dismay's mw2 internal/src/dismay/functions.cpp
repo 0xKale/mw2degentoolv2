@@ -1251,14 +1251,20 @@ namespace functions {
 
 		ImGuiIO& io = ImGui::GetIO();
 		ImDrawList* dl = ImGui::GetBackgroundDrawList();
-		const ImU32 col = ImGui::GetColorU32(vars::crosshair_color);
 		const float cx = io.DisplaySize.x * 0.5f;
 		const float cy = io.DisplaySize.y * 0.5f;
 		const float th = 3.0f;
 
-		dl->AddLine(ImVec2(cx - 12.0f, cy - 1.0f), ImVec2(cx - 4.0f, cy - 1.0f), col, th);
-		dl->AddLine(ImVec2(cx + 3.0f, cy - 1.0f), ImVec2(cx + 11.0f, cy - 1.0f), col, th);
-		dl->AddLine(ImVec2(cx - 1.0f, cy - 12.0f), ImVec2(cx - 1.0f, cy - 4.0f), col, th);
-		dl->AddLine(ImVec2(cx - 1.0f, cy + 3.0f), ImVec2(cx - 1.0f, cy + 11.0f), col, th);
+		auto drawLines = [&](ImU32 c, float t) {
+			dl->AddLine(ImVec2(cx - 12.0f, cy - 1.0f), ImVec2(cx - 4.0f, cy - 1.0f), c, t);
+			dl->AddLine(ImVec2(cx + 3.0f, cy - 1.0f), ImVec2(cx + 11.0f, cy - 1.0f), c, t);
+			dl->AddLine(ImVec2(cx - 1.0f, cy - 12.0f), ImVec2(cx - 1.0f, cy - 4.0f), c, t);
+			dl->AddLine(ImVec2(cx - 1.0f, cy + 3.0f), ImVec2(cx - 1.0f, cy + 11.0f), c, t);
+		};
+
+		if (vars::crosshairOutline)
+			drawLines(IM_COL32(0, 0, 0, 255), th + 2.0f);
+
+		drawLines(ImGui::GetColorU32(vars::crosshair_color), th);
 	}
 }

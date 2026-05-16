@@ -59,6 +59,7 @@ namespace vars {
 
 	bool enableCrosshair = false;
 	ImVec4 crosshair_color = ImColor(225, 255, 255);
+	bool crosshairOutline = true;
 
 }
 
@@ -202,6 +203,7 @@ namespace menu_pages {
 					}
 				}
 				ImGui::ColorEdit4("Crosshair Color", (float*)&vars::crosshair_color, ImGuiColorEditFlags_AlphaPreview | ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_NoInputs);
+				ksd::Checkbox("Crosshair Outline", &vars::crosshairOutline);
 
 			}
 			ksd::EndChild();
