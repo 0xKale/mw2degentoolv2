@@ -550,7 +550,8 @@ namespace iw4 {
             inline constexpr std::uintptr_t cg_weapHitCullEnable = 0x88E1F0;
             inline constexpr std::uintptr_t sensitivity = 0x0B173CC;
         }
-        inline constexpr std::uintptr_t dlc_location = 0x637A7C0; // DLC Location
+        inline constexpr std::uintptr_t dlc_location = 0x637A740; // DLC list name buffer start
+        inline constexpr std::uintptr_t dlc_count = 0x637C3B0; // DLC list item count
         inline constexpr std::uintptr_t LocalClientLevel = 0x1B8B768; // Account Level Location
         inline constexpr std::uintptr_t LocalClientPrestige = 0x1B8B770; // Prestige Location
         inline constexpr std::uintptr_t mouse_enable = 0x6427D3D;

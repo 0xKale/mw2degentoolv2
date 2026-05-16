@@ -48,10 +48,6 @@ namespace vars {
 	char console[256] = "";
 
 	bool enableDLC = false;
-	const char* DLCListDisplay[3] = {
-	"No DLC", "Resurgence", "Stimulus"};
-	int selectedDLC = 0;
-
 	bool enableCustomPort = false;
 	int customPort = 28961;
 
@@ -173,10 +169,6 @@ namespace menu_pages {
                     {
                         SendNotify("DLC Disabled", 2.0f);
                     }
-                }
-                if(vars::enableDLC)
-                {
-                   ksd::SelectableListCombo("Select DLC", &vars::selectedDLC, vars::DLCListDisplay, 3);
                 }
 				if(ksd::Checkbox("Enable Custom Port?", &vars::enableCustomPort))
 				{

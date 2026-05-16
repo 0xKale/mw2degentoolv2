@@ -13,6 +13,7 @@
 #include "../../ext/imgui/imgui.h"
 #include "../menu/gui.hpp"
 #include "../game/offsets.hpp"
+#include "../game/iw4structs.hpp"
 #include "../game/iw4hooks.h"
 #include "../menu/pages/pages.hpp"
 #include "../menu/pages/page_main.hpp"
@@ -317,18 +318,41 @@ namespace functions {
 	}
 	void doDLCMaps()
 	{
-		switch (vars::selectedDLC)
+		static constexpr iw4::DLCDef originalMaps[] = {
+			{ 2, "MP_ORIGINAL_MAPS" },
+		};
+		static constexpr iw4::DLCDef allMaps[] = {
+			{ 2, "MP_ORIGINAL_MAPS" },
+			{ 4, "DLC_1" },
+			{ 8, "DLC_2" },
+		};
+
+		const iw4::DLCDef* items = originalMaps;
+		int itemCount = static_cast<int>(sizeof(originalMaps) / sizeof(originalMaps[0]));
+		const int maxItems = static_cast<int>(sizeof(allMaps) / sizeof(allMaps[0]));
+
+		if (vars::enableDLC)
 		{
-		case 1:
-			*(int*)iw4::offsets::dlc_location = 8; // DLC 1
-			break;
-		case 2:
-			*(int*)iw4::offsets::dlc_location = 4; // DLC 2
-			break;
-		default:
-			*(int*)iw4::offsets::dlc_location = 0; // No DLC
-			break;
+			items = allMaps;
+			itemCount = maxItems;
 		}
+
+		for (int i = 0; i < maxItems; ++i)
+		{
+			iw4::DLCList item{};
+			if (i < itemCount)
+			{
+				item.a2 = items[i].a2;
+				item.flag1 = 1;
+				item.flag2 = 1;
+				strncpy_s(item.name, sizeof(item.name), items[i].name, _TRUNCATE);
+			}
+
+			const auto address = iw4::offsets::dlc_location + static_cast<std::uintptr_t>(i) * sizeof(iw4::DLCList);
+			WriteBytes((LPVOID)address, reinterpret_cast<const char*>(&item), sizeof(item));
+		}
+
+		WriteBytes((LPVOID)iw4::offsets::dlc_count, reinterpret_cast<const char*>(&itemCount), sizeof(itemCount));
 	}
 	void WriteBytes(LPVOID address, const char* bytes, int length)
 	{
