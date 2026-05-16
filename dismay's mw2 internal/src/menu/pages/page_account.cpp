@@ -53,7 +53,7 @@ namespace menu_pages {
 				functions::sendUnlockAllClients();
 				}
 				if (ImGui::IsItemHovered())
-					ImGui::SetTooltip("Do in private match for spinning skull");
+					ImGui::SetTooltip("toggle while in private match for golden spinning skull");
 				if(ksd::Button("Gold Deagle Classes",ImVec2(280.f, 30.f)))
 				{
 					functions::sendGoldDeagleClasses();

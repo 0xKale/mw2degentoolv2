@@ -41,7 +41,7 @@ namespace vars {
 		"Normal",
 		"Super",
 		"Slight",
-		"Dullfish",
+		"Dullish",
 	};
 
 	char console[256] = "";
@@ -127,7 +127,7 @@ namespace menu_pages {
 					}
 				}
 				ksd::InputFloat("Sensitivity", &vars::mouseSensitivity);
-				if(ksd::Button("Send Senitivity", ImVec2(280.f, 30.f)))
+				if(ksd::Button("Send Sensitivity", ImVec2(280.f, 30.f)))
 				{
 					functions::writeSensitivity(vars::mouseSensitivity);
 					if(vars::mouseSensitivity)
@@ -167,7 +167,7 @@ namespace menu_pages {
                 }
                 if(vars::enableDLC)
                 {
-                    ksd::SelectableListCombo("Select DLC", &vars::selectedDLC, vars::DLCListDisplay, 3);
+                   ksd::SelectableListCombo("Select DLC", &vars::selectedDLC, vars::DLCListDisplay, 3);
                 }
 				if(ksd::Checkbox("Enable Custom Port?", &vars::enableCustomPort))
 				{
