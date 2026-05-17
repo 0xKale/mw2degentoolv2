@@ -95,6 +95,17 @@ namespace functions {
 			SetDvarInt(iw4::offsets::dvar::r_drawSun, 0);
 		}
 	}
+	void fuckTheCrosshairAway() noexcept
+	{
+		// Same toggle as DrawCrosshairOverlay: custom crosshair on => hide engine crosshair.
+		const int want = vars::enableCrosshair ? 0 : 1;
+		if (want == ReadDvarInt(iw4::offsets::dvar::cg_drawCrosshair))
+			return;
+		std::uintptr_t dwPointer = *reinterpret_cast<std::uintptr_t*>(iw4::offsets::dvar::cg_drawCrosshair);
+		if (!dwPointer)
+			return;
+		SetDvarInt(iw4::offsets::dvar::cg_drawCrosshair, want);
+	}
 	void clearGlass() noexcept
 	{
 		if (!vars::clearGlass)
@@ -675,6 +686,7 @@ namespace functions {
 		{
 			syncGameMouseCapture();
 			sendFPSandFOV();
+			fuckTheCrosshairAway();
 			doDLCMaps();
 			doFFATeamFix();
 			handleHotkeys();

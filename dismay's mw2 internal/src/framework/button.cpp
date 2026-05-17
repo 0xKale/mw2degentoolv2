@@ -25,7 +25,7 @@ struct ButtonState
 
 }
 
-bool ksd::ButtonEx(const char* label, const ImVec2& sizeArg, const ImGuiButtonFlags flags) noexcept
+bool ksd::ButtonEx(const char* label, const ImVec2& sizeArg, const ImGuiButtonFlags flags, const bool selected) noexcept
 {
 	ImGuiWindow* const window = ImGui::GetCurrentWindow();
 	if (!window || window->SkipItems)
@@ -101,9 +101,8 @@ bool ksd::ButtonEx(const char* label, const ImVec2& sizeArg, const ImGuiButtonFl
 		st.rippleActive ? colors::accent_color : colors::button::button_bg,
 		g.IO.DeltaTime * 6.f);
 
-	const ImVec4 targetTextColor = st.rippleActive || hovered
-		? colors::button::text_active
-		: colors::button::text_inactive;
+	const ImVec4 targetTextColor =
+		st.rippleActive || hovered || selected ? colors::button::text_active : colors::button::text_inactive;
 	st.text = ImLerp(st.text, targetTextColor, g.IO.DeltaTime * 6.f);
 
 	ImDrawList* const dl = ImGui::GetWindowDrawList();
@@ -144,5 +143,10 @@ bool ksd::ButtonEx(const char* label, const ImVec2& sizeArg, const ImGuiButtonFl
 
 bool ksd::Button(const char* label, const ImVec2& size) noexcept
 {
-	return ButtonEx(label, size, ImGuiButtonFlags_None);
+	return ButtonEx(label, size, ImGuiButtonFlags_None, false);
+}
+
+bool ksd::Button(const char* label, const ImVec2& size, const bool selected) noexcept
+{
+	return ButtonEx(label, size, ImGuiButtonFlags_None, selected);
 }

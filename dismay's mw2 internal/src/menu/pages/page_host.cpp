@@ -36,6 +36,8 @@ namespace vars {
 	bool enableDepatchBounces = false;
 	bool enableDepatchBouncesEasy = false;
 	bool enableDepatchElevators = false;
+	bool proneCap360 = false;
+	bool ladderCap360 = false;
 }
 
 namespace menu_pages {
@@ -211,20 +213,24 @@ namespace menu_pages {
 					functions::sendSprintScale();
 				}
 				ImGui::Dummy(ImVec2(0.f, 4.f));
-				if(ksd::Button("360 Prone Cap Off", ImVec2(132.f, 30.f)))
+				if(ksd::Button("360 Prone Cap Off", ImVec2(132.f, 30.f), vars::proneCap360))
 				{
+					vars::proneCap360 = true;
 					Cbuf_AddText(0, "bg_prone_yawcap 360");
 				}ImGui::SameLine();
-				if(ksd::Button("360 Prone Cap On", ImVec2(132.f, 30.f)))
+				if(ksd::Button("360 Prone Cap On", ImVec2(132.f, 30.f), !vars::proneCap360))
 				{
-				Cbuf_AddText(0, "bg_prone_yawcap 85");
-			}
-				if(ksd::Button("360 Ladder Cap Off", ImVec2(132.f, 30.f)))
+					vars::proneCap360 = false;
+					Cbuf_AddText(0, "bg_prone_yawcap 85");
+				}
+				if(ksd::Button("360 Ladder Cap Off", ImVec2(132.f, 30.f), vars::ladderCap360))
 				{
+					vars::ladderCap360 = true;
 					Cbuf_AddText(0, "bg_ladder_yawcap 360");
 				}ImGui::SameLine();
-				if(ksd::Button("360 Ladder Cap On", ImVec2(132.f, 30.f)))
+				if(ksd::Button("360 Ladder Cap On", ImVec2(132.f, 30.f), !vars::ladderCap360))
 				{
+					vars::ladderCap360 = false;
 					Cbuf_AddText(0, "bg_ladder_yawcap 100");
 				}
 				if(ksd::SliderFloat("Knockback Scale", &vars::knockbackScale, 1000, 999999))

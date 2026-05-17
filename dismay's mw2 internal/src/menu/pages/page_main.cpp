@@ -52,7 +52,7 @@ namespace vars {
 	int customPort = 28961;
 
 	int fullbright = 0;
-	int lightmap = 0;
+	int lightmap = 1;
 
 	bool enableCrosshair = false;
 	ImVec4 crosshair_color = ImColor(225, 255, 255);
@@ -65,6 +65,13 @@ namespace vars {
 	bool crosshairTStyle = false;
 	char csShareCodeInput[48] = "";
 
+}
+
+namespace {
+	bool FullbrightPresetActive(const int fb, const int lm) noexcept
+	{
+		return vars::fullbright == fb && vars::lightmap == lm;
+	}
 }
 
 namespace menu_pages {
@@ -193,6 +200,7 @@ namespace menu_pages {
 				}
 				if(ksd::Checkbox("Enable Crosshair", &vars::enableCrosshair))
 				{
+					functions::fuckTheCrosshairAway();
 					if(vars::enableCrosshair)
 					{
 						SendNotify("Crosshair Enabled", 2.0f);
@@ -263,32 +271,37 @@ namespace menu_pages {
 			ImGui::SetCursorPos(ImVec2(rightX, origin.y + 290.f));
 			if(ksd::BeginChild(ICON_FA_GEAR, "Fullbright", 190.f, layout::rightWidth))
 			{
-				if(ksd::Button("Invert", ImVec2(280.f, 30.f)))
+				if(ksd::Button("Invert", ImVec2(280.f, 30.f), FullbrightPresetActive(0, 0)))
 				{
+					vars::selectedFullbrightMode = 0;
 					vars::fullbright = 0;
 					vars::lightmap = 0;
 					Cbuf_AddText(0, "r_fullbright 0;r_lightMap 0;");
 				}
-				if(ksd::Button("Normal", ImVec2(280.f, 30.f)))
+				if(ksd::Button("Normal", ImVec2(280.f, 30.f), FullbrightPresetActive(0, 1)))
 				{
+					vars::selectedFullbrightMode = 1;
 					vars::fullbright = 0;
 					vars::lightmap = 1;
 					Cbuf_AddText(0, "r_fullbright 0;r_lightMap 1;");
 				}
-				if(ksd::Button("Super", ImVec2(280.f, 30.f)))
+				if(ksd::Button("Super", ImVec2(280.f, 30.f), FullbrightPresetActive(0, 2)))
 				{
+					vars::selectedFullbrightMode = 2;
 					vars::fullbright = 0;
 					vars::lightmap = 2;
 					Cbuf_AddText(0, "r_fullbright 0;r_lightMap 2;");
 				}
-				if(ksd::Button("Slight", ImVec2(280.f, 30.f)))
+				if(ksd::Button("Slight", ImVec2(280.f, 30.f), FullbrightPresetActive(0, 3)))
 				{
+					vars::selectedFullbrightMode = 3;
 					vars::fullbright = 0;
 					vars::lightmap = 3;
 					Cbuf_AddText(0, "r_fullbright 0;r_lightMap 3;");
 				}
-				if(ksd::Button("Dullish", ImVec2(280.f, 30.f)))
+				if(ksd::Button("Dullish", ImVec2(280.f, 30.f), FullbrightPresetActive(1, 0)))
 				{
+					vars::selectedFullbrightMode = 4;
 					vars::fullbright = 1;
 					vars::lightmap = 0;
 					Cbuf_AddText(0, "r_fullbright 1;r_lightMap 1;");

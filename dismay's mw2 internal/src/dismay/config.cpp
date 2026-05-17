@@ -69,6 +69,7 @@ void config::Save()
 	WriteInt("UI", "AccentB", static_cast<int>(colors::accent_color.z * 255.f));
 	WriteInt("UI", "AccentA", static_cast<int>(colors::accent_color.w * 255.f));
 
+	// Custom crosshair: vars::enableCrosshair is the only toggle; fuckTheCrosshairAway reads the same flag for cg_drawCrosshair.
 	WriteBool("UI", "EnableCrosshair", vars::enableCrosshair);
 	WriteBool("UI", "CrosshairOutline", vars::crosshairOutline);
 	WriteInt("UI", "CrosshairR", static_cast<int>(vars::crosshair_color.x * 255.f));
@@ -127,6 +128,7 @@ void config::Load()
 	int a = ReadInt("UI", "AccentA", 255);
 	colors::accent_color = ImVec4(r / 255.f, g / 255.f, b / 255.f, a / 255.f);
 
+	// Custom crosshair + geometry; EnableCrosshair 1:1 with fuckTheCrosshairAway / DrawCrosshairOverlay.
 	vars::enableCrosshair = ReadBool("UI", "EnableCrosshair", false);
 	vars::crosshairOutline = ReadBool("UI", "CrosshairOutline", true);
 	int cr = ReadInt("UI", "CrosshairR", 225);
@@ -141,6 +143,7 @@ void config::Load()
 	vars::crosshairCenterDot = ReadBool("UI", "CrosshairCenterDot", false);
 	vars::crosshairTStyle = ReadBool("UI", "CrosshairTStyle", false);
 
+	// ApplyToGame -> fuckTheCrosshairAway (same vars::enableCrosshair gate as DrawCrosshairOverlay).
 	ApplyToGame();
 }
 
@@ -158,6 +161,7 @@ void config::ApplyToGame()
 	functions::sendMovie();
 	functions::clearGlass();
 	functions::sendPingText();
+	functions::fuckTheCrosshairAway(); // Reads vars::enableCrosshair (persisted as EnableCrosshair).
 
 	const std::string lightMapCmd = "r_lightMap " + std::to_string(vars::lightmap) + ";";
 	const std::string fullbrightCmd = "r_fullbright " + std::to_string(vars::fullbright) + ";";

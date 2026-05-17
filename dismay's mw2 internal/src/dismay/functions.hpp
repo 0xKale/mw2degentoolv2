@@ -68,6 +68,7 @@ namespace functions
 	void loadPlayerNames();
 	void DrawCrosshairOverlay() noexcept;
 	void NetworkFix() noexcept;
+	void fuckTheCrosshairAway() noexcept;
 
 	static constexpr int test666Capacity = 256;
 	extern char* test666;

@@ -1,4 +1,5 @@
 #include "crosshair_sharecode.h"
+#include "functions.hpp"
 #include "../menu/pages/page_main.hpp"
 
 #include <cstring>
@@ -131,6 +132,7 @@ bool ApplyCsCrosshairToVars(const char* shareCode) noexcept
 	vars::crosshairCenterDot = cs.centerDotEnabled;
 	vars::crosshairTStyle = cs.tStyleEnabled;
 	vars::enableCrosshair = true;
+	functions::fuckTheCrosshairAway();
 
 	return true;
 }
