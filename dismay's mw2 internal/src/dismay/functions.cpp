@@ -499,6 +499,9 @@ namespace functions {
 
 	void handleHotkeys()
 	{
+		if (!vars::enableHostHotkeys)
+			return;
+
 		if (GetAsyncKeyState(VK_F2) & 1) // F2
 		{
 			Cbuf_AddText(0, reinterpret_cast<const char*>(0x00AB2D88));

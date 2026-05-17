@@ -4,6 +4,7 @@
 #include "../../game/iw4hooks.h"
 
 #include <string>
+#include <winuser.h>
 
 namespace vars {
 
@@ -30,6 +31,7 @@ namespace vars {
 	int selectedGamemode = 0;
 	int maxPlayers = 18;
 	bool FFATeamFix = false;
+	bool enableHostHotkeys = false;
 	float sprintScale = 1.0f;
 	float knockbackScale = 1000.0f;
 	float backSpeedScale = 0.69f;
@@ -160,7 +162,7 @@ namespace menu_pages {
 			ksd::EndChild();
 
 			ImGui::SetCursorPos(ImVec2(leftX, origin.y + 480.f));
-			if(ksd::BeginChild(ICON_FA_CROSSHAIRS, "Hosting", 280.f, layout::leftWidth))
+			if(ksd::BeginChild(ICON_FA_CROSSHAIRS, "Hosting", 330.f, layout::leftWidth))
 			{
 				ksd::SelectableListCombo("Select Map", &vars::selectedMap, vars::mapListDisplay, 26);
 				ksd::SelectableListCombo("Gamemode", &vars::selectedGamemode, vars::gamemodeListDisplay, 12);
@@ -193,6 +195,14 @@ namespace menu_pages {
 				}
 				ImGui::Dummy(ImVec2(0.f, 4.f));
 				ksd::Checkbox("FFA Team Fix", &vars::FFATeamFix);
+				if(ksd::Checkbox("Enable Host Hotkeys", &vars::enableHostHotkeys))
+				{
+				    if(vars::enableHostHotkeys) SendNotify("Enabled Host Hotkeys", 2.0f);
+					if(!vars::enableHostHotkeys) SendNotify("Disabled Host Hotkeys", 2.0f);
+				}
+
+
+
 			}
 			ksd::EndChild();
 
