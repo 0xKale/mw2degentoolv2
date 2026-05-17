@@ -69,18 +69,16 @@ namespace menu_pages {
 				ksd::Text("Server Commands:");
 				ImGui::Dummy(ImVec2(0.f, 1.f));
 				ksd::InputTextOnly("##serverCommand", vars::serverCommand, sizeof(vars::serverCommand), 609.f);
-				if(ksd::Button("Send to ALL clients", ImVec2(291.5f, 30.f)))
-				{
-					for (int i = 0; i <= 17; ++i) {
-						SV_GameSendServerCommand(i, 0, (char*)vars::serverCommand);
-					}
 
-				}ImGui::SameLine();
+				/*
 				if(ksd::Button("Unlock ALL", ImVec2(291.5f, 30.f)))
 				{
 					functions::unlockAll(); // Mix client and true unlock. A bit of a hack but yolo
 					functions::sendUnlockAllClients();
 				}
+
+				 */
+
 				if(ksd::Button(vars::playerName[0], ImVec2(136.5f, 30.f)))
 				{
 
@@ -159,6 +157,13 @@ namespace menu_pages {
 				}
 
 			}
+			if(ksd::Button("Send to ALL clients", ImVec2(291.5f, 30.f)))
+			{
+				for (int i = 0; i <= 17; ++i) {
+					SV_GameSendServerCommand(i, 0, (char*)vars::serverCommand);
+				}
+
+			}ImGui::SameLine();
 			ksd::EndChild();
 
 			ImGui::SetCursorPos(ImVec2(leftX, origin.y + 480.f));
