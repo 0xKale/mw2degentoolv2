@@ -41,22 +41,26 @@ namespace menu_pages {
 				if(ksd::Button("Send Prestige",ImVec2(280.f, 30.f)))
 				{
 					functions::sendPrestige(vars::prestige);
+					SendNotify("Prestige Sent", 2.0f);
 				}
 				if(ksd::Button("Send Rank",ImVec2(280.f, 30.f)))
 				{
 					functions::sendRank();
+					SendNotify("Rank Sent", 2.0f);
 				}
 
 				if(ksd::Button("Unlock All",ImVec2(280.f, 30.f)))
 				{
 				functions::unlockAll(); // Mix client and true unlock. A bit of a hack but yolo
 				functions::sendUnlockAllClients();
+				SendNotify("Unlock All. Done.", 2.0f);
 				}
 				if (ImGui::IsItemHovered())
 					ImGui::SetTooltip("Toggle in private match for golden spinning skull");
 				if(ksd::Button("Gold Deagle Classes",ImVec2(280.f, 30.f)))
 				{
 					functions::sendGoldDeagleClasses();
+					SendNotify("Gold Deagle Classes Added", 2.0f);
 				}
 			}
 			ksd::EndChild();
@@ -77,10 +81,12 @@ namespace menu_pages {
 				if(ksd::Button("Load Profile Stats", ImVec2(280.f, 30.f)))
 				{
 					functions::loadProfileStats();
+					SendNotify("Profile Loaded", 2.0f);
 				}
 				if(ksd::Button("Send Profile Stats", ImVec2(280.f, 30.f)))
 				{
 					functions::sendProfileStats();
+					SendNotify("Stats Sent to Profile", 2.0f);
 				}
 			}
 			ksd::EndChild();

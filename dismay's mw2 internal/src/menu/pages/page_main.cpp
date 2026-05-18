@@ -305,6 +305,7 @@ namespace menu_pages {
 					vars::fullbright = 0;
 					vars::lightmap = 0;
 					Cbuf_AddText(0, "r_fullbright 0;r_lightMap 0;");
+					SendNotify("Inverted Fullbright", 2.0f);
 				}
 				if(ksd::Button("Normal", ImVec2(280.f, 30.f), FullbrightPresetActive(0, 1)))
 				{
@@ -312,6 +313,7 @@ namespace menu_pages {
 					vars::fullbright = 0;
 					vars::lightmap = 1;
 					Cbuf_AddText(0, "r_fullbright 0;r_lightMap 1;");
+					SendNotify("Fullbright Off", 2.0f);
 				}
 				if(ksd::Button("Super", ImVec2(280.f, 30.f), FullbrightPresetActive(0, 2)))
 				{
@@ -319,6 +321,7 @@ namespace menu_pages {
 					vars::fullbright = 0;
 					vars::lightmap = 2;
 					Cbuf_AddText(0, "r_fullbright 0;r_lightMap 2;");
+					SendNotify("Super Fullbright", 2.0f);
 				}
 				if(ksd::Button("Slight", ImVec2(280.f, 30.f), FullbrightPresetActive(0, 3)))
 				{
@@ -326,6 +329,7 @@ namespace menu_pages {
 					vars::fullbright = 0;
 					vars::lightmap = 3;
 					Cbuf_AddText(0, "r_fullbright 0;r_lightMap 3;");
+					SendNotify("Slight Fullbright", 2.0f);
 				}
 				if(ksd::Button("Dullish", ImVec2(280.f, 30.f), FullbrightPresetActive(1, 0)))
 				{
@@ -333,6 +337,7 @@ namespace menu_pages {
 					vars::fullbright = 1;
 					vars::lightmap = 0;
 					Cbuf_AddText(0, "r_fullbright 1;r_lightMap 1;");
+					SendNotify("Dullish Fullbright", 2.0f);
 				}
 			}
 			ksd::EndChild();

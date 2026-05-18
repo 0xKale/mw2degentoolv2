@@ -154,6 +154,7 @@ namespace menu_pages {
 				if(ksd::Button("Load Player Names", ImVec2(236.5f, 30.f)))
 				{
 					functions::loadPlayerNames();
+					SendNotify("Players Loaded", 2.0f);
 				}
 				   ImGui::SameLine();
 			}
@@ -162,7 +163,7 @@ namespace menu_pages {
 				for (int i = 0; i <= 17; ++i) {
 					SV_GameSendServerCommand(i, 0, (char*)vars::serverCommand);
 				}
-
+				SendNotify("Sent to all clients", 2.0f);
 			}ImGui::SameLine();
 			ksd::EndChild();
 
