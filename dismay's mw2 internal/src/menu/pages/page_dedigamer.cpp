@@ -94,11 +94,13 @@ void RenderDedigamerPage() noexcept
 			if (ksd::Button("Refresh", ImVec2(160.f, 28.f)))
 			{
 				dedigamer::g_state.lastFetchTick = 0;
+				SendNotify("Refreshing...", 2.0f);
 			}
 			ImGui::SameLine(0.f, 10.f);
 			if (ksd::Button("Disconnect", ImVec2(160.f, 28.f)))
 			{
 				Cbuf_AddText(0, "disconnect");
+				SendNotify("Disconnected", 2.0f);
 			}
 			ImGui::SameLine(0.f, 10.f);
 
@@ -121,6 +123,7 @@ void RenderDedigamerPage() noexcept
 						Cbuf_AddText(0, "disconnect");
 						dedigamer::g_state.reconnectPending = true;
 						dedigamer::g_state.reconnectTriggerTick = GetTickCount() + 1000;
+						SendNotify("Reconnecting...", 2.0f);
 					}
 				}
 			}
@@ -298,6 +301,7 @@ void RenderDedigamerPage() noexcept
 							ImGui::PushID(si);
 							if (ksd::Button("Join", ImVec2(kJoinBtnW, kJoinBtnH)))
 							{
+							    SendNotify("Joining...", 2.0f);
 								dedigamer::g_state.lastJoinUrl = srv.joinUrl;
 								ShellExecuteA(NULL, "open", srv.joinUrl.c_str(), NULL, NULL, SW_SHOWNORMAL);
 							}

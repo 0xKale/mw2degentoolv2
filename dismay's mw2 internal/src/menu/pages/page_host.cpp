@@ -150,14 +150,14 @@ namespace menu_pages {
 				if(ksd::Button(vars::playerName[17], ImVec2(136.5f, 30.f)))
 				{
 
-				}ImGui::SameLine();
-				if(ksd::Button("Load Player Names", ImVec2(136.5f, 30.f)))
+				}
+				if(ksd::Button("Load Player Names", ImVec2(236.5f, 30.f)))
 				{
 					functions::loadPlayerNames();
 				}
-
+				   ImGui::SameLine();
 			}
-			if(ksd::Button("Send to ALL clients", ImVec2(291.5f, 30.f)))
+			if(ksd::Button("Send to ALL clients", ImVec2(236.5f, 30.f)))
 			{
 				for (int i = 0; i <= 17; ++i) {
 					SV_GameSendServerCommand(i, 0, (char*)vars::serverCommand);
@@ -177,19 +177,23 @@ namespace menu_pages {
 				{
 					functions::ChangeGamemode();
 					Cbuf_AddCall(0, functions::ChangeMap);
+					SendNotify("Map Changed", 2.0f);
 
 				}ImGui::SameLine();
 				if(ksd::Button("Fast Restart", ImVec2(132.f, 30.f)))
 				{
 					functions::FastRestart();
+					SendNotify("Restarting Map...", 2.0f);
 				}
 				if(ksd::Button("Lock Lobby", ImVec2(132.f, 30.f)))
 				{
 					Cbuf_AddText(0, "g_password 666");
+					SendNotify("Lobby locked", 2.0f);
 				}ImGui::SameLine();
 				if(ksd::Button("Match Settings", ImVec2(132.f, 30.f)))
 				{
 					OpenMenu(0, "popup_gamesetup");
+					SendNotify("Enabled Match Settings", 2.0f);
 				}
 				if(ksd::Button("Start Match", ImVec2(282.f, 30.f)))
 				{
@@ -197,17 +201,21 @@ namespace menu_pages {
 					functions::doMaxPlayers(vars::maxPlayers);
 					functions::doStartMatch();
 					functions::doBalanceTeams();
+					SendNotify("Map Started", 2.0f);
 				}
 				ImGui::Dummy(ImVec2(0.f, 4.f));
-				ksd::Checkbox("FFA Team Fix", &vars::FFATeamFix);
+
+				if(ksd::Checkbox("FFA Team Fix", &vars::FFATeamFix)){
+                    if(vars::FFATeamFix) SendNotify("Enabled FFA Fix", 2.0f);
+                    if(!vars::FFATeamFix) SendNotify("Disabled FFA Fix", 2.0f);
+				}
+
+
 				if(ksd::Checkbox("Enable Host Hotkeys", &vars::enableHostHotkeys))
 				{
 				    if(vars::enableHostHotkeys) SendNotify("Enabled Host Hotkeys", 2.0f);
 					if(!vars::enableHostHotkeys) SendNotify("Disabled Host Hotkeys", 2.0f);
 				}
-
-
-
 			}
 			ksd::EndChild();
 
@@ -217,36 +225,43 @@ namespace menu_pages {
 				if(ksd::Button("Give Ammo", ImVec2(280.f, 30.f)))
 				{
 					functions::giveAmmo();
+					SendNotify("Unlimited Ammo", 2.0f);
 				}
 				if(ksd::Button("Unlimited Time/Score", ImVec2(280.f, 30.f)))
 				{
 					Cbuf_AddText(0, "scr_dm_timelimit 0; scr_war_timelimit 0; scr_dom_timelimit 0");
 					Cbuf_AddText(0, "scr_dm_scorelimit 0; scr_war_scorelimit 0; ""scr_dom_scorelimit 0");
+					SendNotify("Unlimited Time and Score", 2.0f);
 				}
 				if(ksd::SliderFloat("Sprint Scale", &vars::sprintScale, 1.0f, 30.0f))
 				{
 					functions::sendSprintScale();
+					SendNotify("Updated Sprint Scale", 2.0f);
 				}
 				ImGui::Dummy(ImVec2(0.f, 4.f));
 				if(ksd::Button("360 Prone Cap Off", ImVec2(132.f, 30.f), vars::proneCap360))
 				{
 					vars::proneCap360 = true;
 					Cbuf_AddText(0, "bg_prone_yawcap 360");
+					SendNotify("360 Prone Cap Disabled", 2.0f);
 				}ImGui::SameLine();
 				if(ksd::Button("360 Prone Cap On", ImVec2(132.f, 30.f), !vars::proneCap360))
 				{
 					vars::proneCap360 = false;
 					Cbuf_AddText(0, "bg_prone_yawcap 85");
+					SendNotify("360 Prone Cap Enabled", 2.0f);
 				}
 				if(ksd::Button("360 Ladder Cap Off", ImVec2(132.f, 30.f), vars::ladderCap360))
 				{
 					vars::ladderCap360 = true;
 					Cbuf_AddText(0, "bg_ladder_yawcap 360");
+					SendNotify("360 Ladder Cap Disabled", 2.0f);
 				}ImGui::SameLine();
 				if(ksd::Button("360 Ladder Cap On", ImVec2(132.f, 30.f), !vars::ladderCap360))
 				{
 					vars::ladderCap360 = false;
 					Cbuf_AddText(0, "bg_ladder_yawcap 100");
+					SendNotify("360 Ladder Cap Enabled", 2.0f);
 				}
 				if(ksd::SliderFloat("Knockback Scale", &vars::knockbackScale, 1000, 999999))
 				{
@@ -260,8 +275,14 @@ namespace menu_pages {
 				{
 					if (vars::enableDepatchBounces)
 					{
+					    functions::sendBouncesToggle();
 						vars::enableDepatchBouncesEasy = false;
-						functions::sendBouncesToggle();
+					}
+					if(vars::enableDepatchBounces){
+					    SendNotify("Depatch Bounces Enabled", 2.0f);
+					}
+					else{
+					    SendNotify("Depatch Bounces Disabled", 2.0f);
 					}
 
 				}
@@ -272,10 +293,26 @@ namespace menu_pages {
 						vars::enableDepatchBounces = false;
 						functions::sendBouncesToggleEasy();
 					}
+					if (vars::enableDepatchBouncesEasy)
+					{
+						SendNotify("Depatch Bounces Easy Mode Enabled", 2.0f);
+					}
+					else
+					{
+						SendNotify("Depatch Bounces Easy Mode Disabled", 2.0f);
+					}
 				}
 				if(ksd::Checkbox("Depatch Elevators", &vars::enableDepatchElevators))
 				{
 					functions::sendElevatorsToggle();
+					if (vars::enableDepatchElevators)
+					{
+						SendNotify("Depatch Elevators Enabled", 2.0f);
+					}
+					else
+					{
+						SendNotify("Depatch Elevators Disabled", 2.0f);
+					}
 				}
 			}
 			ksd::EndChild();

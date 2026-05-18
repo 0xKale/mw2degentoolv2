@@ -214,7 +214,7 @@ namespace menu_pages {
 				ksd::Checkbox("Crosshair Outline", &vars::crosshairOutline);
 				ksd::Checkbox("Center Dot", &vars::crosshairCenterDot);
 				ksd::Checkbox("T-Style", &vars::crosshairTStyle);
-				/*
+
 				ImGui::Dummy(ImVec2(0.f, 4.f));
 				ksd::Text("CS2 Crosshair Code");
 				ImGui::Dummy(ImVec2(0.f, 1.f));
@@ -226,7 +226,7 @@ namespace menu_pages {
 					else
 						SendNotify("Invalid Share Code", 2.0f);
 				}
-				 */
+
 
 
 			}
@@ -238,30 +238,58 @@ namespace menu_pages {
 				if(ksd::Checkbox("Draw Sun", &vars::noSun))
 				{
 					functions::fuckTheSunAway();
+					if(vars::noSun)
+						SendNotify("Draw Sun Enabled", 2.0f);
+					else
+						SendNotify("Draw Sun Disabled", 2.0f);
 				}
 				if(ksd::Checkbox("Draw Camos", &vars::noCamo))
 				{
 					functions::sendNoCamo();
+					if(vars::noCamo)
+						SendNotify("Draw Camos Enabled", 2.0f);
+					else
+						SendNotify("Draw Camos Disabled", 2.0f);
 				}
 				if(ksd::Checkbox("Draw Fog", &vars::noFog))
 				{
 					functions::sendNoFog();
+					if(vars::noFog)
+						SendNotify("Draw Fog Enabled", 2.0f);
+					else
+						SendNotify("Draw Fog Disabled", 2.0f);
 				}
 				if(ksd::Checkbox("Draw Bullets", &vars::noBullets))
 				{
 					functions::sendNoBullets();
+					if(vars::noBullets)
+						SendNotify("Draw Bullets Enabled", 2.0f);
+					else
+						SendNotify("Draw Bullets Disabled", 2.0f);
 				}
 				if(ksd::Checkbox("Movie Mode", &vars::movieMode))
 				{
 					functions::sendMovie();
+					if(vars::movieMode)
+						SendNotify("Movie Mode Enabled", 2.0f);
+					else
+						SendNotify("Movie Mode Disabled", 2.0f);
 				}
 				if(ksd::Checkbox("Clear Glass", &vars::clearGlass))
 				{
 					functions::clearGlass();
+					if(vars::clearGlass)
+						SendNotify("Clear Glass Enabled", 2.0f);
+					else
+						SendNotify("Clear Glass Disabled", 2.0f);
 				}
 				if(ksd::Checkbox("Ping Text", &vars::pingText))
 				{
 					functions::sendPingText();
+					if(vars::pingText)
+						SendNotify("Ping Text Enabled", 2.0f);
+					else
+						SendNotify("Ping Text Disabled", 2.0f);
 				}
 
 			}
