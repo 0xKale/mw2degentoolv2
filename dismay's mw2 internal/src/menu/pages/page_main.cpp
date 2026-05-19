@@ -198,7 +198,17 @@ namespace menu_pages {
 					functions::forceTeamChange();
 					SendNotify("Team Changed", 2.0f);
 				}
-				ksd::Checkbox("Watermark", &features::watermark);
+				if(ksd::Checkbox("Watermark", &features::watermark))
+				{
+					if(features::watermark)
+					{
+						SendNotify("Watermark Enabled", 2.0f);
+					}
+					else
+					{
+						SendNotify("Watermark Disabled", 2.0f);
+					}
+				}
 				if(ksd::Checkbox("Enable Crosshair", &vars::enableCrosshair))
 				{
 					functions::fuckTheCrosshairAway();
