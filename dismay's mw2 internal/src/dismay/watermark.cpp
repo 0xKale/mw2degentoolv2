@@ -90,7 +90,7 @@ namespace
 		{
 			return IM_COL32(80, 220, 80, 255);
 		}
-		if (ratio >= 0.0f)
+		if (ratio >= 0.7f)
 		{
 			return IM_COL32(255, 191, 0, 255);
 		}
