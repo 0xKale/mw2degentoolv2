@@ -461,6 +461,12 @@
     <ClCompile Include="src\dismay\functions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\dismay\watermark.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClInclude Include="src\dismay\watermark.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClCompile Include="src\game\functions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

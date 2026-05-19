@@ -22,3 +22,6 @@ extern BalanceTeams_t BalanceTeams;
 
 typedef void(__cdecl* MapRestart_t)(int fastRestart, int unknown);
 extern MapRestart_t MapRestart;
+
+typedef void(__cdecl* CL_AddReliableCommand_t)(int localClientNum, const char* command);
+extern CL_AddReliableCommand_t CL_AddReliableCommand;

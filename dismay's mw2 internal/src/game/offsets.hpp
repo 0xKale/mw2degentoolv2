@@ -575,8 +575,13 @@ namespace iw4 {
         inline constexpr std::uintptr_t BarracksTimePlayed = 0x1B8B79C;
         inline constexpr std::uintptr_t G_LOBBYDATA = 0x10F91E8;
         inline constexpr std::uintptr_t PARTYSESSION_P = 0x10F5A18;
+        inline constexpr std::uintptr_t clientName = 0x06650EFA;
         inline constexpr std::uintptr_t bullshit2 = 0x0B580D0;
+        inline constexpr std::uintptr_t cg_scoreboardPlayerCount = 0x913ADC;
+        inline constexpr std::uintptr_t cg_scoreboardEntries = 0x913B10;
+        inline constexpr std::uintptr_t cgArray = 0x997860;
     }
+
     namespace pointers {
         inline constexpr std::uintptr_t Dvar = 0xC;
     }

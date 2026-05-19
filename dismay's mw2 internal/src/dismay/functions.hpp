@@ -1,8 +1,12 @@
 #pragma once
 
 #include <cstdint>
+#include <string>
+#include <vector>
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
+
+#include "../game/iw4structs.hpp"
 
 namespace functions
 {
@@ -54,6 +58,9 @@ namespace functions
 	void sendElevatorsToggle();
 	void giveAmmo();
 	char* getPlayerName(int client);
+	static int ReadDvarInt(std::uintptr_t dvarAddress);
+	std::string readGameString(std::uintptr_t address, int maxLength = 256);
+	int getLocalClientNum() noexcept;
 	void sendCustomPort();
 	void doIronSight();
 	void writeSensitivity(float sens);
@@ -67,6 +74,7 @@ namespace functions
 	void sendUnlockAllClients();
 	void loadPlayerNames();
 	void DrawCrosshairOverlay() noexcept;
+	std::vector<iw4::score_t> getScoreboardEntries();
 	void NetworkFix() noexcept;
 	void fuckTheCrosshairAway() noexcept;
 

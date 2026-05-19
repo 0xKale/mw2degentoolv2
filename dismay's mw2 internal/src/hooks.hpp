@@ -2,6 +2,7 @@
 #include "menu/gui.hpp"
 #include "framework/notify.hpp"
 #include "dismay/functions.hpp"
+#include "dismay/watermark.hpp"
 #include "dismay/dedigamer/dedigamer.hpp"
 #include <stdexcept>
 #include <intrin.h>
@@ -112,6 +113,7 @@ inline long __stdcall hooks::EndScene(IDirect3DDevice9* device) noexcept
 	functions::syncImGuiMouseDrawCursor();
 	// ImGui draw lists must be filled on the render thread (here), not from FunctionWorkerLoop.
 	functions::DrawCrosshairOverlay();
+	watermark::render();
 
 	notify::setupNotify();
 

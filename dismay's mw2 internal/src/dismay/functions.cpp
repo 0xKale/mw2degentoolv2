@@ -10,6 +10,7 @@
 #include <cstring>
 #include <string>
 #include <thread>
+#include <vector>
 #include "../../ext/imgui/imgui.h"
 #include "../menu/gui.hpp"
 #include "../game/offsets.hpp"
@@ -1323,4 +1324,74 @@ namespace functions {
 			dl->AddCircleFilled(ImVec2(cx, cy), dotR, ImGui::GetColorU32(vars::crosshair_color));
 		}
 	}
+
+	std::string readGameString(std::uintptr_t address, int maxLength)
+	{
+		void* const ptr = reinterpret_cast<void*>(address);
+		DWORD origProtect = 0;
+		VirtualProtect(ptr, maxLength, PAGE_EXECUTE_READWRITE, &origProtect);
+		const char* charPtr = static_cast<const char*>(ptr);
+		std::string result;
+		for (int i = 0; i < maxLength; ++i)
+		{
+			if (charPtr[i] == '\0')
+				break;
+			result += charPtr[i];
+		}
+		VirtualProtect(ptr, maxLength, origProtect, &origProtect);
+		return result;
+	}
+
+	int getLocalClientNum() noexcept
+	{
+		const std::string self = readGameString(iw4::offsets::clientName);
+		if (self.empty())
+			return 0;
+
+		for (int i = 0; i < iw4::maxScoreboardClients; ++i)
+		{
+			if (_stricmp(self.c_str(), getPlayerName(i)) == 0)
+				return i;
+		}
+
+		return 0;
+	}
+
+	static int copyScoreboardEntriesImpl(iw4::score_t* out, int maxOut) noexcept
+	{
+		int written = 0;
+
+		__try
+		{
+			const int count = *reinterpret_cast<const int*>(iw4::offsets::cg_scoreboardPlayerCount);
+			if (count <= 0)
+				return 0;
+
+			int limit = count;
+			if (limit > iw4::maxScoreboardClients)
+				limit = iw4::maxScoreboardClients;
+
+			const auto* entries = reinterpret_cast<const iw4::score_t*>(iw4::offsets::cg_scoreboardEntries);
+
+			for (int i = 0; i < limit && written < maxOut; ++i)
+				out[written++] = entries[i];
+		}
+		__except (EXCEPTION_EXECUTE_HANDLER)
+		{
+			return 0;
+		}
+
+		return written;
+	}
+
+	std::vector<iw4::score_t> getScoreboardEntries()
+	{
+		iw4::score_t buffer[iw4::maxScoreboardClients]{};
+		const int n = copyScoreboardEntriesImpl(buffer, iw4::maxScoreboardClients);
+		if (n <= 0)
+			return {};
+
+		return std::vector<iw4::score_t>(buffer, buffer + n);
+	}
+
 }

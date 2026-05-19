@@ -13,3 +13,5 @@ SV_SpawnServer_t SV_SpawnServer = (SV_SpawnServer_t)0x589D90;
 BalanceTeams_t BalanceTeams = (BalanceTeams_t)0x4D73B0;
 
 MapRestart_t MapRestart = (MapRestart_t)0x5850A0;
+
+CL_AddReliableCommand_t CL_AddReliableCommand = (CL_AddReliableCommand_t)0x4C2DD0;

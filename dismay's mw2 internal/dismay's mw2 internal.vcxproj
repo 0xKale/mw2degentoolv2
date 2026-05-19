@@ -101,6 +101,7 @@
     <ClInclude Include="src\menu\pages\page_dedigamer.hpp" />
     <ClInclude Include="src\menu\pages\page_host.hpp" />
     <ClInclude Include="src\menu\pages\page_main.hpp" />
+    <ClInclude Include="src\dismay\watermark.hpp" />
     <ClInclude Include="src\menu\pages\pages.hpp" />
   </ItemGroup>
   <ItemGroup>
@@ -137,6 +138,9 @@
     </ClCompile>
     <ClCompile Include="src\dismay\functions.cpp">
       <ObjectFileName>$(IntDir)dismay_functions.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="src\dismay\watermark.cpp">
+      <ObjectFileName>$(IntDir)dismay_watermark.obj</ObjectFileName>
     </ClCompile>
     <ClCompile Include="src\dllmain.cpp" />
     <ClCompile Include="src\framework\combo.cpp" />
