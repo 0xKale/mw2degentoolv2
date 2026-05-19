@@ -82,11 +82,15 @@ namespace
 
 	ImU32 ratioColor(float ratio) noexcept
 	{
+		if (ratio >= 3.0f)
+		{
+			return IM_COL32(255, 215, 0, 255);
+		}
 		if (ratio >= 1.0f)
 		{
 			return IM_COL32(80, 220, 80, 255);
 		}
-		if (ratio >= 0.70f)
+		if (ratio >= 0.0f)
 		{
 			return IM_COL32(255, 191, 0, 255);
 		}
