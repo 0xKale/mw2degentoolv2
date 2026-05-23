@@ -13,6 +13,19 @@
 
 namespace ksd {
 
+	PlayerFillTier GetPlayerFillTier(const int current, const int total) noexcept
+	{
+		if (total > 0 && current >= total)
+		{
+			return PlayerFillTier::Full;
+		}
+		if (total > 0 && current * 3 >= total * 2)
+		{
+			return PlayerFillTier::Yellow;
+		}
+		return PlayerFillTier::Green;
+	}
+
 	void TableCellText(const char* const text) noexcept
 	{
 		ImGui::PushStyleColor(ImGuiCol_Text, colors::combo::text_inactive);
@@ -57,17 +70,18 @@ namespace ksd {
 	void TableCellPlayers(const int current, const int total) noexcept
 	{
 		ImVec4 col = colors::combo::text_inactive;
-		if (total > 0 && current >= total)
+		switch (GetPlayerFillTier(current, total))
 		{
+		case PlayerFillTier::Full:
 			col = ImVec4(1.f, 0.3f, 0.3f, 1.f);
-		}
-		else if (total > 0 && current * 3 >= total * 2)
-		{
+			break;
+		case PlayerFillTier::Yellow:
 			col = ImVec4(1.f, 0.9f, 0.3f, 1.f);
-		}
-		else
-		{
+			break;
+		case PlayerFillTier::Green:
+		default:
 			col = ImVec4(0.3f, 1.f, 0.3f, 1.f);
+			break;
 		}
 		ImGui::PushStyleColor(ImGuiCol_Text, col);
 		ImGui::Text("%d/%d", current, total);

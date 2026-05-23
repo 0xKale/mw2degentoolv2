@@ -4,6 +4,14 @@
 
 namespace ksd {
 
+enum class PlayerFillTier {
+	Green = 0,
+	Yellow = 1,
+	Full = 2
+};
+
+PlayerFillTier GetPlayerFillTier(int current, int total) noexcept;
+
 void TableCellText(const char* text) noexcept;
 void TableCellTextf(const char* fmt, ...) IM_FMTARGS(1) noexcept;
 void TableCellTextColored(const ImVec4& color, const char* text) noexcept;

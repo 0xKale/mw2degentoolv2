@@ -180,6 +180,10 @@ void RenderDedigamerPage() noexcept
 
 							if (sortSpecs->SpecsCount == 0)
 							{
+								const int tierA = static_cast<int>(ksd::GetPlayerFillTier(sa.currentPlayers, sa.totalPlayers));
+								const int tierB = static_cast<int>(ksd::GetPlayerFillTier(sb.currentPlayers, sb.totalPlayers));
+								if (tierA != tierB)
+									return tierA > tierB;
 								const float ratioA = sa.totalPlayers > 0 ? static_cast<float>(sa.currentPlayers) / static_cast<float>(sa.totalPlayers) : 0.f;
 								const float ratioB = sb.totalPlayers > 0 ? static_cast<float>(sb.currentPlayers) / static_cast<float>(sb.totalPlayers) : 0.f;
 								if (ratioA != ratioB)
@@ -197,10 +201,19 @@ void RenderDedigamerPage() noexcept
 								cmp = sa.name.compare(sb.name);
 								break;
 							case Col_Players:
-								cmp = (sa.currentPlayers > sb.currentPlayers) ? 1 : (sa.currentPlayers < sb.currentPlayers) ? -1 : 0;
-								if (cmp == 0)
-									cmp = (sa.totalPlayers > sb.totalPlayers) ? 1 : (sa.totalPlayers < sb.totalPlayers) ? -1 : 0;
+							{
+								const int tierA = static_cast<int>(ksd::GetPlayerFillTier(sa.currentPlayers, sa.totalPlayers));
+								const int tierB = static_cast<int>(ksd::GetPlayerFillTier(sb.currentPlayers, sb.totalPlayers));
+								if (tierA != tierB)
+									cmp = (tierA > tierB) ? 1 : -1;
+								else if (sa.currentPlayers != sb.currentPlayers)
+									cmp = (sa.currentPlayers > sb.currentPlayers) ? 1 : -1;
+								else if (sa.totalPlayers != sb.totalPlayers)
+									cmp = (sa.totalPlayers > sb.totalPlayers) ? 1 : -1;
+								else
+									cmp = sa.name.compare(sb.name);
 								break;
+							}
 							case Col_Map:
 								cmp = sa.map.compare(sb.map);
 								break;

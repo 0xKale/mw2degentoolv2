@@ -211,7 +211,7 @@ static bool SliderScalar(
 			ImVec2(trackRect.Min.x - glowPad, trackRect.Min.y - glowPad),
 			ImVec2(accentMax.x + glowPad, trackRect.Max.y + glowPad));
 
-		ImGui::PushClipRect(glowClip.Min, glowClip.Max, false);
+		ImGui::PushClipRect(glowClip.Min, glowClip.Max, true);
 
 		dl->AddRectFilled(trackRect.Min, accentMax, accentPacked, trackRounding);
 
