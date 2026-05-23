@@ -1294,10 +1294,10 @@ namespace functions {
 		const float cx = io.DisplaySize.x * 0.5f;
 		const float cy = io.DisplaySize.y * 0.5f;
 
-		const float scale = io.DisplaySize.y / 480.f;
+		const float scale = (io.DisplaySize.y / 480.f) * vars::crosshairScale;
 		const float th = vars::crosshairThickness * scale;
-		const float gap = vars::crosshairGap * scale;
-		const float len = vars::crosshairLength * scale;
+		const float gap = vars::crosshairGap * scale * vars::crosshairGapScale;
+		const float len = vars::crosshairLength * scale * vars::crosshairLengthScale;
 		const float olTh = vars::crosshairOutlineThickness * scale;
 		const float inner = gap;
 		const float outer = gap + len;

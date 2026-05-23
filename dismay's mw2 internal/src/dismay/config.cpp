@@ -80,6 +80,9 @@ void config::Save()
 	WriteFloat("UI", "CrosshairLength", vars::crosshairLength);
 	WriteFloat("UI", "CrosshairThickness", vars::crosshairThickness);
 	WriteFloat("UI", "CrosshairOutlineThickness", vars::crosshairOutlineThickness);
+	WriteFloat("UI", "CrosshairScale", vars::crosshairScale);
+	WriteFloat("UI", "CrosshairLengthScale", vars::crosshairLengthScale);
+	WriteFloat("UI", "CrosshairGapScale", vars::crosshairGapScale);
 	WriteBool("UI", "CrosshairCenterDot", vars::crosshairCenterDot);
 	WriteBool("UI", "CrosshairTStyle", vars::crosshairTStyle);
 
@@ -140,6 +143,9 @@ void config::Load()
 	vars::crosshairLength = ReadFloat("UI", "CrosshairLength", 3.5f);
 	vars::crosshairThickness = ReadFloat("UI", "CrosshairThickness", 1.3f);
 	vars::crosshairOutlineThickness = ReadFloat("UI", "CrosshairOutlineThickness", 1.0f);
+	vars::crosshairScale = ReadFloat("UI", "CrosshairScale", 1.0f);
+	vars::crosshairLengthScale = ReadFloat("UI", "CrosshairLengthScale", 1.0f);
+	vars::crosshairGapScale = ReadFloat("UI", "CrosshairGapScale", 1.0f);
 	vars::crosshairCenterDot = ReadBool("UI", "CrosshairCenterDot", false);
 	vars::crosshairTStyle = ReadBool("UI", "CrosshairTStyle", false);
 

@@ -45,6 +45,9 @@ namespace vars {
 	extern float crosshairLength;
 	extern float crosshairThickness;
 	extern float crosshairOutlineThickness;
+	extern float crosshairScale;
+	extern float crosshairLengthScale;
+	extern float crosshairGapScale;
 	extern bool crosshairCenterDot;
 	extern bool crosshairTStyle;
 	extern char csShareCodeInput[48];

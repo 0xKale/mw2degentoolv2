@@ -61,6 +61,9 @@ namespace vars {
 	float crosshairLength = 3.5f;
 	float crosshairThickness = 1.3f;
 	float crosshairOutlineThickness = 1.0f;
+	float crosshairScale = 1.0f;
+	float crosshairLengthScale = 1.0f;
+	float crosshairGapScale = 1.0f;
 	bool crosshairCenterDot = false;
 	bool crosshairTStyle = false;
 	char csShareCodeInput[48] = "";
@@ -225,8 +228,11 @@ namespace menu_pages {
 				ksd::Checkbox("Crosshair Outline", &vars::crosshairOutline);
 				ksd::Checkbox("Center Dot", &vars::crosshairCenterDot);
 				ksd::Checkbox("T-Style", &vars::crosshairTStyle);
-
-				ImGui::Dummy(ImVec2(0.f, 4.f));
+				ksd::SliderFloat("Crosshair Scale", &vars::crosshairScale, 0.5f, 2.0f, "%.2f");
+				ksd::SliderFloat("Crosshair Length", &vars::crosshairLengthScale, 0.5f, 3.0f, "%.2f");
+				ksd::SliderFloat("Crosshair Gap", &vars::crosshairGapScale, 0.5f, 3.0f, "%.2f");
+/*
+    ImGui::Dummy(ImVec2(0.f, 4.f));
 				ksd::Text("CS2 Crosshair Code");
 				ImGui::Dummy(ImVec2(0.f, 1.f));
 				ksd::InputTextOnly("##csCrosshair", vars::csShareCodeInput, sizeof(vars::csShareCodeInput), 290.f);
@@ -237,9 +243,7 @@ namespace menu_pages {
 					else
 						SendNotify("Invalid Share Code", 2.0f);
 				}
-
-
-
+ */
 			}
 			ksd::EndChild();
 
