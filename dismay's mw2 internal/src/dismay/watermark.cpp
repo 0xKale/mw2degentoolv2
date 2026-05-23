@@ -107,7 +107,7 @@ namespace watermark
 			return;
 		}
 
-		requestScoreboardUpdate();
+		//requestScoreboardUpdate(); // broken, crashes game
 
 		ImDrawList* drawList = ImGui::GetBackgroundDrawList();
 		if (drawList == nullptr)
