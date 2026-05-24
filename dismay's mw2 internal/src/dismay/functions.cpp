@@ -42,6 +42,7 @@ namespace functions {
 		if (!ImGui::GetCurrentContext())
 			return;
 		ImGuiIO& io = ImGui::GetIO();
+		io.WantCaptureKeyboard = gui::open;
 		io.MouseDrawCursor = gui::open;
 	}
 
@@ -688,6 +689,12 @@ namespace functions {
 		ULONGLONG lastMenuTweakMs = 0;
 		while (!g_featureWorkerStop.load(std::memory_order_acquire))
 		{
+			if (!gui::setup)
+			{
+				::Sleep(10);
+				continue;
+			}
+
 			syncGameMouseCapture();
 			sendFPSandFOV();
 			fuckTheCrosshairAway();

@@ -4,6 +4,7 @@
 #include "dismay/functions.hpp"
 #include "dismay/watermark.hpp"
 #include "dismay/dedigamer/dedigamer.hpp"
+#include <atomic>
 #include <stdexcept>
 #include <intrin.h>
 
@@ -15,21 +16,20 @@
 
 namespace hooks
 {
-	inline void Setup();
-	inline void Destroy() noexcept;
+	inline std::atomic<bool> backgroundServicesStarted{ false };
 
-	// Helper to get Virtual Function address
+	inline void Setup();
+	inline void TryStartBackgroundServices() noexcept;
+
 	constexpr void* VirtualFunction(void* thisptr, size_t index) noexcept
 	{
 		return (*static_cast<void***>(thisptr))[index];
 	}
 
-	// EndScene
 	using EndSceneFn = long(__stdcall*)(IDirect3DDevice9*) noexcept;
 	inline EndSceneFn EndSceneOriginal = nullptr;
 	inline long __stdcall EndScene(IDirect3DDevice9* device) noexcept;
 
-	// Reset
 	using ResetFn = HRESULT(__stdcall*)(IDirect3DDevice9*, D3DPRESENT_PARAMETERS*) noexcept;
 	inline ResetFn ResetOriginal = nullptr;
 	inline HRESULT __stdcall Reset(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* params) noexcept;
@@ -57,53 +57,77 @@ inline void hooks::Setup()
 
 	if (MH_EnableHook(MH_ALL_HOOKS))
 		throw std::runtime_error("Unable to enable hooks");
+}
+
+inline void hooks::TryStartBackgroundServices() noexcept
+{
+	if (backgroundServicesStarted.load(std::memory_order_acquire))
+	{
+		return;
+	}
+
+	if (!gui::setup)
+	{
+		return;
+	}
+
+	const bool alreadyStarted = backgroundServicesStarted.exchange(true, std::memory_order_acq_rel);
+	if (alreadyStarted)
+	{
+		return;
+	}
 
 	functions::startFeatureWorker();
 	dedigamer::Init();
-}
-
-inline void hooks::Destroy() noexcept
-{
-	dedigamer::Shutdown();
-	functions::stopFeatureWorker();
-	MH_DisableHook(MH_ALL_HOOKS);
-	MH_RemoveHook(MH_ALL_HOOKS);
-	MH_Uninitialize();
 }
 
 inline long __stdcall hooks::EndScene(IDirect3DDevice9* device) noexcept
 {
 	static const auto returnAddress = _ReturnAddress();
 
-	const auto result = EndSceneOriginal(device);
+	const long result = EndSceneOriginal(device);
 
-	if (_ReturnAddress() == returnAddress) {
+	if (_ReturnAddress() == returnAddress)
+	{
 		return result;
 	}
 
 	const bool was_setup = gui::setup;
 	if (!gui::setup)
+	{
 		gui::SetupMenu(device);
+	}
 
 	if (!gui::setup)
+	{
 		return result;
+	}
 
 	if (!was_setup && gui::setup)
+	{
+		TryStartBackgroundServices();
 		return result;
+	}
 
 	if (!ImGui::GetCurrentContext())
+	{
 		return result;
+	}
 
 	ImGuiIO& io = ImGui::GetIO();
 	if (io.BackendRendererUserData == nullptr)
 	{
 		if (!ImGui_ImplDX9_Init(device))
+		{
 			return result;
+		}
 	}
 	if (io.BackendPlatformUserData == nullptr)
 	{
 		if (!ImGui_ImplWin32_Init(gui::window))
+		{
 			return result;
+		}
 	}
 
 	ImGui_ImplDX9_NewFrame();
@@ -111,14 +135,15 @@ inline long __stdcall hooks::EndScene(IDirect3DDevice9* device) noexcept
 	ImGui::NewFrame();
 
 	functions::syncImGuiMouseDrawCursor();
-	// ImGui draw lists must be filled on the render thread (here), not from FunctionWorkerLoop.
 	functions::DrawCrosshairOverlay();
 	watermark::render();
 
 	notify::setupNotify();
 
 	if (gui::open)
+	{
 		gui::Render();
+	}
 
 	ImGui::EndFrame();
 	ImGui::Render();
@@ -129,15 +154,22 @@ inline long __stdcall hooks::EndScene(IDirect3DDevice9* device) noexcept
 
 inline HRESULT __stdcall hooks::Reset(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* params) noexcept
 {
-	if (!ResetOriginal || !device || !params) {
+	if (!ResetOriginal || !device || !params)
+	{
 		return D3DERR_INVALIDCALL;
+	}
+
+	if (!gui::setup)
+	{
+		return ResetOriginal(device, params);
 	}
 
 	ImGui_ImplDX9_InvalidateDeviceObjects();
 
 	const HRESULT result = ResetOriginal(device, params);
 
-	if (SUCCEEDED(result)) {
+	if (SUCCEEDED(result))
+	{
 		ImGui_ImplDX9_CreateDeviceObjects();
 	}
 

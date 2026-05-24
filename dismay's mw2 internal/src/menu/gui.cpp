@@ -27,6 +27,27 @@ namespace {
 
 LRESULT CALLBACK WindowProcess(HWND window, UINT message, WPARAM wideParam, LPARAM longParam);
 
+bool WaitForD3D9(const int maxAttempts, const DWORD sleepMs) noexcept
+{
+	for (int attempt = 0; attempt < maxAttempts; ++attempt)
+	{
+		const HMODULE module = GetModuleHandleA("d3d9.dll");
+		if (module != nullptr && GetProcAddress(module, "Direct3DCreate9") != nullptr)
+		{
+			return true;
+		}
+
+		Sleep(sleepMs);
+	}
+
+	return false;
+}
+
+bool ShouldBlockGameKeys(const UINT message) noexcept
+{
+	return message >= WM_KEYFIRST && message <= WM_KEYLAST;
+}
+
 }
 
 namespace gui {
@@ -223,14 +244,36 @@ namespace gui {
 	}
 
 	void Setup() {
+		constexpr int maxAttempts = 50;
+
+		if (!WaitForD3D9(maxAttempts, 100))
+		{
+			throw std::runtime_error("Timed out waiting for d3d9.dll");
+		}
+
 		if (!SetupWindowClass("hackClass001")) {
 			throw std::runtime_error("Failed to create window class.");
 		}
 		if (!SetupWindow("Hack Window")) {
 			throw std::runtime_error("Failed to create window.");
 		}
-		if (!SetupDirectX()) {
-			throw std::runtime_error("Failed to setup DirectX.");
+
+		bool probeCreated = false;
+		for (int attempt = 0; attempt < maxAttempts; ++attempt)
+		{
+			if (SetupDirectX())
+			{
+				probeCreated = true;
+				break;
+			}
+
+			DestroyDirectX();
+			Sleep(100);
+		}
+
+		if (!probeCreated || !device)
+		{
+			throw std::runtime_error("Failed to create D3D9 probe device");
 		}
 	}
 
@@ -301,23 +344,6 @@ namespace gui {
 		}
 		setup = true;
 		config::Load();
-	}
-
-	void Destroy() noexcept {
-		ksd::D3D9MemoryGif_Unload();
-		if (setup) {
-			ImGui_ImplDX9_Shutdown();
-			ImGui_ImplWin32_Shutdown();
-			ImGui::DestroyContext();
-			setup = false;
-		}
-
-		if (window && originalWindowProcess) {
-			SetWindowLongPtr(window, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(originalWindowProcess));
-			originalWindowProcess = nullptr;
-		}
-
-		DestroyDirectX();
 	}
 
 	void Render() noexcept {
@@ -544,19 +570,35 @@ namespace gui {
 
 namespace {
 	LRESULT CALLBACK WindowProcess(HWND currentWindow, UINT message, WPARAM wideParam, LPARAM longParam) {
-		if (GetAsyncKeyState(VK_INSERT) & 1) {
+		if (message == WM_KEYDOWN && wideParam == VK_INSERT)
+		{
 			gui::open = !gui::open;
 		}
 
-		ImGuiIO& io = ImGui::GetIO();
-		io.MouseDrawCursor = gui::open;
+		if (gui::open && ImGui::GetCurrentContext() != nullptr)
+		{
+			const LRESULT imguiResult = ImGui_ImplWin32_WndProcHandler(
+				currentWindow,
+				message,
+				wideParam,
+				longParam);
 
-		if (gui::open && ImGui_ImplWin32_WndProcHandler(currentWindow, message, wideParam, longParam)) {
-			return 1L;
+			if (imguiResult != 0)
+			{
+				return imguiResult;
+			}
+
+			if (ShouldBlockGameKeys(message))
+			{
+				return 0;
+			}
 		}
 
 		if (gui::originalWindowProcess)
+		{
 			return CallWindowProc(gui::originalWindowProcess, currentWindow, message, wideParam, longParam);
+		}
+
 		return DefWindowProc(currentWindow, message, wideParam, longParam);
 	}
 }

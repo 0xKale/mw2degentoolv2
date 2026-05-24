@@ -20,7 +20,6 @@ namespace gui {
 	void Setup();
 	void FinalizeBootstrapSetup() noexcept;
 
-	void Destroy() noexcept;
 	void TearDownHackHostWindow() noexcept;
 	void UpdateMenuTitle();
 	void SetupMenu(LPDIRECT3DDEVICE9 currentDevice) noexcept;
