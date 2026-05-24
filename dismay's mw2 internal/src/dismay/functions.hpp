@@ -77,6 +77,7 @@ namespace functions
 	std::vector<iw4::score_t> getScoreboardEntries();
 	void NetworkFix() noexcept;
 	void fuckTheCrosshairAway() noexcept;
+	bool isInGameNotSpectating();
 
 	static constexpr int test666Capacity = 256;
 	extern char* test666;

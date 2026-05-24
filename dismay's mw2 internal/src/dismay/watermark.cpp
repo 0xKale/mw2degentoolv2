@@ -107,7 +107,11 @@ namespace watermark
 			return;
 		}
 
-		//requestScoreboardUpdate(); // broken, crashes game
+		if(!functions::isInGameNotSpectating())
+		{
+			return;
+		}
+		requestScoreboardUpdate(); // fixed? it only displays if you are in game not spectating. change if you want.
 
 		ImDrawList* drawList = ImGui::GetBackgroundDrawList();
 		if (drawList == nullptr)

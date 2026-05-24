@@ -1394,4 +1394,10 @@ namespace functions {
 		return std::vector<iw4::score_t>(buffer, buffer + n);
 	}
 
+	bool isInGameNotSpectating()
+	{
+		const std::int32_t flags = *reinterpret_cast<std::int32_t*>(iw4::offsets::CG_OTHER_FLAGS);
+		return (flags & iw4::offsets::OTHER_FLAG_ISINGAME) && !(flags & iw4::offsets::OTHER_FLAG_SPECTATING);
+	}
+
 }

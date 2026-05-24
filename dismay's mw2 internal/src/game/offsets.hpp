@@ -580,6 +580,9 @@ namespace iw4 {
         inline constexpr std::uintptr_t cg_scoreboardPlayerCount = 0x913ADC;
         inline constexpr std::uintptr_t cg_scoreboardEntries = 0x913B10;
         inline constexpr std::uintptr_t cgArray = 0x997860;
+        inline constexpr std::uintptr_t CG_OTHER_FLAGS = 0x8A0E50 + 0x10;
+        constexpr std::int32_t OTHER_FLAG_SPECTATING = 0x800; // ik these arent offsets but im lazy
+        constexpr std::int32_t OTHER_FLAG_ISINGAME    = 0x1000;
     }
 
     namespace pointers {
