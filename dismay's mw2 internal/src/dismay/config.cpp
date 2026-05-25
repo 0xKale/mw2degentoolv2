@@ -60,7 +60,6 @@ void config::Save()
 
 	WriteBool("Misc", "Chat", vars::enableTextChat);
 	WriteBool("Misc", "Mouse11", vars::enableMouseOneToOne);
-	WriteBool("Misc", "MouseFix", vars::mouseFix);
 	WriteFloat("Misc", "MapSize", vars::mapSize);
 	WriteBool("Misc", "PingText", vars::pingText);
 
@@ -124,7 +123,6 @@ void config::Load()
 
 	vars::enableTextChat    = ReadBool("Misc", "Chat", true);
 	vars::enableMouseOneToOne = ReadBool("Misc", "Mouse11", false);
-	vars::mouseFix          = ReadBool("Misc", "MouseFix", false);
 	vars::mapSize           = ReadFloat("Misc", "MapSize", 1.0f);
 	vars::pingText          = ReadBool("Misc", "PingText", true);
 

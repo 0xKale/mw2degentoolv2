@@ -14,7 +14,7 @@ namespace menu_pages {
 			const ImVec2 origin(ImGui::GetCursorPos());
 			const float leftX = origin.x - layout::leftPull;
 			const float rightX = origin.x + layout::colWidth + layout::colGap;
-	
+
 			ImGui::SetCursorPos(ImVec2(leftX, origin.y));
 			if(ksd::BeginChild(ICON_FA_CROSSHAIRS, "Config", 150.f, layout::leftWidth))
 			{
@@ -29,12 +29,12 @@ namespace menu_pages {
 					config::Save();
 				}
 				ImGui::ColorEdit4("Accent Color", (float*)&colors::accent_color, ImGuiColorEditFlags_AlphaPreview | ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_NoInputs);
-                               
+
 
 			}
 
 			ksd::EndChild();
-	
+
 			ImGui::SetCursorPos(ImVec2(rightX, origin.y));
 			if(ksd::BeginChild(ICON_FA_KEYBOARD, "Links & Credits", 150.f, layout::rightWidth))
 			{
@@ -45,6 +45,8 @@ namespace menu_pages {
 				ImGui::Separator();
 				ksd::Text("Check out my GitHub here: ");
 				ksd::TextLinkOpenURL("0xKale", "https://github.com/0xKale");
+				ImGui::Separator();
+				ksd::TextLinkOpenURL("My fav anime", "https://www.youtube.com/watch?v=LkNechrBIrg");
 			}
 			ksd::EndChild();
 		}

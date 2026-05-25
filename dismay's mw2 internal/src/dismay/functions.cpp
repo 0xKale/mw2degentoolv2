@@ -702,6 +702,7 @@ namespace functions {
 			doFFATeamFix();
 			handleHotkeys();
 			sendMapSize();
+			mouseFix();
 			NetworkFix();
 
 			const ULONGLONG now = GetTickCount64();

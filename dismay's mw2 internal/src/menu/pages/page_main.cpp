@@ -16,7 +16,6 @@ namespace vars {
 	bool enableTextChat = true;
 	bool enableMouseOneToOne = false;
 	bool ironSightIntervention = false;
-	bool mouseFix = false;
 
 	bool noSun = true;
 	bool noCamo = false;
@@ -79,6 +78,10 @@ namespace {
 	{
 		return vars::fullbright == fb && vars::lightmap == lm;
 	}
+
+	// Must match ksd::BeginChild padding in child.cpp
+	constexpr float childContentPadTop = 50.f;
+	constexpr float panelGap = 10.f;
 }
 
 namespace menu_pages {
@@ -89,9 +92,13 @@ namespace menu_pages {
 			const ImVec2 origin(ImGui::GetCursorPos());
 			const float leftX = origin.x - layout::leftPull;
 			const float rightX = origin.x + layout::colWidth + layout::colGap;
+			const float mainContentHeight = vars::enableCustomPort ? 575.f : 535.f;
+			const float crosshairContentHeight = 230.f;
+			const float mainOuterHeight = mainContentHeight + childContentPadTop;
+			const float crosshairY = origin.y + mainOuterHeight + panelGap;
 
 			ImGui::SetCursorPos(ImVec2(leftX, origin.y));
-			if(ksd::BeginChild(ICON_FA_CROSSHAIRS, "Main", 830.f, layout::leftWidth))
+			if(ksd::BeginChild(ICON_FA_CROSSHAIRS, "Main", mainContentHeight, layout::leftWidth))
 			{
 				if(ksd::Checkbox("Enable Text Chat", &vars::enableTextChat))
 				{
@@ -132,18 +139,6 @@ namespace menu_pages {
 						SendNotify("Iron Sight Intervention Disabled", 2.0f);
 					}
 
-				}
-				if(ksd::Checkbox("Mouse Fix", &vars::mouseFix))
-				{
-					functions::mouseFix();
-					if(vars::mouseFix)
-					{
-						SendNotify("Mouse Fix Enabled", 2.0f);
-					}
-					else
-					{
-						SendNotify("Mouse Fix Disabled", 2.0f);
-					}
 				}
 				ksd::InputFloat("Sensitivity", &vars::mouseSensitivity);
 				if(ksd::Button("Send Sensitivity", ImVec2(280.f, 30.f)))
@@ -216,6 +211,12 @@ namespace menu_pages {
 						SendNotify("Watermark Disabled", 2.0f);
 					}
 				}
+			}
+			ksd::EndChild();
+
+			ImGui::SetCursorPos(ImVec2(leftX, crosshairY));
+			if(ksd::BeginChild(ICON_FA_CROSSHAIRS, "Crosshair", crosshairContentHeight, layout::leftWidth))
+			{
 				if(ksd::Checkbox("Enable Crosshair", &vars::enableCrosshair))
 				{
 					functions::fuckTheCrosshairAway();
@@ -362,7 +363,7 @@ namespace menu_pages {
 			ksd::EndChild();
 
 			ImGui::SetCursorPos(ImVec2(rightX, origin.y + 540.f));
-			if(ksd::BeginChild(ICON_FA_GUN, "View Model", 195.f, layout::rightWidth))
+			if(ksd::BeginChild(ICON_FA_GUN, "View Model", 155.f, layout::rightWidth))
 			{
 				if(ksd::SliderFloat("Gun X", &vars::fcg_gun_x, -10.f, 10.f, "%.2f"))
 					functions::sendViewModel();
