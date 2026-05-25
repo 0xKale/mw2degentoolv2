@@ -774,6 +774,13 @@ namespace functions {
 	{
 		SetDvarFloat(iw4::offsets::dvar::player_backSpeedScale, vars::backSpeedScale);
 	}
+
+	void sendViewModel() noexcept
+	{
+		SetDvarFloat(iw4::offsets::dvar::cg_gun_x, vars::fcg_gun_x);
+		SetDvarFloat(iw4::offsets::dvar::cg_gun_y, vars::fcg_gun_y);
+		SetDvarFloat(iw4::offsets::dvar::cg_gun_z, vars::fcg_gun_z);
+	}
 	char bullshit[30];
 	void forceTeamChange()
 	{

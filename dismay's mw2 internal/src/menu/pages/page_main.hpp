@@ -51,4 +51,8 @@ namespace vars {
 	extern bool crosshairCenterDot;
 	extern bool crosshairTStyle;
 	extern char csShareCodeInput[48];
+
+	extern float fcg_gun_x;
+	extern float fcg_gun_y;
+	extern float fcg_gun_z;
 }

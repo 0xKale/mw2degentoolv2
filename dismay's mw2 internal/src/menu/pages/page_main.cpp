@@ -68,6 +68,10 @@ namespace vars {
 	bool crosshairTStyle = false;
 	char csShareCodeInput[48] = "";
 
+	float fcg_gun_x = 0.0f;
+	float fcg_gun_y = 0.0f;
+	float fcg_gun_z = 0.0f;
+
 }
 
 namespace {
@@ -353,6 +357,27 @@ namespace menu_pages {
 					vars::lightmap = 0;
 					Cbuf_AddText(0, "r_fullbright 1;r_lightMap 1;");
 					SendNotify("Dullish Fullbright", 2.0f);
+				}
+			}
+			ksd::EndChild();
+
+			ImGui::SetCursorPos(ImVec2(rightX, origin.y + 540.f));
+			if(ksd::BeginChild(ICON_FA_GUN, "View Model", 195.f, layout::rightWidth))
+			{
+				if(ksd::SliderFloat("Gun X", &vars::fcg_gun_x, -10.f, 10.f, "%.2f"))
+					functions::sendViewModel();
+				if(ksd::SliderFloat("Gun Y", &vars::fcg_gun_y, -10.f, 10.f, "%.2f"))
+					functions::sendViewModel();
+				if(ksd::SliderFloat("Gun Z", &vars::fcg_gun_z, -10.f, 10.f, "%.2f"))
+					functions::sendViewModel();
+				if(ksd::Button("Reset View Model", ImVec2(280.f, 30.f)))
+				{
+				// Default values
+					vars::fcg_gun_x = 0.0f;
+					vars::fcg_gun_y = 0.0f;
+					vars::fcg_gun_z = 0.0f;
+					functions::sendViewModel();
+					SendNotify("View Model Reset", 2.0f);
 				}
 			}
 			ksd::EndChild();

@@ -85,6 +85,9 @@ void config::Save()
 	WriteFloat("UI", "CrosshairGapScale", vars::crosshairGapScale);
 	WriteBool("UI", "CrosshairCenterDot", vars::crosshairCenterDot);
 	WriteBool("UI", "CrosshairTStyle", vars::crosshairTStyle);
+	WriteFloat("UI", "GunX", vars::fcg_gun_x);
+	WriteFloat("UI", "GunY", vars::fcg_gun_y);
+	WriteFloat("UI", "GunZ", vars::fcg_gun_z);
 
 	WritePrivateProfileStringA(NULL, NULL, NULL, file.c_str());
 }
@@ -148,6 +151,9 @@ void config::Load()
 	vars::crosshairGapScale = ReadFloat("UI", "CrosshairGapScale", 1.0f);
 	vars::crosshairCenterDot = ReadBool("UI", "CrosshairCenterDot", false);
 	vars::crosshairTStyle = ReadBool("UI", "CrosshairTStyle", false);
+	vars::fcg_gun_x = ReadFloat("UI", "GunX", 0.0f);
+	vars::fcg_gun_y = ReadFloat("UI", "GunY", 0.0f);
+	vars::fcg_gun_z = ReadFloat("UI", "GunZ", 0.0f);
 
 	// ApplyToGame -> fuckTheCrosshairAway (same vars::enableCrosshair gate as DrawCrosshairOverlay).
 	ApplyToGame();
@@ -168,6 +174,7 @@ void config::ApplyToGame()
 	functions::clearGlass();
 	functions::sendPingText();
 	functions::fuckTheCrosshairAway(); // Reads vars::enableCrosshair (persisted as EnableCrosshair).
+	functions::sendViewModel();
 
 	const std::string lightMapCmd = "r_lightMap " + std::to_string(vars::lightmap) + ";";
 	const std::string fullbrightCmd = "r_fullbright " + std::to_string(vars::fullbright) + ";";
