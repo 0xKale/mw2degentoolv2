@@ -15,6 +15,7 @@
 #include "../menu/gui.hpp"
 #include "../game/offsets.hpp"
 #include "../game/iw4structs.hpp"
+#include "../game/functions.hpp"
 #include "../game/iw4hooks.h"
 #include "../menu/pages/pages.hpp"
 #include "../menu/pages/page_main.hpp"
@@ -186,17 +187,34 @@ namespace functions {
 		SetDvarFloat(iw4::offsets::dvar::compassSize, vars::mapSize);
 	}
 
+	namespace
+	{
+		bool isOneToOneExcludedWeapon() noexcept
+		{
+			const char* weapon = iw4::getCurrentWeaponName();
+			if (weapon == nullptr)
+			{
+				return false;
+			}
+			return std::strstr(weapon, "cheytac") != nullptr
+				|| std::strstr(weapon, "barrett") != nullptr
+				|| std::strstr(weapon, "wa2000") != nullptr
+				|| std::strstr(weapon, "m21") != nullptr;
+		}
+	}
+
 	void sendFOVMin() noexcept
 	{
-		if (vars::enableMouseOneToOne)
+		if (vars::enableMouseOneToOne && !isOneToOneExcludedWeapon())
 		{
 			if (vars::fieldOfView != ReadDvarFloat(iw4::offsets::dvar::cg_fovMin))
 			{
 				SetDvarFloat(iw4::offsets::dvar::cg_fovMin, vars::fieldOfView);
 			}
 		}
-		else{
-		    SetDvarFloat(iw4::offsets::dvar::cg_fovMin, vars::defaultFovMin);
+		else
+		{
+			SetDvarFloat(iw4::offsets::dvar::cg_fovMin, vars::defaultFovMin);
 		}
 	}
 	void toggleChat() noexcept
@@ -704,6 +722,10 @@ namespace functions {
 			sendMapSize();
 			mouseFix();
 			NetworkFix();
+			if (vars::enableMouseOneToOne)
+			{
+				sendFOVMin();
+			}
 
 			const ULONGLONG now = GetTickCount64();
 			if (now - lastMenuTweakMs >= 250ULL)

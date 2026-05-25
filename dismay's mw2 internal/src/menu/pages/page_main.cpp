@@ -115,7 +115,6 @@ namespace menu_pages {
 				}
 				if(ksd::Checkbox("Enable Mouse 1:1", &vars::enableMouseOneToOne))
 				{
-					functions::sendFOVMin();
 					if(vars::enableMouseOneToOne)
 					{
 						SendNotify("Mouse 1:1 Enabled", 2.0f);

@@ -34,5 +34,11 @@ namespace iw4 {
 
 	inline constexpr int maxScoreboardClients = 18;
 	inline constexpr int cgClientStride = 331;
+
+	struct weapon_complete_def_t {
+		const char* name;           
+		void*       weaponDef;
+		const char* localizedName; 
+	};
 }
 

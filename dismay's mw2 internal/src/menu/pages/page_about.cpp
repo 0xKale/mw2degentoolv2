@@ -3,6 +3,7 @@
 #include "../../dismay/config.h"
 #include "../../dismay/functions.hpp"
 #include "../../game/iw4hooks.h"
+#include "../../game/functions.hpp"
 
 #include <string>
 
@@ -36,7 +37,7 @@ namespace menu_pages {
 			ksd::EndChild();
 
 			ImGui::SetCursorPos(ImVec2(rightX, origin.y));
-			if(ksd::BeginChild(ICON_FA_KEYBOARD, "Links & Credits", 150.f, layout::rightWidth))
+			if(ksd::BeginChild(ICON_FA_KEYBOARD, "Links & Credits", 190.f, layout::rightWidth))
 			{
 				ksd::Text("MAJOR Thanks to:");
 				ksd::TextLinkOpenURL("KingsleydotDev", "https://github.com/KingsleydotDev");
