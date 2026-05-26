@@ -9,9 +9,9 @@ namespace vars {
 	extern bool ironSightIntervention;
 
 	extern bool noSun;
-	extern bool noCamo;
-	extern bool noFog;
-	extern bool noBullets;
+	extern bool drawCamo;
+	extern bool drawFog;
+	extern bool drawBullets;
 	extern bool movieMode;
 	extern bool clearGlass;
 	extern bool pingText;

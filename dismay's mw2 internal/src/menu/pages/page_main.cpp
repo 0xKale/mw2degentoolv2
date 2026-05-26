@@ -18,9 +18,9 @@ namespace vars {
 	bool ironSightIntervention = false;
 
 	bool noSun = true;
-	bool noCamo = false;
-	bool noFog = false;
-	bool noBullets = false;
+	bool drawCamo = true;
+	bool drawFog = true;
+	bool drawBullets = true;
 	bool movieMode = false;
 	bool clearGlass = false;
 	bool pingText = true;
@@ -262,26 +262,26 @@ namespace menu_pages {
 					else
 						SendNotify("Draw Sun Disabled", 2.0f);
 				}
-				if(ksd::Checkbox("Draw Camos", &vars::noCamo))
+				if(ksd::Checkbox("Draw Camos", &vars::drawCamo))
 				{
 					functions::sendNoCamo();
-					if(vars::noCamo)
+					if(vars::drawCamo)
 						SendNotify("Draw Camos Enabled", 2.0f);
 					else
 						SendNotify("Draw Camos Disabled", 2.0f);
 				}
-				if(ksd::Checkbox("Draw Fog", &vars::noFog))
+				if(ksd::Checkbox("Draw Fog", &vars::drawFog))
 				{
 					functions::sendNoFog();
-					if(vars::noFog)
+					if(vars::drawFog)
 						SendNotify("Draw Fog Enabled", 2.0f);
 					else
 						SendNotify("Draw Fog Disabled", 2.0f);
 				}
-				if(ksd::Checkbox("Draw Bullets", &vars::noBullets))
+				if(ksd::Checkbox("Draw Bullets", &vars::drawBullets))
 				{
 					functions::sendNoBullets();
-					if(vars::noBullets)
+					if(vars::drawBullets)
 						SendNotify("Draw Bullets Enabled", 2.0f);
 					else
 						SendNotify("Draw Bullets Disabled", 2.0f);

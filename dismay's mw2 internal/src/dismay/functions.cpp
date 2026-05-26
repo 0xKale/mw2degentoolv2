@@ -123,7 +123,7 @@ namespace functions {
 	}
 	void sendNoCamo() noexcept
 	{
-		if (!vars::noCamo)
+		if (vars::drawCamo)
 		{
 			SetDvarInt(iw4::offsets::dvar::r_detail, 1);
 			SetDvarInt(iw4::offsets::dvar::r_detailMap, 1);
@@ -136,23 +136,24 @@ namespace functions {
 	}
 	void sendNoFog() noexcept
 	{
-		if (!vars::noFog)
-		{
-			SetDvarInt(iw4::offsets::dvar::r_fog, 0);
-			SetDvarInt(iw4::offsets::dvar::fx_drawClouds, 0); // basically more fog.
-			//SetDvarInt(iw4::offsets::dvar::r_detailMap, 0);
-			//removed the other r_polygonOffsetScale replaced with r_detailMap
-		}
-		else
+		if (vars::drawFog)
 		{
 			SetDvarInt(iw4::offsets::dvar::r_fog, 1);
 			SetDvarInt(iw4::offsets::dvar::fx_drawClouds, 1);
 			//SetDvarInt(iw4::offsets::dvar::r_detailMap, 1);
 			//removed the other r_polygonOffsetScale replaced with r_detailMap
 		}
+		else
+		{
+			SetDvarInt(iw4::offsets::dvar::r_fog, 0);
+			SetDvarInt(iw4::offsets::dvar::fx_drawClouds, 0); // basically more fog.
+			//SetDvarInt(iw4::offsets::dvar::r_detailMap, 0);
+			//removed the other r_polygonOffsetScale replaced with r_detailMap
+		}
+	}
 	void sendNoBullets() noexcept
 	{
-		if (!vars::noBullets)
+		if (vars::drawBullets)
 		{
 			SetDvarInt(iw4::offsets::dvar::cg_brass, 1); // this is bullet casing coming out of the gun
 			SetDvarInt(iw4::offsets::dvar::fx_marks, 1); // this is bullet casing coming out of the gun

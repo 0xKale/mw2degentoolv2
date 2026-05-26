@@ -50,9 +50,9 @@ void config::Save()
 	WriteInt("Visuals", "FPS", vars::framesPerSecond);
 	WriteFloat("Visuals", "FOV", vars::fieldOfView);
 	WriteBool("Visuals", "DrawSun", vars::noSun);
-	WriteBool("Visuals", "NoCamoEnabled", vars::noCamo);
-	WriteBool("Visuals", "NoFogEnabled", vars::noFog);
-	WriteBool("Visuals", "NoBulletsEnabled", vars::noBullets);
+	WriteBool("Visuals", "NoCamoEnabled", vars::drawCamo);
+	WriteBool("Visuals", "NoFogEnabled", vars::drawFog);
+	WriteBool("Visuals", "NoBulletsEnabled", vars::drawBullets);
 	WriteBool("Visuals", "MovieMode", vars::movieMode);
 	WriteBool("Visuals", "ClearGlass", vars::clearGlass);
 	WriteInt("Visuals", "Fullbright", vars::fullbright);
@@ -113,9 +113,9 @@ void config::Load()
 	vars::framesPerSecond   = ReadInt("Visuals", "FPS", 400);
 	vars::fieldOfView       = ReadFloat("Visuals", "FOV", 90.0f);
 	vars::noSun             = ReadBool("Visuals", "DrawSun", true);
-	vars::noCamo            = ReadBool("Visuals", "NoCamoEnabled", false);
-	vars::noFog             = ReadBool("Visuals", "NoFogEnabled", false);
-	vars::noBullets         = ReadBool("Visuals", "NoBulletsEnabled", false);
+	vars::drawCamo            = ReadBool("Visuals", "NoCamoEnabled", false);
+	vars::drawFog             = ReadBool("Visuals", "NoFogEnabled", false);
+	vars::drawBullets         = ReadBool("Visuals", "NoBulletsEnabled", false);
 	vars::movieMode         = ReadBool("Visuals", "MovieMode", false);
 	vars::clearGlass        = ReadBool("Visuals", "ClearGlass", false);
 	vars::fullbright        = ReadInt("Visuals", "Fullbright", 0);
