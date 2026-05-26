@@ -153,11 +153,13 @@ namespace functions {
 	{
 		if (!vars::noBullets)
 		{
-			SetDvarInt(iw4::offsets::dvar::cg_brass, 1);
+			SetDvarInt(iw4::offsets::dvar::cg_brass, 1); // this is bullet casing coming out of the gun
+			SetDvarInt(iw4::offsets::dvar::fx_marks, 1); // this is bullet casing coming out of the gun
 		}
 		else
 		{
 			SetDvarInt(iw4::offsets::dvar::cg_brass, 0);
+			SetDvarInt(iw4::offsets::dvar::fx_marks, 0);
 		}
 	}
 	void sendMovie() noexcept
