@@ -139,13 +139,13 @@ namespace functions {
 		if (!vars::noFog)
 		{
 			SetDvarInt(iw4::offsets::dvar::r_fog, 0);
-			SetDvarInt(iw4::offsets::dvar::r_detailMap, 0);
+			//SetDvarInt(iw4::offsets::dvar::r_detailMap, 0);
 			//removed the other r_polygonOffsetScale replaced with r_detailMap
 		}
 		else
 		{
 			SetDvarInt(iw4::offsets::dvar::r_fog, 1);
-			SetDvarInt(iw4::offsets::dvar::r_detailMap, 1);
+			//SetDvarInt(iw4::offsets::dvar::r_detailMap, 1);
 			//removed the other r_polygonOffsetScale replaced with r_detailMap
 		}
 	}
