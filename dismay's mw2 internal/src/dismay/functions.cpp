@@ -165,7 +165,7 @@ namespace functions {
 	}
 	void sendMovie() noexcept
 	{
-		if (!vars::movieMode)
+		if (vars::movieMode)
 		{
 			SetDvarInt(iw4::offsets::dvar::r_filmUseTweaks, 1);
 		}
