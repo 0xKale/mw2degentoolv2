@@ -191,20 +191,29 @@ namespace functions {
 		SetDvarFloat(iw4::offsets::dvar::compassSize, vars::mapSize);
 	}
 
-	namespace
+
+	bool isOneToOneExcludedWeapon() noexcept
 	{
-		bool isOneToOneExcludedWeapon() noexcept
+		const char* weapon = iw4::getCurrentWeaponName();
+		if (weapon == nullptr)
 		{
-			const char* weapon = iw4::getCurrentWeaponName();
-			if (weapon == nullptr)
-			{
-				return false;
-			}
-			return std::strstr(weapon, "cheytac") != nullptr
-				|| std::strstr(weapon, "barrett") != nullptr
-				|| std::strstr(weapon, "wa2000") != nullptr
-				|| std::strstr(weapon, "m21") != nullptr;
+			return false;
 		}
+		return std::strstr(weapon, "cheytac") != nullptr
+			|| std::strstr(weapon, "barrett") != nullptr
+			|| std::strstr(weapon, "wa2000") != nullptr
+			|| std::strstr(weapon, "m21") != nullptr;
+	}
+
+	static bool isCheytacAcogWeapon() noexcept
+	{
+		const char* weapon = iw4::getCurrentWeaponName();
+		if (weapon == nullptr)
+		{
+			return false;
+		}
+		return std::strstr(weapon, "cheytac") != nullptr
+			&& std::strstr(weapon, "acog") != nullptr;
 	}
 
 	void sendFOVMin() noexcept
@@ -648,7 +657,7 @@ namespace functions {
 		BYTE bytes3[2] = { 0x3E, 0x16 };
 		BYTE bytes4[1] = { 0x40 };
 
-		if (vars::ironSightIntervention)
+		if (vars::ironSightIntervention && isCheytacAcogWeapon())
 		{
 			SetDvarFloat(iw4::offsets::dvar::cg_gun_z, 1.0f);
 			SetDvarFloat(iw4::offsets::dvar::cg_gun_y, 0.0f);
@@ -729,6 +738,10 @@ namespace functions {
 			if (vars::enableMouseOneToOne)
 			{
 				sendFOVMin();
+			}
+			if (vars::ironSightIntervention)
+			{
+				doIronSight();
 			}
 
 			const ULONGLONG now = GetTickCount64();
