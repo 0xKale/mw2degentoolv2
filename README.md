@@ -1,4 +1,4 @@
-# DISMAY — MW2 Internal
+# DISMAY'S DEGEN TOOL — MW2 Internal
 
 C++ DLL for **Call of Duty: Modern Warfare 2** multiplayer (`iw4mp.exe`) using **ImGui**, **DirectX 9**, and **MinHook**. Legit-focused tweaks (sensitivity, visuals, hosting, profile tools) — no wallhacks, aimbot or anything of that sort.
 
