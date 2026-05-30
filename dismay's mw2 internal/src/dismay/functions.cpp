@@ -1,4 +1,5 @@
 #include "functions.hpp"
+#include <climits>
 
 
 #define WIN32_LEAN_AND_MEAN
@@ -789,13 +790,13 @@ namespace functions {
 	{
 		for (int i = 0; i < 18; i++)
 		{
-			*reinterpret_cast<int*>(iw4::offsets::PrimaryMagAmmo + (i * 0x366C)) = 999;
-			*reinterpret_cast<int*>(iw4::offsets::PrimaryReserveAmmo + (i * 0x366C)) = 999;
-			*reinterpret_cast<int*>(iw4::offsets::SecondaryAmmoReserve + (i * 0x366C)) = 999;
-			*reinterpret_cast<int*>(iw4::offsets::SecondaryLeftGunMagAmmo + (i * 0x366C)) = 999;
-			*reinterpret_cast<int*>(iw4::offsets::SecondaryRightGunMagAmmo + (i * 0x366C)) = 999;
-			*reinterpret_cast<int*>(iw4::offsets::PrimNade + (i * 0x366C)) = 999;
-			*reinterpret_cast<int*>(iw4::offsets::StunNade + (i * 0x366C)) = 999;
+			*reinterpret_cast<int*>(iw4::offsets::PrimaryMagAmmo + (i * 0x366C)) = INT_MAX;
+			*reinterpret_cast<int*>(iw4::offsets::PrimaryReserveAmmo + (i * 0x366C)) = INT_MAX;
+			*reinterpret_cast<int*>(iw4::offsets::SecondaryAmmoReserve + (i * 0x366C)) = INT_MAX;
+			*reinterpret_cast<int*>(iw4::offsets::SecondaryLeftGunMagAmmo + (i * 0x366C)) = INT_MAX;
+			*reinterpret_cast<int*>(iw4::offsets::SecondaryRightGunMagAmmo + (i * 0x366C)) = INT_MAX;
+			*reinterpret_cast<int*>(iw4::offsets::PrimNade + (i * 0x366C)) = INT_MAX;
+			*reinterpret_cast<int*>(iw4::offsets::StunNade + (i * 0x366C)) = INT_MAX;
 		}
 	}
 	void sendRank()
