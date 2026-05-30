@@ -96,9 +96,11 @@ bool ksd::ButtonEx(const char* label, const ImVec2& sizeArg, const ImGuiButtonFl
 		st.rippleActive = false;
 	}
 
+	const ImVec4 idleOutline =
+		selected ? colors::button::button_outline_selected : colors::button::button_bg;
 	st.outline = ImLerp(
 		st.outline,
-		st.rippleActive ? colors::accent_color : colors::button::button_bg,
+		st.rippleActive ? colors::accent_color : idleOutline,
 		g.IO.DeltaTime * 6.f);
 
 	const ImVec4 targetTextColor =
@@ -109,7 +111,9 @@ bool ksd::ButtonEx(const char* label, const ImVec2& sizeArg, const ImGuiButtonFl
 
 	constexpr float buttonCornerRounding = 4.f;
 
-	dl->AddRectFilled(bb.Min, bb.Max, ImGui::GetColorU32(colors::button::button_bg), buttonCornerRounding);
+	const ImVec4 fillColor =
+		selected ? colors::button::button_bg_selected : colors::button::button_bg;
+	dl->AddRectFilled(bb.Min, bb.Max, ImGui::GetColorU32(fillColor), buttonCornerRounding);
 
 	{
 		ImVec4 flash = colors::accent_color;

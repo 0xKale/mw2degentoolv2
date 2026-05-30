@@ -312,7 +312,10 @@ void RenderDedigamerPage() noexcept
 						if (!srv.joinUrl.empty())
 						{
 							ImGui::PushID(si);
-							if (ksd::Button("Join", ImVec2(kJoinBtnW, kJoinBtnH)))
+							const bool isLastJoined =
+								!dedigamer::g_state.lastJoinUrl.empty() &&
+								srv.joinUrl == dedigamer::g_state.lastJoinUrl;
+							if (ksd::Button("Join", ImVec2(kJoinBtnW, kJoinBtnH), isLastJoined))
 							{
 							    SendNotify("Joining...", 2.0f);
 								dedigamer::g_state.lastJoinUrl = srv.joinUrl;

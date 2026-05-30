@@ -66,6 +66,8 @@ namespace colors {
 
     namespace button {
         inline ImVec4 button_bg = ImColor(27, 27, 29);
+        inline ImVec4 button_bg_selected = ImColor(36, 38, 42);
+        inline ImVec4 button_outline_selected = ImColor(52, 54, 58);
         inline ImVec4 text_active = ImColor(255, 255, 255);
         inline ImVec4 text_inactive = ImColor(76, 76, 77);
     }
