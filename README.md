@@ -1,36 +1,126 @@
-<img width="788" height="331" alt="image" src="https://github.com/user-attachments/assets/01852e71-66c6-457f-82a4-4f5647e11edf" />
+# DISMAY'S DEGEN TOOL — MW2 Internal
 
+C++ DLL for **Call of Duty: Modern Warfare 2** multiplayer (`iw4mp.exe`) using **ImGui**, **DirectX 9**, and **MinHook**. Legit-focused tweaks (sensitivity, visuals, hosting, profile tools) — no wallhacks, aimbot or anything of that sort.
 
+Successor to [mw2degentool](https://github.com/0xKale/mw2degentool).
 
+![Menu](https://i.ibb.co/VWxn9FfY/ezgif-3af80ec641f41fbe.gif)
 
-mw2 tool thing, made it to play legit, so no bs like wallhax
-An extention from my old tool: https://github.com/0xKale/mw2degentool
-- better sens changer
-- fullbright
-- Use Insert or Home to open the menu, you can change it in the ini
-- toggable iron sight (use acog for full effect)
-- golden deagle
-- fps/fov changer
-- fovmin which simulates new cods 1:1 sens
-- make map bigger smaller like god intended
-- enable/disable chat
-- remove Camos/Sun Rays/Fog/Bullets
-- semi-Unlock All (Do it in main menu) or Real Unlock All {spinning skull} (Must be in private match server for this one, will do other players aswell)
-- host Console and Server console
-- XYZ Gun Location
-- Private Match stuff like speed hacks
-- Force Host if you want it
-- Port Forwarding for VPNs
-- Something with DLC idk, check the code
-- directly join dedigamer.com servers in the tool and bypass the acc join thing that website does
+## Controls
 
-![images](https://github.com/user-attachments/assets/b2193c3b-8e52-41d3-a2fd-35c824fc9420)
+| Key | Action |
+|-----|--------|
+| `INSERT` | Toggle menu |
 
-enjoy
-<img width="787" height="581" alt="image" src="https://github.com/user-attachments/assets/51f5372e-ebb9-4382-85a3-2cdbcc20808c" />
-<img width="2560" height="1392" alt="image" src="https://github.com/user-attachments/assets/93673774-0d3a-414b-a121-a6b0357c28ad" />
-<img width="1500" height="1024" alt="image" src="https://github.com/user-attachments/assets/a3a602c3-c377-486b-bbc3-4b1ac4a4f2db" />
+## Menu
 
+Tabs: **Main**, **Account**, **Host**, **Dedigamer**, **About**
 
+- Notification system
 
+### Main
 
+- Text chat on/off
+- Mouse 1:1 (FOV-min style sens)
+- Iron sight intervention
+- Sensitivity read/write
+- FPS, FOV, and map size sliders
+- Disconnect and in-game console command box
+- DLC toggle and custom port (for VPN / port forwarding)
+- Force team change
+- In-game live stats overlay — toggle on/off; while in a match (not spectating) shows your name, kills, assists, deaths, kill streak, K/D ratio, FPS, ping, and local time
+- Custom crosshair (color, outline, T-style, center dot, scale)
+- Visual toggles: sun, camos, fog, bullets, movie mode, clear glass, ping text
+- Fullbright presets (Invert, Normal, Super, Slight, Dullish)
+- View model offset (gun X / Y / Z) and reset
+
+### Account
+
+- Prestige and rank sliders (send to profile)
+- Unlock all (use in private match for full lobby unlock / spinning skull)
+- Gold Deagle loadout classes
+- Profile stats editor (wins, K/D, time played, etc.) — load and send
+
+### Host
+
+- Server command console (`s` / `c` / `f` / `J` / `M` / `n` prefixes documented in-menu)
+- Per-client buttons, load player names, broadcast to all clients
+- Map and gamemode picker, max players, change map, fast restart
+- Lock lobby, match settings, start match
+- FFA team fix and host hotkeys
+- Lobby tweaks: unlimited ammo, unlimited time/score, sprint scale
+- 360 prone/ladder cap, knockback and back-speed scale
+- Depatch bounces (normal / easy) and depatch elevators
+
+### Dedigamer
+
+- Live server browser (players, map, gametype, uptime)
+- Refresh, disconnect, reconnect to last join
+- One-click join
+
+### About
+
+- Load / save config (`dismay_config.ini` next to the DLL)
+- Menu accent color
+- Credits and links
+
+## Build
+
+1. Install the [DirectX SDK (June 2010)](https://www.microsoft.com/en-us/download/details.aspx?id=6812) and set the `DXSDK_DIR` environment variable.
+2. Install **Visual Studio 2022** with the **Desktop development with C++** workload and **Windows 10/11 SDK**.
+3. Open `dismays mw2 internal.sln` in Visual Studio.
+4. Select **Release \| Win32** (x86) and build.
+
+Output: `Build/mw2degentool.dll`
+
+**VS Code / CLI:** run the default build task (`msbuild release x86`) or:
+
+```powershell
+& "C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\MSBuild.exe" "dismays mw2 internal.sln" /p:Configuration=Release /p:Platform=x86
+```
+
+Inject `mw2degentool.dll` into `iw4mp.exe`.
+
+## Requirements
+
+| | |
+|---|---|
+| Output | DLL (`mw2degentool.dll`) |
+| Platform | **Win32** (x86) — matches the game |
+| Configuration | Release only (in solution) |
+| Windows SDK | 10.0 |
+| Toolset | v143 (VS 2022) |
+| C++ standard | C++20 |
+| Character set | Multi-Byte |
+| DirectX | DirectX 9 + legacy DirectX SDK (`DXSDK_DIR`) |
+
+## Layout
+
+```
+dismay's mw2 internal/
+  src/
+    dllmain.cpp
+    menu/              — ImGui menu, DX9 hook, pages
+    menu/pages/        — Main, Account, Host, Dedigamer, About
+    dismay/            — features, config, dedigamer API
+    game/              — hooks, offsets, structs
+    framework/         — custom UI widgets
+  ext/                 — imgui, minhook, fonts
+Build/                 — compiled DLL
+```
+
+Config saves to `dismay_config.ini` in the same folder as the injected DLL.
+
+## Screenshots
+
+![Main tab](https://i.ibb.co/vxMyYRFx/iw4mp-Qt19yoauo-C.jpg)
+
+![Account tab](https://i.ibb.co/GfWxv73r/iw4mp-o-Ybxsvbst-R.png)
+
+![Host tab](https://i.ibb.co/3m5KYVhj/iw4mp-VKb-FTxe-Ejm.jpg)
+
+![Dedigamer tab](https://i.ibb.co/mCpvTFCT/iw4mp-d-Km-NODb-Nmm.png)
+
+![IronSight0](https://i.ibb.co/WWWFYLBS/iw4mp-Vika-AP5-Rj-J.jpg)
+
+![IronSight1](https://i.ibb.co/GfQJDwgc/iw4mp-Os0q7d-WOWv.jpg)
