@@ -450,7 +450,7 @@ namespace functions {
 			Cbuf_AddText(0, "g_gametype sd; ui_gametype sd; party_gametype sd");
 			break;
 		case 3:
-			Cbuf_AddText(0, "g_gametype ffa; ui_gametype ffa; party_gametype ffa");
+			Cbuf_AddText(0, "g_gametype dm; ui_gametype dm; party_gametype dm");
 			break;
 		case 4:
 			Cbuf_AddText(0, "g_gametype koth; ui_gametype koth; party_gametype koth");
