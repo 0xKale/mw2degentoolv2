@@ -90,14 +90,7 @@ namespace functions {
 	}
 	void fuckTheSunAway() noexcept
 	{
-		if (vars::noSun)
-		{
-			SetDvarInt(iw4::offsets::dvar::r_drawSun, 1);
-		}
-		else
-		{
-			SetDvarInt(iw4::offsets::dvar::r_drawSun, 0);
-		}
+		SetDvarInt(iw4::offsets::dvar::r_drawSun, vars::noSun ? 1 : 0);
 	}
 	void fuckTheCrosshairAway() noexcept
 	{
@@ -124,57 +117,27 @@ namespace functions {
 	}
 	void sendNoCamo() noexcept
 	{
-		if (vars::drawCamo)
-		{
-			SetDvarInt(iw4::offsets::dvar::r_detail, 1);
-			SetDvarInt(iw4::offsets::dvar::r_detailMap, 1);
-		}
-		else
-		{
-			SetDvarInt(iw4::offsets::dvar::r_detail, 0);
-			SetDvarInt(iw4::offsets::dvar::r_detailMap, 0);
-		}
+		const int value = vars::drawCamo ? 1 : 0;
+		SetDvarInt(iw4::offsets::dvar::r_detail, value);
+		SetDvarInt(iw4::offsets::dvar::r_detailMap, value);
 	}
 	void sendNoFog() noexcept
 	{
-		if (vars::drawFog)
-		{
-			SetDvarInt(iw4::offsets::dvar::r_fog, 1);
-			SetDvarInt(iw4::offsets::dvar::fx_drawClouds, 1);
-			//SetDvarInt(iw4::offsets::dvar::r_detailMap, 1);
-			//removed the other r_polygonOffsetScale replaced with r_detailMap
-		}
-		else
-		{
-			SetDvarInt(iw4::offsets::dvar::r_fog, 0);
-			SetDvarInt(iw4::offsets::dvar::fx_drawClouds, 0); // basically more fog.
-			//SetDvarInt(iw4::offsets::dvar::r_detailMap, 0);
-			//removed the other r_polygonOffsetScale replaced with r_detailMap
-		}
+		// fx_drawClouds tracks r_fog; turning both off removes fog/clouds.
+		const int value = vars::drawFog ? 1 : 0;
+		SetDvarInt(iw4::offsets::dvar::r_fog, value);
+		SetDvarInt(iw4::offsets::dvar::fx_drawClouds, value);
 	}
 	void sendNoBullets() noexcept
 	{
-		if (vars::drawBullets)
-		{
-			SetDvarInt(iw4::offsets::dvar::cg_brass, 1); // this is bullet casing coming out of the gun
-			SetDvarInt(iw4::offsets::dvar::fx_marks, 1); // this is bullet casing coming out of the gun
-		}
-		else
-		{
-			SetDvarInt(iw4::offsets::dvar::cg_brass, 0);
-			SetDvarInt(iw4::offsets::dvar::fx_marks, 0);
-		}
+		// cg_brass = ejected shell casings, fx_marks = bullet impact decals.
+		const int value = vars::drawBullets ? 1 : 0;
+		SetDvarInt(iw4::offsets::dvar::cg_brass, value);
+		SetDvarInt(iw4::offsets::dvar::fx_marks, value);
 	}
 	void sendMovie() noexcept
 	{
-		if (vars::movieMode)
-		{
-			SetDvarInt(iw4::offsets::dvar::r_filmUseTweaks, 1);
-		}
-		else
-		{
-			SetDvarInt(iw4::offsets::dvar::r_filmUseTweaks, 0);
-		}
+		SetDvarInt(iw4::offsets::dvar::r_filmUseTweaks, vars::movieMode ? 1 : 0);
 	}
 	void sendFPSandFOV() noexcept
 	{
@@ -233,14 +196,7 @@ namespace functions {
 	}
 	void toggleChat() noexcept
 	{
-		if (vars::enableTextChat)
-		{
-			SetDvarInt(iw4::offsets::dvar::cg_chatTime, 12000);
-		}
-		else
-		{
-			SetDvarInt(iw4::offsets::dvar::cg_chatTime, 0);
-		}
+		SetDvarInt(iw4::offsets::dvar::cg_chatTime, vars::enableTextChat ? 12000 : 0);
 	}
 	void mouseFix()
 	{
@@ -313,14 +269,10 @@ namespace functions {
 	}
 	void unlockAll()
 	{
-		const uint8_t NOP = 0x90;
-		uint8_t* unlockAll = (uint8_t*)malloc(2572);
-		if (unlockAll != NULL)
-		{
-			memset(unlockAll, NOP, 2572);
-			writeMemory(0x01B8BD8F, unlockAll, 2572);
-			free(unlockAll);
-		}
+		constexpr uint8_t NOP = 0x90;
+		constexpr DWORD patchSize = 2572;
+		std::vector<uint8_t> nops(patchSize, NOP);
+		writeMemory(0x01B8BD8F, nops.data(), patchSize);
 	}
 	static int xpToAdvanceFromRank(int n) noexcept
 	{
@@ -401,9 +353,17 @@ namespace functions {
 	}
 	void WriteBytes(LPVOID address, const char* bytes, int length)
 	{
-		DWORD origProtect;
-		VirtualProtect(address, length, PAGE_EXECUTE_READWRITE, &origProtect);
+		if (!address || length <= 0)
+			return;
+
+		DWORD origProtect = 0;
+		if (!VirtualProtect(address, length, PAGE_EXECUTE_READWRITE, &origProtect))
+			return;
+
 		memcpy(address, bytes, length);
+
+		// Restore the original protection so we don't leave executable pages writable.
+		VirtualProtect(address, length, origProtect, &origProtect);
 	}
 
 	void doMaxPlayers(int amount)
@@ -773,14 +733,7 @@ namespace functions {
 
 	void sendPingText()
 	{
-		if (vars::pingText)
-		{
-			SetDvarInt(iw4::offsets::dvar::cg_scoreboardPingText, 1);
-		}
-		else
-		{
-			SetDvarInt(iw4::offsets::dvar::cg_scoreboardPingText, 0);
-		}
+		SetDvarInt(iw4::offsets::dvar::cg_scoreboardPingText, vars::pingText ? 1 : 0);
 	}
 	void sendProfileStats()
 	{

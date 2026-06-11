@@ -18,7 +18,6 @@ namespace functions
 	void SetDvarInt(std::uintptr_t dvarAddress, int value);
 	void SetDvarFloat(std::uintptr_t dvarAddress, float value);
 	int getHostId() noexcept;
-	int GetAmmo(int client) noexcept;
 
 	void fuckTheSunAway() noexcept;
 	void clearGlass() noexcept;
@@ -55,10 +54,8 @@ namespace functions
 	void sendElevatorsToggle();
 	void sendBouncesToggle();
 	void sendBouncesToggleEasy();
-	void sendElevatorsToggle();
 	void giveAmmo();
 	char* getPlayerName(int client);
-	static int ReadDvarInt(std::uintptr_t dvarAddress);
 	std::string readGameString(std::uintptr_t address, int maxLength = 256);
 	int getLocalClientNum() noexcept;
 	void sendCustomPort();
@@ -79,7 +76,4 @@ namespace functions
 	void fuckTheCrosshairAway() noexcept;
 	void sendViewModel() noexcept;
 	bool isInGameNotSpectating();
-
-	static constexpr int test666Capacity = 256;
-	extern char* test666;
 }

@@ -8,7 +8,6 @@ namespace iw4 {
             inline constexpr std::uintptr_t cl_maxpackets = 0x0BC37E4;
             inline constexpr std::uintptr_t cl_packetdup = 0x0BC37DC;
             inline constexpr std::uintptr_t cg_fov = 0xAAC1F8;
-            inline constexpr std::uintptr_t cg_FovMin = 0x88CB54;
             inline constexpr std::uintptr_t com_maxFPS = 0x1B90730;             // FPS
             inline constexpr std::uintptr_t cg_chatTime = 0xAA61C0;             // Chat
             inline constexpr std::uintptr_t compassSize = 0x886E7C;          // Map Size

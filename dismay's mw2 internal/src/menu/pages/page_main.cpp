@@ -111,7 +111,6 @@ namespace menu_pages {
 					{
 						SendNotify("Chat Disabled", 2.0f);
 					}
-					functions::toggleChat();
 				}
 				if(ksd::Checkbox("Enable Mouse 1:1", &vars::enableMouseOneToOne))
 				{

@@ -289,10 +289,10 @@ namespace menu_pages {
 				}
 				if(ksd::Checkbox("Depatch Bounces Easy Mode", &vars::enableDepatchBouncesEasy))
 				{
-					if (vars::enableDepatchBounces)
+					if (vars::enableDepatchBouncesEasy)
 					{
-						vars::enableDepatchBounces = false;
 						functions::sendBouncesToggleEasy();
+						vars::enableDepatchBounces = false;
 					}
 					if (vars::enableDepatchBouncesEasy)
 					{
