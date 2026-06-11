@@ -1,0 +1,5 @@
+# MW2 is a 32-bit process; the injected DLL must be 32-bit too. Default every
+# cargo invocation in this crate to the i686 MSVC target so `cargo build` / `cargo
+# check` "just work" without remembering --target.
+[build]
+target = "i686-pc-windows-msvc"

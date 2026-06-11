@@ -1,0 +1,30 @@
+[package]
+name = "mw2degentool"
+version = "2.0.0"
+edition = "2021"
+description = "Rust port of dismay's mw2 internal (IW4 / MW2 game internal)."
+publish = false
+
+[lib]
+name = "mw2degentool"
+crate-type = ["cdylib"]
+
+# This DLL is injected into MW2.exe, a 32-bit process. The whole thing only makes
+# sense as an i686 build: every absolute address in game/offsets.rs and every
+# game-function pointer in game/funcs.rs lives in a 32-bit address space, and the
+# game ABI is 32-bit __cdecl / __stdcall. See .cargo/config.toml for the default
+# target.
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"      # never unwind across the FFI boundary into the game
+
+[profile.dev]
+panic = "abort"
+
+[dependencies]
+ab_glyph = "0.2.32"
+image = { version = "0.25.10", default-features = false, features = ["gif"] }
+windows = { version = "0.62", features = ["Win32_Foundation", "Win32_Graphics_Direct3D9", "Win32_Graphics_Direct3D", "Win32_Graphics_Gdi", "Win32_UI_WindowsAndMessaging", "Win32_UI_Input_KeyboardAndMouse", "Win32_System_LibraryLoader", "Win32_System_SystemServices"] }
