@@ -250,6 +250,28 @@ namespace functions {
 		//SetDvarFloat(iw4::offsets::dvar::cl_pitchspeed, 0); // I tink this is the same but for up and down. imma leave as it because I don't know for sure.
 		SetDvarInt(iw4::offsets::dvar::m_filter, 0);
 	}
+	void setHighPollingMouseFix(bool enable)
+	{
+		// The game's WndProc (sub_5CC980) calls SetThreadExecutionState(ES_DISPLAY_REQUIRED)
+		// on EVERY Windows message, before any filtering. At mouse polling rates >500Hz the
+		// WM_MOUSEMOVE flood turns that into a per-message kernel syscall storm: the message
+		// pump can't keep up, frame time spirals, and FPS collapses to ~10.
+		// Enable  -> NOP the 8-byte `push 2; call ds:SetThreadExecutionState` @ 0x5CC985.
+		// Disable -> restore the original bytes. The patch is stack-balanced (the __stdcall
+		// callee would have cleaned the pushed arg; with no push and no call there is none).
+		constexpr DWORD address = 0x5CC985;
+		if (enable)
+		{
+			uint8_t nops[8];
+			memset(nops, 0x90, sizeof(nops));
+			writeMemory(address, nops, sizeof(nops));
+		}
+		else
+		{
+			uint8_t original[8] = { 0x6A, 0x02, 0xFF, 0x15, 0x64, 0xD2, 0x67, 0x00 };
+			writeMemory(address, original, sizeof(original));
+		}
+	}
  void NetworkFix() noexcept
     {
         int packets = 100;

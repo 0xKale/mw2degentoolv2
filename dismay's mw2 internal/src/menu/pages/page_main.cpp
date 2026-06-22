@@ -15,6 +15,7 @@ namespace vars {
 
 	bool enableTextChat = true;
 	bool enableMouseOneToOne = false;
+	bool highPollingMouseFix = false;
 	bool ironSightIntervention = false;
 
 	bool noSun = true;
@@ -125,6 +126,18 @@ namespace menu_pages {
 						//functions::sendFOVMin();
 					}
 
+				}
+				if(ksd::Checkbox("1000Hz Mouse Fix", &vars::highPollingMouseFix))
+				{
+					functions::setHighPollingMouseFix(vars::highPollingMouseFix);
+					if(vars::highPollingMouseFix)
+					{
+						SendNotify("1000Hz Mouse Fix Enabled", 2.0f);
+					}
+					else
+					{
+						SendNotify("1000Hz Mouse Fix Disabled", 2.0f);
+					}
 				}
 				if(ksd::Checkbox("Iron Sight Intervention", &vars::ironSightIntervention))
 				{

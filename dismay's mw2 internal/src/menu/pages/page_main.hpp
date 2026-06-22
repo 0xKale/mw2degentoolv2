@@ -6,6 +6,7 @@ namespace vars {
 
 	extern bool enableTextChat;
 	extern bool enableMouseOneToOne;
+	extern bool highPollingMouseFix;
 	extern bool ironSightIntervention;
 
 	extern bool noSun;

@@ -31,6 +31,7 @@ namespace functions
 	void sendFOVMin() noexcept;
 	void toggleChat() noexcept;
 	void mouseFix();
+	void setHighPollingMouseFix(bool enable);
 	void doSaveBarracks();
 	void loadProfileStats() noexcept;
 	void sendProfileStats();

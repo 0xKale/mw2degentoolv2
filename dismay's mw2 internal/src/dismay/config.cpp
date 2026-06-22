@@ -60,6 +60,7 @@ void config::Save()
 
 	WriteBool("Misc", "Chat", vars::enableTextChat);
 	WriteBool("Misc", "Mouse11", vars::enableMouseOneToOne);
+	WriteBool("Misc", "HighPollingMouseFix", vars::highPollingMouseFix);
 	WriteFloat("Misc", "MapSize", vars::mapSize);
 	WriteBool("Misc", "PingText", vars::pingText);
 
@@ -123,6 +124,7 @@ void config::Load()
 
 	vars::enableTextChat    = ReadBool("Misc", "Chat", true);
 	vars::enableMouseOneToOne = ReadBool("Misc", "Mouse11", false);
+	vars::highPollingMouseFix = ReadBool("Misc", "HighPollingMouseFix", false);
 	vars::mapSize           = ReadFloat("Misc", "MapSize", 1.0f);
 	vars::pingText          = ReadBool("Misc", "PingText", true);
 
@@ -164,6 +166,7 @@ void config::ApplyToGame()
 	functions::toggleChat();
 	functions::sendFOVMin();
 	functions::mouseFix();
+	functions::setHighPollingMouseFix(vars::highPollingMouseFix);
 	functions::fuckTheSunAway();
 	functions::sendNoCamo();
 	functions::sendNoFog();
