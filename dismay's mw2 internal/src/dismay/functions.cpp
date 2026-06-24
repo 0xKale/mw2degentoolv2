@@ -805,10 +805,8 @@ namespace functions {
 			sendMapSize();
 			mouseFix();
 			NetworkFix();
-			if (vars::enableMouseOneToOne)
-			{
-				sendFOVMin();
-			}
+			sendFOVMin();
+
 			if (vars::ironSightIntervention)
 			{
 				doIronSight();
