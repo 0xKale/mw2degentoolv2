@@ -23,6 +23,7 @@ Tabs: **Main**, **Account**, **Host**, **Dedigamer**, **About**
 - Text chat on/off
 - Mouse 1:1 (FOV-min style sens)
 - Iron sight intervention
+- 1000/2000Hz Mouse Support (4000+ will still lag)
 - Sensitivity read/write
 - FPS, FOV, and map size sliders
 - Disconnect and in-game console command box
