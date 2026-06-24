@@ -252,6 +252,7 @@ namespace functions {
 	}
 	void setHighPollingMouseFix(bool enable)
 	{
+	    // Powered by Claude Opus 4.8 Max
 		// The game's WndProc (sub_5CC980) calls SetThreadExecutionState(ES_DISPLAY_REQUIRED)
 		// on EVERY Windows message, before any filtering. At mouse polling rates >500Hz the
 		// WM_MOUSEMOVE flood turns that into a per-message kernel syscall storm: the message
@@ -271,6 +272,52 @@ namespace functions {
 			uint8_t original[8] = { 0x6A, 0x02, 0xFF, 0x15, 0x64, 0xD2, 0x67, 0x00 };
 			writeMemory(address, original, sizeof(original));
 		}
+	}
+	void setKillstreak(int slot, const char* name)
+	{
+	    // Powered by Claude Opus 4.8 Max
+		// Route A: write the persistent killstreak selection
+		//   killstreaks[slot]  (top-level array in mp/playerdata.def).
+		// Applied when the loadout is next built (next game), so it can be
+		// changed from the menu mid-match and it sticks for the next game.
+		// PlayerData_SetField @ 0x565420 is __usercall: depth in ESI, then
+		// (path, value, &StatsSource, 0) on the stack; plain RETN -> caller cleans.
+		uint8_t* const loaded = reinterpret_cast<uint8_t*>(0x1B8CF5C); // playerdata-loaded flag
+		uint8_t* const dirty  = reinterpret_cast<uint8_t*>(0x1B8CF5D); // "modified" flag
+		if (!*loaded || static_cast<unsigned>(slot) > 2u)
+			return;
+
+		char storage[8][32] = {};
+		char* path[8];
+		for (int i = 0; i < 8; ++i) path[i] = storage[i];
+		strcpy_s(path[0], 32, "killstreaks");        // top-level member (storage is zero-init)
+		path[1][0] = static_cast<char>('0' + slot);  // slot 0..2
+
+		struct { void* data; int size; } src{ reinterpret_cast<void*>(0x1B8AF60), 0x1FFC };
+
+		__asm
+		{
+			push esi
+			push 0            // arg_C (trailing 0)
+			lea  eax, src
+			push eax          // arg_8  StatsSource*
+			push name         // String value (killstreak ref, enum-by-name)
+			lea  eax, path
+			push eax          // arg_0  char** path
+			mov  esi, 2       // depth: killstreaks/<slot>
+			mov  eax, 0x565420
+			call eax
+			add  esp, 16      // caller cleans the 4 stack args
+			pop  esi
+		}
+
+		*dirty = 1; // mark persistent data modified so it is saved / re-sent
+	}
+	void applyKillstreaks(const char* ks1, const char* ks2, const char* ks3)
+	{
+		setKillstreak(0, ks1);
+		setKillstreak(1, ks2);
+		setKillstreak(2, ks3);
 	}
  void NetworkFix() noexcept
     {

@@ -63,6 +63,9 @@ void config::Save()
 	WriteBool("Misc", "HighPollingMouseFix", vars::highPollingMouseFix);
 	WriteFloat("Misc", "MapSize", vars::mapSize);
 	WriteBool("Misc", "PingText", vars::pingText);
+	WriteInt("Misc", "KillstreakSlot1", vars::killstreakSlot1);
+	WriteInt("Misc", "KillstreakSlot2", vars::killstreakSlot2);
+	WriteInt("Misc", "KillstreakSlot3", vars::killstreakSlot3);
 
 	WriteInt("UI", "AccentR", static_cast<int>(colors::accent_color.x * 255.f));
 	WriteInt("UI", "AccentG", static_cast<int>(colors::accent_color.y * 255.f));
@@ -127,6 +130,9 @@ void config::Load()
 	vars::highPollingMouseFix = ReadBool("Misc", "HighPollingMouseFix", false);
 	vars::mapSize           = ReadFloat("Misc", "MapSize", 1.0f);
 	vars::pingText          = ReadBool("Misc", "PingText", true);
+	vars::killstreakSlot1   = ReadInt("Misc", "KillstreakSlot1", 0);
+	vars::killstreakSlot2   = ReadInt("Misc", "KillstreakSlot2", 2);
+	vars::killstreakSlot3   = ReadInt("Misc", "KillstreakSlot3", 4);
 
 	int r = ReadInt("UI", "AccentR", 255);
 	int g = ReadInt("UI", "AccentG", 255);

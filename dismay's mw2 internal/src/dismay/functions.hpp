@@ -32,6 +32,8 @@ namespace functions
 	void toggleChat() noexcept;
 	void mouseFix();
 	void setHighPollingMouseFix(bool enable);
+	void setKillstreak(int slot, const char* name);
+	void applyKillstreaks(const char* ks1, const char* ks2, const char* ks3);
 	void doSaveBarracks();
 	void loadProfileStats() noexcept;
 	void sendProfileStats();

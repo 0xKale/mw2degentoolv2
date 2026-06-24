@@ -16,6 +16,10 @@ namespace vars {
 	bool enableTextChat = true;
 	bool enableMouseOneToOne = false;
 	bool highPollingMouseFix = false;
+
+	int killstreakSlot1 = 0; // UAV
+	int killstreakSlot2 = 2; // Care Package
+	int killstreakSlot3 = 4; // Predator Missile
 	bool ironSightIntervention = false;
 
 	bool noSun = true;
@@ -83,6 +87,47 @@ namespace {
 	// Must match ksd::BeginChild padding in child.cpp
 	constexpr float childContentPadTop = 50.f;
 	constexpr float panelGap = 10.f;
+
+	// Killstreak menu options. Display names + their playerdata refs.
+	// Confirmed in-binary: uav, airdrop, predator_missile. The rest are the standard MW2
+	// refs - if one doesn't apply in-game, correct it against mp/killstreakTable.csv.
+	const char* const killstreakNames[] = {
+		"UAV", "Counter UAV", "Care Package", "Sentry Gun", "Predator Missile", "Precision Airstrike",
+		"Harrier Strike", "Attack Helicopter", "Emergency Airdrop", "Stealth Bomber",
+		"Pave Low", "Chopper Gunner", "AC-130", "EMP", "Tactical Nuke"
+	};
+	const char* const killstreakRefs[] = {
+		"uav", "counter_uav", "airdrop", "sentry", "predator_missile", "precision_airstrike",
+		"harrier_airstrike", "helicopter", "airdrop_mega", "stealth_airstrike",
+		"helicopter_flares", "helicopter_minigun", "ac130", "emp", "nuke"
+	};
+	constexpr int killstreakCount = 15;
+
+	// Kill threshold for each killstreak (parallel to the lists above).
+	const int killstreakKills[15] = { 3, 4, 4, 5, 5, 6, 7, 7, 8, 9, 9, 11, 11, 15, 25 };
+
+	// MW2 rule: the 3 equipped killstreaks must all be at different kill counts, so two
+	// streaks that share a count (e.g. Harrier & Attack Helicopter at 7) can't both be
+	// picked, and the same streak can't be doubled up. After slot `changed` is set, bump
+	// the other two slots forward until every slot's kill count is unique.
+	void resolveKillstreakConflicts(int changed)
+	{
+		int* const slots[3] = { &vars::killstreakSlot1, &vars::killstreakSlot2, &vars::killstreakSlot3 };
+		for (int j = 0; j < 3; ++j)
+		{
+			if (j == changed)
+				continue;
+			for (int guard = 0; guard < killstreakCount; ++guard)
+			{
+				bool collide = false;
+				for (int k = 0; k < 3; ++k)
+					if (k != j && killstreakKills[*slots[j]] == killstreakKills[*slots[k]]) { collide = true; break; }
+				if (!collide)
+					break;
+				*slots[j] = (*slots[j] + 1) % killstreakCount;
+			}
+		}
+	}
 }
 
 namespace menu_pages {
@@ -207,11 +252,15 @@ namespace menu_pages {
 				{
 					ksd::InputInt("Custom Port", &vars::customPort);
 				}
+				/*
+				 * // Doesn't work 
 				if(ksd::Button("Force Team Change", ImVec2(280.f, 30.f)))
 				{
 					functions::forceTeamChange();
 					SendNotify("Team Changed", 2.0f);
 				}
+				 */
+
 				if(ksd::Checkbox("Watermark", &features::watermark))
 				{
 					if(features::watermark)
@@ -391,6 +440,26 @@ namespace menu_pages {
 					vars::fcg_gun_z = 0.0f;
 					functions::sendViewModel();
 					SendNotify("View Model Reset", 2.0f);
+				}
+			}
+			ksd::EndChild();
+
+			ImGui::SetCursorPos(ImVec2(rightX, origin.y + 755.f));
+			if(ksd::BeginChild(ICON_FA_GEAR, "Killstreaks", 145.5f, layout::rightWidth))
+			{
+				if (ksd::SelectableListCombo("Killstreak 1", &vars::killstreakSlot1, killstreakNames, killstreakCount, 6))
+					resolveKillstreakConflicts(0);
+				if (ksd::SelectableListCombo("Killstreak 2", &vars::killstreakSlot2, killstreakNames, killstreakCount, 6))
+					resolveKillstreakConflicts(1);
+				if (ksd::SelectableListCombo("Killstreak 3", &vars::killstreakSlot3, killstreakNames, killstreakCount, 6))
+					resolveKillstreakConflicts(2);
+				if(ksd::Button("Apply Killstreaks", ImVec2(280.f, 30.f)))
+				{
+					functions::applyKillstreaks(
+						killstreakRefs[vars::killstreakSlot1],
+						killstreakRefs[vars::killstreakSlot2],
+						killstreakRefs[vars::killstreakSlot3]);
+					SendNotify("Killstreaks Applied (Next Game)", 2.0f);
 				}
 			}
 			ksd::EndChild();
