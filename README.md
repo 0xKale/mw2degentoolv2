@@ -34,6 +34,7 @@ Tabs: **Main**, **Account**, **Host**, **Dedigamer**, **About**
 - Visual toggles: sun, camos, fog, bullets, movie mode, clear glass, ping text
 - Fullbright presets (Invert, Normal, Super, Slight, Dullish)
 - View model offset (gun X / Y / Z) and reset
+- Abiliity to change killstreak in game (wont take affect until next game 💅)
 
 ### Account
 
