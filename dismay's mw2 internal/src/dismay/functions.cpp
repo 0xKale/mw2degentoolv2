@@ -806,6 +806,7 @@ namespace functions {
 			mouseFix();
 			NetworkFix();
 			sendFOVMin();
+			applyMenuFogColor();
 
 			if (vars::ironSightIntervention)
 			{
@@ -1527,6 +1528,32 @@ namespace functions {
 		// Game sets this flag non-zero while playing back a killcam (after we die,
 		// while spectating the killer). Fixed module global, always mapped/safe to read.
 		return *reinterpret_cast<const volatile std::int32_t*>(iw4::offsets::cg_inKillcam) != 0;
+	}
+
+	void applyMenuFogColor() noexcept
+	{
+		if (!features::menuFogColor)
+			return;
+
+		// Only recolor the menu/background fog; leave actual in-game fog untouched.
+		if (isInGameNotSpectating())
+			return;
+
+		const ImVec4& c = features::menu_fog_color;
+		const auto toByte = [](float v) noexcept -> std::uint32_t
+		{
+			const int i = static_cast<int>(v * 255.f + 0.5f);
+			return static_cast<std::uint32_t>(i < 0 ? 0 : (i > 255 ? 255 : i));
+		};
+
+		// Renderer reads the bytes as B,G,R,A -> pack 0xAARRGGBB (little-endian).
+		const std::uint32_t packed =
+			(toByte(c.w) << 24) | (toByte(c.x) << 16) | (toByte(c.y) << 8) | toByte(c.z);
+
+		// Write the live color and the fog-lerp "to" source so it sticks across frames
+		// (the lerp copies the target into the live color every frame).
+		*reinterpret_cast<volatile std::uint32_t*>(iw4::offsets::fog_color_live)   = packed;
+		*reinterpret_cast<volatile std::uint32_t*>(iw4::offsets::fog_color_target) = packed;
 	}
 
 }

@@ -1,6 +1,8 @@
 #pragma once
 #include "menu/gui.hpp"
 #include "framework/notify.hpp"
+#include "framework/settings.h"
+#include "game/offsets.hpp"
 #include "dismay/functions.hpp"
 #include "dismay/watermark.hpp"
 #include "dismay/brainrot.hpp"
@@ -34,6 +36,12 @@ namespace hooks
 	using ResetFn = HRESULT(__stdcall*)(IDirect3DDevice9*, D3DPRESENT_PARAMETERS*) noexcept;
 	inline ResetFn ResetOriginal = nullptr;
 	inline HRESULT __stdcall Reset(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* params) noexcept;
+
+	// CL_DrawStretchPicPhysical(x,y,w,h, s0,t0,s1,t1, const float* color, Material*) - the
+	// low-level 2D UI quad draw. Hooked to recolor the menu's fullscreen background quad.
+	using DrawStretchPicFn = int(__cdecl*)(float, float, float, float, float, float, float, float, const float*, void*);
+	inline DrawStretchPicFn DrawStretchPicOriginal = nullptr;
+	inline int __cdecl DrawStretchPicHook(float, float, float, float, float, float, float, float, const float*, void*);
 }
 
 inline void hooks::Setup()
@@ -55,6 +63,13 @@ inline void hooks::Setup()
 		&Reset,
 		reinterpret_cast<void**>(&ResetOriginal)
 	)) throw std::runtime_error("Unable to hook Reset()");
+
+	// Optional menu-background tint; non-fatal if it can't be created so the rest still loads.
+	MH_CreateHook(
+		reinterpret_cast<LPVOID>(iw4::offsets::CL_DrawStretchPicPhysical),
+		&DrawStretchPicHook,
+		reinterpret_cast<void**>(&DrawStretchPicOriginal)
+	);
 
 	if (MH_EnableHook(MH_ALL_HOOKS))
 		throw std::runtime_error("Unable to enable hooks");
@@ -176,4 +191,26 @@ inline HRESULT __stdcall hooks::Reset(IDirect3DDevice9* device, D3DPRESENT_PARAM
 	}
 
 	return result;
+}
+
+inline int __cdecl hooks::DrawStretchPicHook(
+	float x, float y, float w, float h,
+	float s0, float t0, float s1, float t1,
+	const float* color, void* material)
+{
+	if (features::menuBgTint && !functions::isInGameNotSpectating() && ImGui::GetCurrentContext())
+	{
+		const ImVec2 disp = ImGui::GetIO().DisplaySize;
+		// The frontend's smoke background is one fullscreen quad anchored at the origin.
+		if (disp.x > 0.f && disp.y > 0.f &&
+			x <= 2.f && y <= 2.f &&
+			w >= disp.x * 0.90f && h >= disp.y * 0.90f)
+		{
+			const ImVec4& c = features::menu_bg_color;
+			const float tint[4] = { c.x, c.y, c.z, color ? color[3] : 1.0f };
+			return DrawStretchPicOriginal(x, y, w, h, s0, t0, s1, t1, tint, material);
+		}
+	}
+
+	return DrawStretchPicOriginal(x, y, w, h, s0, t0, s1, t1, color, material);
 }

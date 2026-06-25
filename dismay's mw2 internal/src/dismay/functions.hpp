@@ -83,6 +83,7 @@ namespace functions
 	void sendViewModel() noexcept;
 	bool isInGameNotSpectating();
 	bool isInKillcam() noexcept;
+	void applyMenuFogColor() noexcept;
 
 	static constexpr int test666Capacity = 256;
 	extern char* test666;

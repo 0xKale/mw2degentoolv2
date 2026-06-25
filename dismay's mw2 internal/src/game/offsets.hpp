@@ -586,8 +586,16 @@ namespace iw4 {
         inline constexpr std::uintptr_t CG = 0x8A0E50;
         inline constexpr std::uintptr_t cg_inKillcam = 0x914E40;   // non-zero while a killcam is playing (we died, now spectating the killer)
         inline constexpr std::uintptr_t cg_killcamType = 0x914E50; // killcam type enum (paired with cg_inKillcam; 1/3/6 = regular variants)
+        // 3D scene/menu-background fog color. Packed RGBA8 0xAARRGGBB (mem bytes: B,G,R,A).
+        // The renderer clears the scene to this when fog is on (see fog color builder sub_43F390).
+        inline constexpr std::uintptr_t fog_color_live   = 0x69547CC; // live value the renderer reads (rebuilt each frame by the fog lerp)
+        inline constexpr std::uintptr_t fog_color_target = 0x695483C; // fog transition "to" color; lerp copies this into the live value each frame
         inline constexpr std::uintptr_t BG_GetViewmodelWeaponIndex = 0x479560;
         inline constexpr std::uintptr_t BG_GetWeaponCompleteDef = 0x4794C0;
+        // CL_DrawStretchPicPhysical(x,y,w,h, s0,t0,s1,t1, const float* color, Material*) -
+        // the low-level 2D UI quad draw (physical pixel coords). Every menu material goes
+        // through it; hooked to recolor the menu's fullscreen background.
+        inline constexpr std::uintptr_t CL_DrawStretchPicPhysical = 0x4BBFC0;
     }
 
     namespace pointers {

@@ -170,5 +170,9 @@ namespace features {
     inline bool esp_perview = false;
     inline bool watermark = true;
     inline bool brainrot = false;
+    inline bool menuFogColor = false;
+    inline ImVec4 menu_fog_color = ImColor(60, 157, 173);
+    inline bool menuBgTint = false;
+    inline ImVec4 menu_bg_color = ImColor(255, 60, 60);
     inline float preview_alpha = 0;
 }

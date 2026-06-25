@@ -17,7 +17,7 @@ namespace menu_pages {
 			const float rightX = origin.x + layout::colWidth + layout::colGap;
 
 			ImGui::SetCursorPos(ImVec2(leftX, origin.y));
-			if(ksd::BeginChild(ICON_FA_CROSSHAIRS, "Config", 185.f, layout::leftWidth))
+			if(ksd::BeginChild(ICON_FA_CROSSHAIRS, "Config", 305.f, layout::leftWidth))
 			{
 				ksd::Text(".ini file is located in the same directory");
 				ksd::Text("as the DLL.");
@@ -42,6 +42,30 @@ namespace menu_pages {
 						SendNotify("Brainrot Disabled", 2.0f);
 					}
 				}
+				if(ksd::Checkbox("Menu Fog Color", &features::menuFogColor))
+				{
+					if(features::menuFogColor)
+					{
+						SendNotify("Menu Fog Color Enabled", 2.0f);
+					}
+					else
+					{
+						SendNotify("Menu Fog Color Disabled", 2.0f);
+					}
+				}
+				ImGui::ColorEdit4("Fog Color", (float*)&features::menu_fog_color, ImGuiColorEditFlags_AlphaPreview | ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_NoInputs);
+				if(ksd::Checkbox("Menu Background", &features::menuBgTint))
+				{
+					if(features::menuBgTint)
+					{
+						SendNotify("Menu Background Tint Enabled", 2.0f);
+					}
+					else
+					{
+						SendNotify("Menu Background Tint Disabled", 2.0f);
+					}
+				}
+				ImGui::ColorEdit4("BG Color", (float*)&features::menu_bg_color, ImGuiColorEditFlags_AlphaPreview | ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_NoInputs);
 
 
 			}
