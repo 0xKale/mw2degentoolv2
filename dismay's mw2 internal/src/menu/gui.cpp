@@ -327,6 +327,13 @@ namespace gui {
 		if (!fonts::morpheus_title)
 			fonts::morpheus_title = fonts::inter_bold_font;
 
+		ImFontConfig optimus_cfg{};
+		optimus_cfg.FontDataOwnedByAtlas = false;
+		fonts::optimus_princeps = io.Fonts->AddFontFromMemoryTTF(
+			OptimusPrinceps, sizeof(OptimusPrinceps), 96.f, &optimus_cfg, io.Fonts->GetGlyphRangesDefault());
+		if (!fonts::optimus_princeps)
+			fonts::optimus_princeps = fonts::morpheus_title;
+
 		io.FontDefault = fonts::inter_font ? fonts::inter_font : fonts::inter_bold_font2;
 
 		if (!ImGui_ImplWin32_Init(window)) {

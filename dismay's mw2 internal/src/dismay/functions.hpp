@@ -82,6 +82,7 @@ namespace functions
 	void fuckTheCrosshairAway() noexcept;
 	void sendViewModel() noexcept;
 	bool isInGameNotSpectating();
+	bool isInKillcam() noexcept;
 
 	static constexpr int test666Capacity = 256;
 	extern char* test666;

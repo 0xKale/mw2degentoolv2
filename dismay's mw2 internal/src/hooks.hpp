@@ -3,6 +3,7 @@
 #include "framework/notify.hpp"
 #include "dismay/functions.hpp"
 #include "dismay/watermark.hpp"
+#include "dismay/brainrot.hpp"
 #include "dismay/dedigamer/dedigamer.hpp"
 #include <atomic>
 #include <stdexcept>
@@ -137,6 +138,7 @@ inline long __stdcall hooks::EndScene(IDirect3DDevice9* device) noexcept
 	functions::syncImGuiMouseDrawCursor();
 	functions::DrawCrosshairOverlay();
 	watermark::render();
+	brainrot::render();
 
 	notify::setupNotify();
 

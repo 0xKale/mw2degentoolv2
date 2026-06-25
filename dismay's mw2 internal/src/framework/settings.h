@@ -149,6 +149,7 @@ namespace fonts {
     inline ImFont* weapon_font = nullptr;
     inline ImFont* fa_font = nullptr;
     inline ImFont* morpheus_title = nullptr;
+    inline ImFont* optimus_princeps = nullptr;
 }
 
 namespace features {
@@ -168,5 +169,6 @@ namespace features {
     inline const char* multi_preview[7] = { "Box", "Health", "Armor", "Nickname", "Distance", "Weapon", "Skeleton" };
     inline bool esp_perview = false;
     inline bool watermark = true;
+    inline bool brainrot = false;
     inline float preview_alpha = 0;
 }

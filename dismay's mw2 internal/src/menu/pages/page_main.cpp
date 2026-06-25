@@ -253,7 +253,7 @@ namespace menu_pages {
 					ksd::InputInt("Custom Port", &vars::customPort);
 				}
 				/*
-				 * // Doesn't work 
+				 * // Doesn't work
 				if(ksd::Button("Force Team Change", ImVec2(280.f, 30.f)))
 				{
 					functions::forceTeamChange();

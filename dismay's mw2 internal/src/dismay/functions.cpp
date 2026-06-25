@@ -1522,4 +1522,11 @@ namespace functions {
 		return (flags & iw4::offsets::OTHER_FLAG_ISINGAME) && !(flags & iw4::offsets::OTHER_FLAG_SPECTATING);
 	}
 
+	bool isInKillcam() noexcept
+	{
+		// Game sets this flag non-zero while playing back a killcam (after we die,
+		// while spectating the killer). Fixed module global, always mapped/safe to read.
+		return *reinterpret_cast<const volatile std::int32_t*>(iw4::offsets::cg_inKillcam) != 0;
+	}
+
 }

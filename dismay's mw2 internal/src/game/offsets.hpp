@@ -584,6 +584,8 @@ namespace iw4 {
         inline constexpr std::int32_t OTHER_FLAG_SPECTATING = 0x800; // ik these arent offsets but im lazy
         inline constexpr std::int32_t OTHER_FLAG_ISINGAME    = 0x1000;
         inline constexpr std::uintptr_t CG = 0x8A0E50;
+        inline constexpr std::uintptr_t cg_inKillcam = 0x914E40;   // non-zero while a killcam is playing (we died, now spectating the killer)
+        inline constexpr std::uintptr_t cg_killcamType = 0x914E50; // killcam type enum (paired with cg_inKillcam; 1/3/6 = regular variants)
         inline constexpr std::uintptr_t BG_GetViewmodelWeaponIndex = 0x479560;
         inline constexpr std::uintptr_t BG_GetWeaponCompleteDef = 0x4794C0;
     }

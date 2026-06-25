@@ -17,7 +17,7 @@ namespace menu_pages {
 			const float rightX = origin.x + layout::colWidth + layout::colGap;
 
 			ImGui::SetCursorPos(ImVec2(leftX, origin.y));
-			if(ksd::BeginChild(ICON_FA_CROSSHAIRS, "Config", 150.f, layout::leftWidth))
+			if(ksd::BeginChild(ICON_FA_CROSSHAIRS, "Config", 185.f, layout::leftWidth))
 			{
 				ksd::Text(".ini file is located in the same directory");
 				ksd::Text("as the DLL.");
@@ -30,6 +30,18 @@ namespace menu_pages {
 					config::Save();
 				}
 				ImGui::ColorEdit4("Accent Color", (float*)&colors::accent_color, ImGuiColorEditFlags_AlphaPreview | ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_NoInputs);
+
+				if(ksd::Checkbox("Brainrot", &features::brainrot))
+				{
+					if(features::brainrot)
+					{
+						SendNotify("Brainrot Enabled", 2.0f);
+					}
+					else
+					{
+						SendNotify("Brainrot Disabled", 2.0f);
+					}
+				}
 
 
 			}
