@@ -28,7 +28,6 @@ Tabs: **Main**, **Account**, **Host**, **Dedigamer**, **About**
 - FPS, FOV, and map size sliders
 - Disconnect and in-game console command box
 - DLC toggle and custom port (for VPN / port forwarding)
-- Force team change
 - In-game live stats overlay — toggle on/off; while in a match (not spectating) shows your name, kills, assists, deaths, kill streak, K/D ratio, FPS, ping, and local time
 - Custom crosshair (color, outline, T-style, center dot, scale)
 - Visual toggles: sun, camos, fog, bullets, movie mode, clear glass, ping text
