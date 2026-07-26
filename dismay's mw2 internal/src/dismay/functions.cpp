@@ -176,8 +176,33 @@ namespace functions {
 			SetDvarInt(iw4::offsets::dvar::r_filmUseTweaks, 0);
 		}
 	}
+	// Com_Frame waits out the rest of the frame in a loop that compares a whole-
+	// millisecond timeGetTime() delta against 1000/com_maxfps, sleeping via
+	// `push 1; call Sys_Sleep` @ 0x56B0A6 until it clears. Sys_Sleep is a bare Sleep(),
+	// which overshoots by roughly a millisecond even though the game calls
+	// timeBeginPeriod(1) at startup (sub_5C8E80) - so every frame lands well past its
+	// target and the cap is never met: com_maxfps 500 wants 2ms, measures ~2.85ms, and
+	// delivers ~350fps. Sleep(0) yields the timeslice but returns immediately, so the
+	// wait exits on the millisecond boundary and the cap is real. Only the operand
+	// changes, so the instruction length is untouched.
+	//
+	// The cap is meaningless without this, so it is not optional - it rides along with
+	// the com_maxfps write. Reads the site first, making it cheap enough to call every
+	// worker tick and self-healing if anything else restores the page.
+	static void applyPreciseFpsCap() noexcept
+	{
+		constexpr DWORD address = 0x56B0A6;
+		const volatile uint8_t* const site = reinterpret_cast<const volatile uint8_t*>(address);
+		if (site[0] != 0x6A || site[1] == 0x00)
+		{
+			return;
+		}
+		uint8_t patched[2] = { 0x6A, 0x00 };
+		writeMemory(address, patched, sizeof(patched));
+	}
 	void sendFPSandFOV() noexcept
 	{
+		applyPreciseFpsCap();
 		if (vars::framesPerSecond != ReadDvarInt(iw4::offsets::dvar::com_maxFPS))
 		{
 			SetDvarInt(iw4::offsets::dvar::com_maxFPS, vars::framesPerSecond);

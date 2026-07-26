@@ -88,6 +88,33 @@ namespace {
 	constexpr float childContentPadTop = 50.f;
 	constexpr float panelGap = 10.f;
 
+	// com_maxfps drives an integer millisecond frame limiter in Com_Frame:
+	//     minFrameTime = 1000 / com_maxfps      (integer divide, iw4mp.exe+0x56B03F)
+	// so only caps of the form 1000/divisor are actually reachable. A raw value of
+	// 400 floors to 2ms and really runs at 500; 60 gives 62.5; stock 85 gives ~91.
+	// Step the slider over the divisor instead of raw FPS so every position is a cap
+	// the engine can produce. 1000/divisor round-trips back to the same divisor
+	// (note 166, not 167 - 1000/167 floors to 5, which would jump you to 200).
+	constexpr int fpsMinDivisor = 1;  // 1000 fps
+	constexpr int fpsMaxDivisor = 33; // ~30 fps
+
+	// Slider steps ascend with FPS, so they run inverse to the divisor. Self-inverse -
+	// the same mapping converts a step back into a divisor.
+	constexpr int FpsStepFromDivisor(const int divisor) noexcept
+	{
+		return fpsMaxDivisor + 1 - divisor;
+	}
+
+	int FpsDivisorFromValue(const int fps) noexcept
+	{
+		const int divisor = fps > 0 ? 1000 / fps : 10;
+		if (divisor < fpsMinDivisor)
+			return fpsMinDivisor;
+		if (divisor > fpsMaxDivisor)
+			return fpsMaxDivisor;
+		return divisor;
+	}
+
 	// Killstreak menu options. Display names + their playerdata refs.
 	// Confirmed in-binary: uav, airdrop, predator_missile. The rest are the standard MW2
 	// refs - if one doesn't apply in-game, correct it against mp/killstreakTable.csv.
@@ -206,7 +233,21 @@ namespace menu_pages {
 						SendNotify("Sensitivity Sent", 2.0f);
 					}
 				}
-				ksd::SliderInt("Frames Per Second", &vars::framesPerSecond, 30, 1000);
+				{
+					// Display the cap the engine will really produce, not the raw dvar.
+					const int fpsDivisor = FpsDivisorFromValue(vars::framesPerSecond);
+					int fpsStep = FpsStepFromDivisor(fpsDivisor);
+					char fpsLabel[16];
+					ImFormatString(fpsLabel, IM_ARRAYSIZE(fpsLabel), "%d", 1000 / fpsDivisor);
+					// fpsLabel is the resolved value text, so Ctrl+Click entry has no
+					// format to parse back - NoInput keeps it drag-only.
+					if(ksd::SliderInt("Frames Per Second", &fpsStep,
+						FpsStepFromDivisor(fpsMaxDivisor), FpsStepFromDivisor(fpsMinDivisor),
+						fpsLabel, ImGuiSliderFlags_NoInput))
+					{
+						vars::framesPerSecond = 1000 / FpsStepFromDivisor(fpsStep);
+					}
+				}
 				ksd::SliderFloat("Field Of View", &vars::fieldOfView, 65.0f, 120.0f, "%.0f");
 				ksd::SliderFloat("Map Size", &vars::mapSize, 1.f, 2.0f);
 				ImGui::Dummy(ImVec2(0.f, 10.f));
