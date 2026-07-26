@@ -33,7 +33,7 @@ namespace vars {
 	float mouseSensitivity = functions::readSensitivity();
 	float defaultFovMin = 1.0f;
 
-	int framesPerSecond = 400;
+	int framesPerSecond = 500; // on the slider's 1000/divisor grid
 	float fieldOfView = 90.0f;
 	float mapSize = 1.000f;
 
@@ -88,13 +88,11 @@ namespace {
 	constexpr float childContentPadTop = 50.f;
 	constexpr float panelGap = 10.f;
 
-	// com_maxfps drives an integer millisecond frame limiter in Com_Frame:
-	//     minFrameTime = 1000 / com_maxfps      (integer divide, iw4mp.exe+0x56B03F)
-	// so only caps of the form 1000/divisor are actually reachable. A raw value of
-	// 400 floors to 2ms and really runs at 500; 60 gives 62.5; stock 85 gives ~91.
-	// Step the slider over the divisor instead of raw FPS so every position is a cap
-	// the engine can produce. 1000/divisor round-trips back to the same divisor
-	// (note 166, not 167 - 1000/167 floors to 5, which would jump you to 200).
+	// Frame rate is driven by functions::paceFrame (a QPC limiter on the Com_Frame hook),
+	// so any target is reachable now and the number on the slider is the number you get.
+	// The stops are still the classic 1000/divisor caps - 250, 333, 500, 1000 - because
+	// those are the values people actually ask for. The divisor is just a tidy way to
+	// enumerate them, not a constraint any more.
 	constexpr int fpsMinDivisor = 1;  // 1000 fps
 	constexpr int fpsMaxDivisor = 33; // ~30 fps
 
@@ -234,11 +232,13 @@ namespace menu_pages {
 					}
 				}
 				{
-					// Display the cap the engine will really produce, not the raw dvar.
 					const int fpsDivisor = FpsDivisorFromValue(vars::framesPerSecond);
+					// Snap to the grid so the pacer targets exactly what the label reads.
+					// Idempotent - a snapped value maps back to the same divisor.
+					vars::framesPerSecond = 1000 / fpsDivisor;
 					int fpsStep = FpsStepFromDivisor(fpsDivisor);
 					char fpsLabel[16];
-					ImFormatString(fpsLabel, IM_ARRAYSIZE(fpsLabel), "%d", 1000 / fpsDivisor);
+					ImFormatString(fpsLabel, IM_ARRAYSIZE(fpsLabel), "%d", vars::framesPerSecond);
 					// fpsLabel is the resolved value text, so Ctrl+Click entry has no
 					// format to parse back - NoInput keeps it drag-only.
 					if(ksd::SliderInt("Frames Per Second", &fpsStep,
@@ -247,8 +247,7 @@ namespace menu_pages {
 					{
 						vars::framesPerSecond = 1000 / FpsStepFromDivisor(fpsStep);
 					}
-				}
-				ksd::SliderFloat("Field Of View", &vars::fieldOfView, 65.0f, 120.0f, "%.0f");
+				}				ksd::SliderFloat("Field Of View", &vars::fieldOfView, 65.0f, 120.0f, "%.0f");
 				ksd::SliderFloat("Map Size", &vars::mapSize, 1.f, 2.0f);
 				ImGui::Dummy(ImVec2(0.f, 10.f));
 				if(ksd::Button("Disconnect", ImVec2(280.f, 30.f)))

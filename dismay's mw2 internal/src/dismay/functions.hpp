@@ -27,6 +27,11 @@ namespace functions
 	void sendNoBullets() noexcept;
 	void sendMovie() noexcept;
 	void sendFPSandFOV() noexcept;
+	// QPC frame limiter, called once per frame from the Com_Frame hook. setFramePacerActive
+	// tells sendFPSandFOV whether the hook installed; if it didn't, com_maxfps goes back to
+	// driving the engine's own limiter.
+	void paceFrame() noexcept;
+	void setFramePacerActive(bool active) noexcept;
 	void sendMapSize() noexcept;
 	void sendFOVMin() noexcept;
 	void toggleChat() noexcept;

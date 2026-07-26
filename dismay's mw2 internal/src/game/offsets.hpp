@@ -596,6 +596,9 @@ namespace iw4 {
         // the low-level 2D UI quad draw (physical pixel coords). Every menu material goes
         // through it; hooked to recolor the menu's fullscreen background.
         inline constexpr std::uintptr_t CL_DrawStretchPicPhysical = 0x4BBFC0;
+        // Com_Frame() - the main frame driver, one call per rendered frame from sub_56B380.
+        // Its built-in limiter lives at 0x56B0A2 and is replaced by functions::paceFrame.
+        inline constexpr std::uintptr_t Com_Frame = 0x56AFA0;
     }
 
     namespace pointers {

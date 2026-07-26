@@ -114,7 +114,7 @@ void config::Load()
 		return GetPrivateProfileIntA(section, key, def ? 1 : 0, file.c_str()) == 1;
 	};
 
-	vars::framesPerSecond   = ReadInt("Visuals", "FPS", 400);
+	vars::framesPerSecond   = ReadInt("Visuals", "FPS", 500);
 	vars::fieldOfView       = ReadFloat("Visuals", "FOV", 90.0f);
 	vars::noSun             = ReadBool("Visuals", "DrawSun", true);
 	vars::drawCamo            = ReadBool("Visuals", "NoCamoEnabled", false);

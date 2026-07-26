@@ -176,19 +176,29 @@ namespace functions {
 			SetDvarInt(iw4::offsets::dvar::r_filmUseTweaks, 0);
 		}
 	}
-	// Com_Frame waits out the rest of the frame in a loop that compares a whole-
-	// millisecond timeGetTime() delta against 1000/com_maxfps, sleeping via
-	// `push 1; call Sys_Sleep` @ 0x56B0A6 until it clears. Sys_Sleep is a bare Sleep(),
-	// which overshoots by roughly a millisecond even though the game calls
-	// timeBeginPeriod(1) at startup (sub_5C8E80) - so every frame lands well past its
-	// target and the cap is never met: com_maxfps 500 wants 2ms, measures ~2.85ms, and
-	// delivers ~350fps. Sleep(0) yields the timeslice but returns immediately, so the
-	// wait exits on the millisecond boundary and the cap is real. Only the operand
-	// changes, so the instruction length is untouched.
+	// ---- Frame pacing -------------------------------------------------------------
 	//
-	// The cap is meaningless without this, so it is not optional - it rides along with
-	// the com_maxfps write. Reads the site first, making it cheap enough to call every
-	// worker tick and self-healing if anything else restores the page.
+	// The engine's own limiter (Com_Frame @ 0x56B0A2) is unusable for an accurate cap.
+	// It compares a whole-millisecond timeGetTime() delta against 1000/com_maxfps, so
+	// it can only express caps of 1000/m - 333, 500, 1000, nothing in between - and it
+	// waits by calling Sys_Sleep(1) in a loop, which overshoots by about a millisecond
+	// per call. Worse, at 0x56B0B8 it resets its baseline to the observed time rather
+	// than advancing it by one period, so a frame that runs long is never made up and
+	// the average can only ever sit below target.
+	//
+	// paceFrame replaces all three properties: QPC instead of a millisecond clock, a
+	// deadline that advances by a fixed period so overruns are absorbed by the next
+	// frame instead of lost, and a sleep/spin split so the wait is precise without
+	// burning a core through the whole frame. Runs from the Com_Frame hook, ahead of
+	// the engine's loop, which then falls straight through because com_maxfps is pinned
+	// to 1000 (a 1ms floor) whenever the pacer is live.
+	static std::atomic<bool> g_framePacerActive{ false };
+	static LONGLONG g_qpcFreq = 0;
+	static LONGLONG g_nextFrameDeadline = 0;
+
+	// The Sleep(1) fallback patch, used only when the Com_Frame hook could not be
+	// installed. Restores nothing on failure - it just makes the engine's own limiter
+	// land on its millisecond boundary instead of a millisecond past it.
 	static void applyPreciseFpsCap() noexcept
 	{
 		constexpr DWORD address = 0x56B0A6;
@@ -200,12 +210,83 @@ namespace functions {
 		uint8_t patched[2] = { 0x6A, 0x00 };
 		writeMemory(address, patched, sizeof(patched));
 	}
+
+	void setFramePacerActive(bool active) noexcept
+	{
+		g_framePacerActive.store(active, std::memory_order_release);
+		g_nextFrameDeadline = 0; // resync on the next frame
+	}
+
+	void paceFrame() noexcept
+	{
+		if (g_qpcFreq == 0)
+		{
+			LARGE_INTEGER freq{};
+			if (!QueryPerformanceFrequency(&freq) || freq.QuadPart <= 0)
+			{
+				return;
+			}
+			g_qpcFreq = freq.QuadPart;
+		}
+
+		const int fps = vars::framesPerSecond;
+		if (fps <= 0)
+		{
+			return;
+		}
+
+		const LONGLONG period = g_qpcFreq / fps;
+		LARGE_INTEGER now{};
+		QueryPerformanceCounter(&now);
+
+		// First frame, or we fell more than a full period behind - a hitch, a level load,
+		// an alt-tab. Rebase instead of sprinting through a burst of catch-up frames.
+		if (g_nextFrameDeadline == 0 || now.QuadPart - g_nextFrameDeadline > period)
+		{
+			g_nextFrameDeadline = now.QuadPart + period;
+			return;
+		}
+
+		// Sleep off the bulk of the wait and spin only the tail. Sleep(1) can overshoot
+		// by around a millisecond, so the spin margin has to clear that comfortably or
+		// the sleep would carry us straight past the deadline.
+		const LONGLONG spinMargin = (g_qpcFreq * 2) / 1000; // 2ms
+		for (;;)
+		{
+			QueryPerformanceCounter(&now);
+			const LONGLONG remaining = g_nextFrameDeadline - now.QuadPart;
+			if (remaining <= 0)
+			{
+				break;
+			}
+			if (remaining > spinMargin)
+			{
+				::Sleep(1);
+			}
+			else
+			{
+				YieldProcessor();
+			}
+		}
+
+		g_nextFrameDeadline += period;
+	}
+
 	void sendFPSandFOV() noexcept
 	{
-		applyPreciseFpsCap();
-		if (vars::framesPerSecond != ReadDvarInt(iw4::offsets::dvar::com_maxFPS))
+		// With the pacer live, com_maxfps is pinned to 1000 so the engine's limiter has a
+		// 1ms floor and always falls straight through - paceFrame owns the timing. If the
+		// hook never installed, fall back to the engine limiter: write the real target and
+		// patch its Sleep(1) so it at least lands on the 1000/m grid.
+		const bool paced = g_framePacerActive.load(std::memory_order_acquire);
+		if (!paced)
 		{
-			SetDvarInt(iw4::offsets::dvar::com_maxFPS, vars::framesPerSecond);
+			applyPreciseFpsCap();
+		}
+		const int cap = paced ? 1000 : vars::framesPerSecond;
+		if (cap != ReadDvarInt(iw4::offsets::dvar::com_maxFPS))
+		{
+			SetDvarInt(iw4::offsets::dvar::com_maxFPS, cap);
 		}
 		if (vars::fieldOfView != ReadDvarFloat(iw4::offsets::dvar::cg_fov))
 		{

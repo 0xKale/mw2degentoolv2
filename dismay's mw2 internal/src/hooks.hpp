@@ -42,6 +42,13 @@ namespace hooks
 	using DrawStretchPicFn = int(__cdecl*)(float, float, float, float, float, float, float, float, const float*, void*);
 	inline DrawStretchPicFn DrawStretchPicOriginal = nullptr;
 	inline int __cdecl DrawStretchPicHook(float, float, float, float, float, float, float, float, const float*, void*);
+
+	// Com_Frame() - one call per frame. Hooked to run functions::paceFrame ahead of the
+	// engine's own millisecond limiter, which can only express 1000/m caps and loses any
+	// frame that overruns. See functions::paceFrame for the full reasoning.
+	using ComFrameFn = void(__cdecl*)();
+	inline ComFrameFn ComFrameOriginal = nullptr;
+	inline void __cdecl ComFrameHook();
 }
 
 inline void hooks::Setup()
@@ -71,8 +78,23 @@ inline void hooks::Setup()
 		reinterpret_cast<void**>(&DrawStretchPicOriginal)
 	);
 
+	// Frame pacer. Also non-fatal - if it can't be created, sendFPSandFOV is told to fall
+	// back to driving the engine's own limiter through com_maxfps instead.
+	const bool pacerHooked = MH_CreateHook(
+		reinterpret_cast<LPVOID>(iw4::offsets::Com_Frame),
+		&ComFrameHook,
+		reinterpret_cast<void**>(&ComFrameOriginal)
+	) == MH_OK;
+	functions::setFramePacerActive(pacerHooked);
+
 	if (MH_EnableHook(MH_ALL_HOOKS))
 		throw std::runtime_error("Unable to enable hooks");
+}
+
+inline void __cdecl hooks::ComFrameHook()
+{
+	functions::paceFrame();
+	ComFrameOriginal();
 }
 
 inline void hooks::TryStartBackgroundServices() noexcept
