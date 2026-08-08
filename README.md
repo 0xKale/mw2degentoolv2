@@ -125,3 +125,5 @@ Config saves to `dismay_config.ini` in the same folder as the injected DLL.
 ![IronSight0](https://i.ibb.co/WWWFYLBS/iw4mp-Vika-AP5-Rj-J.jpg)
 
 ![IronSight1](https://i.ibb.co/GfQJDwgc/iw4mp-Os0q7d-WOWv.jpg)
+
+[![HitCount](https://hits.dwyl.com/0xKale/mw2degentoolv2.svg?style=flat-square)](http://hits.dwyl.com/0xKale/mw2degentoolv2)
