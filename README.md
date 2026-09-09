@@ -1,5 +1,7 @@
 # DISMAY'S DEGEN TOOL — MW2 Internal
 
+Tool is currently being converted. I will upload source when it is completed. Host and unlock all has issues but all MAIN stuff is working and tested. 
+
 DISCLAIMER: I DONT CARE IF YOU USE OUR CODE, BUT STEALING IT TO SELL IT IN YOUR OWN TOOL IS A DOG ACT. GROW UP.
 
 ## Intro
