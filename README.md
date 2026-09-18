@@ -33,8 +33,8 @@ Tabs: **Main**, **Account**, **Host**, **Dedigamer**, **About**
 - Sensitivity read/write
 - FPS, FOV, and map size sliders
 - Disconnect and in-game console command box
-- DLC toggle and custom port (for VPN / port forwarding)
-- In-game live stats overlay — toggle on/off; while in a match (not spectating) shows your name, kills, assists, deaths, kill streak, K/D ratio, FPS, ping, and local time
+- DLC toggle and custom port (for VPN / port forwarding)  _{Unknown}_
+- In-game live stats overlay — toggle on/off; while in a match (not spectating) shows your name, kills, assists, deaths, kill streak, K/D ratio, FPS, ping, and local time  _{BROKEN: TO FIX}_
 - Custom crosshair (color, outline, T-style, center dot, scale)
 - Visual toggles: sun, camos, fog, bullets, movie mode, clear glass, ping text
 - Fullbright presets (Invert, Normal, Super, Slight, Dullish)
@@ -44,20 +44,20 @@ Tabs: **Main**, **Account**, **Host**, **Dedigamer**, **About**
 ### Account
 
 - Prestige and rank sliders (send to profile)
-- Unlock all (use in private match for full lobby unlock / spinning skull)
-- Gold Deagle loadout classes
-- Profile stats editor (wins, K/D, time played, etc.) — load and send
+- Unlock all (MUST use in private match for it to work + spinning skull)
+- Gold Deagle loadout classes _{BROKEN: TO FIX}_
+- Profile stats editor (wins, K/D, time played, etc.) — load and send  _{BROKEN: TO FIX}_
 
 ### Host
 
 - Server command console (`s` / `c` / `f` / `J` / `M` / `n` prefixes documented in-menu)
 - Per-client buttons, load player names, broadcast to all clients
 - Map and gamemode picker, max players, change map, fast restart
-- Lock lobby, match settings, start match
-- FFA team fix and host hotkeys
-- Lobby tweaks: unlimited ammo, unlimited time/score, sprint scale
-- 360 prone/ladder cap, knockback and back-speed scale
-- Depatch bounces (normal / easy) and depatch elevators
+- Lock lobby, match settings, start match  _{BROKEN: TO FIX}_
+- FFA team fix and host hotkeys  _{BROKEN: TO FIX}_
+- Lobby tweaks: unlimited ammo, unlimited time/score, sprint scale  _{BROKEN: TO FIX}_
+- 360 prone/ladder cap, knockback and back-speed scale  _{BROKEN: TO FIX}_
+- Depatch bounces (normal / easy) and depatch elevators  _{BROKEN: TO FIX}_
 
 ### Dedigamer
 
